@@ -66,7 +66,7 @@ const Header = styled.div`
     font-weight: 700;
     font-size: 16px;
     font-family: 'Lobster', cursive;
-    color: ${StyleConstants.GREY_COLOR};
+    color: ${StyleConstants. MEDIUM_GREY_COLOR};
     line-height: 18px;
     align-self: end;
     ${customMedia.lessThan("medium")`

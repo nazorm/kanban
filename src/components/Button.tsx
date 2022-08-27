@@ -24,24 +24,48 @@ export const TransparentButton = ({ content, className, secondaryBtnAction }: IB
         </TranparentBtn>
     )
 }
+
+export const BorderlessButton = ({ content, className, primaryBtnAction }: IButton) => {
+    return (
+        <BorderlessBtn onClick={primaryBtnAction}>
+            {content}
+        </BorderlessBtn>
+    )
+}
+
 export const PrimaryBtn = styled.button`
-       border-radius: 4px;
+        border-radius: 4px;
         border: transparent;
         font-weight: bold;
         padding: 10px 20px;
         background-color: ${StyleConstants.ACCENT_COLOR};
-       color: ${StyleConstants.WHITE_COLOR};;
-       border-radius: 24px;
-       &:hover{
-        cursor: pointer;
-       }
+        color: ${StyleConstants.WHITE_COLOR};;
+        border-radius: 24px;
+        &:hover{
+                cursor: pointer;
+                background-color:  ${StyleConstants.PRIMARY_HOVER_COLOR};
+        }
 `;
+
+
+
 const TranparentBtn = styled(PrimaryBtn)`
-    color:   ${StyleConstants.ACCENT_COLOR};
-    border: 2px solid  ${StyleConstants.ACCENT_COLOR};
-    background-color: color: ${StyleConstants.WHITE_COLOR};;
-    :hover{
-      background-color:  ${StyleConstants.ACCENT_COLOR};
-      color: color: ${StyleConstants.WHITE_COLOR};;
-    }
+        color:   ${StyleConstants.ACCENT_COLOR};
+        border: 2px solid  ${StyleConstants.ACCENT_COLOR};
+        background-color: color: ${StyleConstants.WHITE_COLOR};;
+        :hover{
+            background-color:  ${StyleConstants.ACCENT_COLOR};
+            color: color: ${StyleConstants.WHITE_COLOR};
+        }
+`;
+
+const BorderlessBtn = styled.button`
+    color: ${StyleConstants.MEDIUM_GREY_COLOR};
+    border: transparent;
+    background-color: transparent;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 30px;
+    text-align: center;
 `;

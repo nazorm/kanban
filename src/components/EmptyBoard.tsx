@@ -33,7 +33,7 @@ justify-self: center;
     font-weight: 700;
     font-size: 18px;
     line-height: 23px;
-    color: ${StyleConstants.GREY_COLOR};;
+    color: ${StyleConstants. MEDIUM_GREY_COLOR};
 }
 
 `;
