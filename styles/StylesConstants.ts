@@ -4,5 +4,9 @@ export enum StyleConstants {
     LIGHT_LILAC = '#F4F7FD',
     WHITE_COLOR = '#ffffff',
     MEDIUM_GREY_COLOR = '#828FA3',
+    DONE_COLOR = '#67E2AE',
+    DOING_COLOR = '#8471F2',
+    TODO_COLOR = '#49C4E5',
+    BLACK_COLOR = '#000112',
   }
   

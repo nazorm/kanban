@@ -76,7 +76,7 @@ export const SideBarIcon = (props: ISideBarLinkProps) => {
         <li className={router.pathname == route ? "closed-active-item" : "closed-side-bar__item"}>
             <Link href={route}>
                 <div className='closed-sidebar'>
-                    <Image src={icon} alt='icon' className='icon' />
+                    <Image src={icon} alt='icon' className='icon' width={20}  height={20} />
                 </div>
             </Link>
         </li>
@@ -144,14 +144,14 @@ export const SideBar = () => {
 }
 
 const Wrapper = styled.div`
-     height: 800px;
+     height: 600px;
      position: relative;
 `;
 
 const OpenSideBar = styled.div`
      width: 300px;
      padding-top: 10px;
-     height: 800px;
+     height: 600px;
      background-color: ${StyleConstants.WHITE_COLOR};
     .sidebar-list{
         padding: 0px;
@@ -184,7 +184,7 @@ const OpenSideBar = styled.div`
 `;
 const ClosedSideBar = styled.div`
         width: 100px;
-        height: 800px;
+        height: 600px;
         padding-top: 10px;
         background-color: ${StyleConstants.ACCENT_COLOR};
         color: ${StyleConstants.WHITE_COLOR};
@@ -193,14 +193,11 @@ const ClosedSideBar = styled.div`
             margin-top: 0;
         }
       .closed-side-bar__item, .closed-active-item{
-        margin: 10px 2px ;
-        list-style-type: none;
-        padding: 15px;
-        width: 100px;
-        transition: 0.5s;
-        img{
-            width: 80px;
-        }
+            margin: 10px 2px ;
+            list-style-type: none;
+            padding: 15px;
+            width: 100px;
+            transition: 0.5s;
       }
     .closed-active-item{
      img{
@@ -212,7 +209,7 @@ const ClosedSideBar = styled.div`
 const ThemeWrapper = styled.div`
       position: absolute;
       width: 90%;
-      bottom: 10%;
+      bottom:10%;
       text-align: center;
       background-color: ${StyleConstants.LIGHT_LILAC};
       padding: 5px;
@@ -223,7 +220,7 @@ const ThemeWrapper = styled.div`
 `;
 const Collapse = styled.div`
       position: absolute;
-      bottom: 4%;
+      bottom: 1%;
       width: 100%;
       display: flex;
       padding: 20px;

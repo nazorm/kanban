@@ -11,7 +11,7 @@ const HomePage = () => {
             <Head>
                 <title>Home- Kanban</title>
                 <meta name="description" content="A Project Management Board" />
-                <link rel="icon" href="/favicon.ico" />
+                 <link rel="icon" href="/favicon/favicon.ico" />
             </Head>
             <Header>
                 <Link href="/home">
@@ -28,7 +28,7 @@ const HomePage = () => {
 }
 
 const Wrapper = styled.section`
-width: 100%;
+    width: 100%;
 `;
 const Header = styled.div`
   display: flex;

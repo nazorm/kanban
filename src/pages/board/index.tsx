@@ -4,7 +4,7 @@ import Head from "next/head";
 import { BoardHeader } from '../../components/Layout/BoardHeader';
 import { SideBar } from 'src/components/Layout/Sidebar';
 import { EmptyBoard } from 'src/components/EmptyBoard';
-import { ActiveBoard } from './activeBoard';
+import { ActiveBoard } from './components/ActiveBoard';
 
 const Board = () => {
     const boardList = [
@@ -19,11 +19,11 @@ const Board = () => {
                 <Head>
                     <title>Board - Kanban</title>
                     <meta name="description" content="A Project Management Board" />
-                    <link rel="icon" href="/favicon.ico" />
+                    <link rel="icon" href="/favicon/favicon.ico" />
                 </Head>
                 <Container>
                     <SideBar />
-                    {boardList.length=== 0 ?<EmptyBoard/>  : <ActiveBoard/> }
+                    {boardList.length === 0 ? <EmptyBoard/>  : <ActiveBoard/> }
                 </Container>
             </Wrapper>
         </>
@@ -32,10 +32,10 @@ const Board = () => {
 }
 
 const Wrapper = styled.section`
-width: 100%;
+    width: 100%;
 `;
 const Container = styled.div`
-display: flex;
+    display: flex;
 `
 
 export default Board;
