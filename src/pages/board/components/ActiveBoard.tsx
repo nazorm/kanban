@@ -42,6 +42,24 @@ export const ActiveBoard = () => {
         dragNode.current.addEventListener('dragend', handleDragEnd);
         setIsDragging(true);
     }
+
+    const handleDragEnter = (e: any, params: { boardIndex: number; cardIndex: number; }) => {
+        console.log('entering', params);
+        const currentItem = dragItem.current;
+        if (e.target === dragNode.current) {
+            console.log('itself');
+        } else {
+            console.log('not itself');
+             setList(oldlist => {
+                let newList = JSON.parse(JSON.stringify(oldlist))
+                newList[params.boardIndex].items.splice(params.cardIndex,0,newList[currentItem.boardIndex].items.splice(currentItem.cardIndex, 1)[0])
+                // newList[params.boardIndex].items.splice(1 ,0,2)
+                dragItem.current = params;
+                return newList;
+             })
+        }
+    }
+
     const handleDragEnd = () => {
         console.log('drag end')
         dragNode.current.removeEventListener('dragend', handleDragEnd);
@@ -49,19 +67,16 @@ export const ActiveBoard = () => {
         dragNode.current = null;
         setIsDragging(false);
     }
-    const handleDragEnter = (e:any, params: { boardIndex: number; cardIndex: number; }) => {
-        console.log('entering', params);
-        const currentItem = dragItem.current;
-        if(e.target !== dragNode.current){
-            console.log('not itself');
-        }
-    }
+
 
     return (
         <Wrapper>
             <CarouselContainer>
                 {list.map((board, boardIndex) => (
-                    <ActiveColumn key={boardIndex}>
+                    <ActiveColumn 
+                    key={boardIndex}
+                    onDragEnter={isDragging && !board.items.length? (e)=>{handleDragEnter(e,{boardIndex, cardIndex:0}) } : null}
+                    >
                         <div className='active-board-head'>
                             <Image src={board.icon} alt='icon' className='icon' width={10} height={10} />
                             <span className='active-board-text'>{board.boardTitle} {`(${board.items.length})`} </span>
@@ -74,8 +89,8 @@ export const ActiveBoard = () => {
                                             key={cardIndex}
                                             id={cardIndex}
                                             title={card.title}
-                                            handleDragStart={(e) => { handleDragStart(e, { boardIndex, cardIndex })}}
-                                            handleDragEnter={isDragging ? (e) => { handleDragEnter(e, { boardIndex, cardIndex })} : null}
+                                            handleDragStart={(e) => { handleDragStart(e, { boardIndex, cardIndex }) }}
+                                            handleDragEnter={isDragging ? (e) => { handleDragEnter(e, { boardIndex, cardIndex }) } : null}
                                         />
                                     )
                                 })}
