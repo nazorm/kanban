@@ -1,13 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
 import { StyleConstants } from 'styles/StylesConstants';
+import { useDropzone } from "react-dropzone";
 
 export interface IActiveBoardProps {
-    id: string;
+    id: number;
     title: string,
     description?: string,
     status?: string,
-    subtasks?: IActiveBoardSubTaskProps[],
+    // subtasks?: IActiveBoardSubTaskProps[],
+    handleDragStart: (e:any)=>void
+    handleDragEnter: (e:any )=>void | null,
+    handleCardView?: () => void,
 }
 
 export interface IActiveBoardSubTaskProps {
@@ -15,13 +19,16 @@ export interface IActiveBoardSubTaskProps {
     title: string,
     isCompleted: boolean,
 }
-
-export const TaskCard = ({ title, description, status, subtasks }: IActiveBoardProps) => {
+// const handleCard = (id)=>{
+// console.log(id)
+// }
+export const TaskCard = ({ title, handleDragStart, handleDragEnter, id}: IActiveBoardProps) => {
     return (
-        <Card>
+        <Card  onDragStart={handleDragStart} onDragEnter={handleDragEnter} draggable>
             <p className='card-title'>{title}</p>
-            <span className='subtask-number'>{0} of {subtasks?.length} substasks</span>
+            {/* <span className='subtask-number'>{0} of {subtasks?.length} substasks</span> */}
         </Card>
+
     )
 }
 

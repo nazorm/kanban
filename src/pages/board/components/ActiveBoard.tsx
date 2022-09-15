@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
 import doneIcon from '../../../assets/icons/done-icon.svg';
 import doingIcon from '../../../assets/icons/doing-icon.svg';
@@ -6,141 +6,92 @@ import todoIcon from '../../../assets/icons/todo-icon.svg';
 import Image from 'next/image';
 import { StyleConstants } from 'styles/StylesConstants';
 import { BorderlessButton } from '../../../components/Button';
-import { backlog, inProgress, completed } from '../../../components/PmData';
-import { TaskCard } from 'src/components/TaskCard';
+import { boardList, newBoardList } from '../../../components/PmData';
+import { IActiveBoardProps, TaskCard } from 'src/components/TaskCard';
+import { TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 
-export interface IActiveBoardProps {
 
-}
 
 export const ActiveBoard = () => {
-    const uniqueId = JSON.stringify(new Date().getTime());
-    console.log()
-    const addBacklogCard = () => {
-        console.log('todo')
+    const [isViewTaskModalOpen, setIsViewTaskModalOpen] = useState(false);
+    const [taskDescriptionData, setTaskDescriptionData] = useState<IActiveBoardProps>();
+    const [isDragging, setIsDragging] = useState(false)
+    const [list, setList] = useState(newBoardList);
+    const dragItem = useRef();
+    const dragNode = useRef();
+
+
+
+    const handleViewTaskModal = (id: string) => {
+        setIsViewTaskModalOpen(!isViewTaskModalOpen);
+        console.log(id)
+        const taskCardInfo = newBoardList.map((taskInfo) => {
+            return taskInfo.items;
+        })
+        console.log(...taskCardInfo)
+
     }
-    const addInProgressCard = () => {
-        console.log('doing')
+
+    const addCardHandler = () => {
+        console.log('new card')
     }
-    const addCompletedCard = () => {
-        console.log('done')
+    const handleDragStart = (e: any, params: { boardIndex: number; cardIndex: number; }) => {
+        console.log('drag starting', params);
+        dragItem.current = params;
+        dragNode.current = e.target;
+        dragNode.current.addEventListener('dragend', handleDragEnd);
+        setIsDragging(true);
     }
-    const addNewColumn = () => {
-        console.log('new Column')
+    const handleDragEnd = () => {
+        console.log('drag end')
+        dragNode.current.removeEventListener('dragend', handleDragEnd);
+        dragItem.current = null;
+        dragNode.current = null;
+        setIsDragging(false);
+    }
+    const handleDragEnter = (e:any, params: { boardIndex: number; cardIndex: number; }) => {
+        console.log('entering', params);
+        const currentItem = dragItem.current;
+        if(e.target !== dragNode.current){
+            console.log('not itself');
+        }
     }
 
     return (
         <Wrapper>
             <CarouselContainer>
-                <ActiveColumn>
-                    <div className='active-board-head'>
-                        <Image src={todoIcon} alt='icon' className='icon' width={10} height={10} />
-                        <span className='active-board-text'>BACKLOG {`(${backlog.length})`} </span>
-                    </div>
-                        <div className={backlog.length > 5 ? 'active-column-scroll' : 'active-column'}>
-                            {backlog.length > 0 && <ActiveList>
-                                {backlog.map((todo) => {
+                {list.map((board, boardIndex) => (
+                    <ActiveColumn key={boardIndex}>
+                        <div className='active-board-head'>
+                            <Image src={board.icon} alt='icon' className='icon' width={10} height={10} />
+                            <span className='active-board-text'>{board.boardTitle} {`(${board.items.length})`} </span>
+                        </div>
+                        <div className={board.items.length > 5 ? 'active-column-scroll' : 'active-column'}>
+                            <ActiveList>
+                                {board.items.map((card, cardIndex) => {
                                     return (
-                                        <TaskCard key={uniqueId} id={uniqueId} title={todo.title} subtasks={todo.subtasks} />
+                                        <TaskCard
+                                            key={cardIndex}
+                                            id={cardIndex}
+                                            title={card.title}
+                                            handleDragStart={(e) => { handleDragStart(e, { boardIndex, cardIndex })}}
+                                            handleDragEnter={isDragging ? (e) => { handleDragEnter(e, { boardIndex, cardIndex })} : null}
+                                        />
                                     )
                                 })}
-                            </ActiveList>}
+                            </ActiveList>
+                            <Dialog open={isViewTaskModalOpen} onClose={handleViewTaskModal}>
+                                <DialogTitle>Subscribe{taskDescriptionData?.id}</DialogTitle>
+                            </Dialog>
                         </div>
 
-                    <BorderlessButton
-                        content='+ New Card'
-                        primaryBtnAction={addBacklogCard}
-                    />
-                </ActiveColumn>
-                <ActiveColumn>
-                    <div className='active-board-head'>
-                        <Image src={todoIcon} alt='icon' className='icon' width={10} height={10} />
-                        <span className='active-board-text'>DOING NEXT {`(${backlog.length})`} </span>
-                    </div>
-                        <div className={backlog.length > 5 ? 'active-column-scroll' : 'active-column'}>
-                            {backlog.length > 0 && <ActiveList>
-                                {backlog.map((todo) => {
-                                    return (
-                                        <TaskCard key={uniqueId} id={uniqueId} title={todo.title} subtasks={todo.subtasks} />
-                                    )
-                                })}
-                            </ActiveList>}
-                        </div>
-
-                    <BorderlessButton
-                        content='+ New Card'
-                        primaryBtnAction={addBacklogCard}
-                    />
-                </ActiveColumn>
-                <ActiveColumn>
-                    <div className='active-board-head'>
-                        <Image src={doingIcon} alt='icon' className='icon' width={10} height={10} />
-                        <span className='active-board-text'>IN PROGRESS  {`(${inProgress.length})`} </span>
-                    </div>
-                        <div className={inProgress.length > 5 ? 'active-column-scroll' : 'active-column'}>
-                            {inProgress.length > 0 && <ActiveList>
-                                {inProgress.map((doing) => {
-                                    return (
-                                        <TaskCard key={uniqueId} id={uniqueId} title={doing.title} subtasks={doing.subtasks} />
-                                    )
-                                })}
-                            </ActiveList>}
-                        </div>
-
-                    <BorderlessButton
-                        content='+ New Card'
-                        primaryBtnAction={addInProgressCard}
-                    />
-                </ActiveColumn>
-                <ActiveColumn>
-                    <div className='active-board-head'>
-                        <Image src={doneIcon} alt='icon' className='icon' width={10} height={10} />
-                        <span className='active-board-text'>COMPLETED  {`(${completed.length})`} </span>
-                    </div>
-                        <div className={completed.length > 5 ? 'active-column-scroll' : 'active-column'}>
-                            {completed.length > 0 && <ActiveList>
-                                {completed.map((done) => {
-                                    return (
-                                        <TaskCard key={uniqueId} id={uniqueId} title={done.title} subtasks={done.subtasks} />
-                                    )
-                                })}
-                            </ActiveList>}
-                        </div>
-
-                    <BorderlessButton
-                        content='+ New Card'
-                        primaryBtnAction={addCompletedCard}
-                    />
-                </ActiveColumn>
-
-                <ActiveColumn>
-                    <div className='active-board-head'>
-                        <Image src={doneIcon} alt='icon' className='icon' width={10} height={10} />
-                        <span className='active-board-text'>BLOCKED  {`(${completed.length})`} </span>
-                    </div>
-                        <div className={completed.length > 5 ? 'active-column-scroll' : 'active-column'}>
-                            {completed.length > 0 && <ActiveList>
-                                {completed.map((done) => {
-                                    return (
-                                        <TaskCard key={uniqueId} id={uniqueId} title={done.title} subtasks={done.subtasks} />
-                                    )
-                                })}
-                            </ActiveList>}
-                        </div>
-
-                    <BorderlessButton
-                        content='+ New Card'
-                        primaryBtnAction={addCompletedCard}
-                    />
-                </ActiveColumn>
-
-
-                <NewColumn>
-                    <BorderlessButton
-                        content='+ New Column'
-                        primaryBtnAction={addNewColumn}
-                    />
-                </NewColumn>
+                        <BorderlessButton
+                            content='+ New Card'
+                            primaryBtnAction={addCardHandler}
+                        />
+                    </ActiveColumn>
+                ))
+                }
 
             </CarouselContainer>
         </Wrapper >
@@ -161,7 +112,7 @@ const ActiveColumn = styled.div`
             padding: 10px;
             text-align: center;
         .active-board-text{
-            font-family: 'Plus Jakarta Sans';
+            /* font-family: 'Plus Jakarta Sans'; */
             font-style: normal;
             font-weight: 700;
             font-size: 12px;
@@ -186,13 +137,8 @@ const CarouselContainer = styled.div`
         display: flex;
 `;
 
-const NewColumn = styled.div`
-        display: flex;
-        align-items: center;
-`;
-
 const ActiveList = styled.div`
         margin: 10px;
         width: 90%;
-        overflow-y: scroll;
+        /* overflow-y: scroll; */
 `;
