@@ -55,6 +55,7 @@ const LoginScreen = () => {
                 <div className="circle">
                     <p>Kanban</p>
                 </div>
+                <div className="circle-shadow"></div>
             </LoginRight>
         </Container>
     );

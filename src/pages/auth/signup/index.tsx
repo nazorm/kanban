@@ -62,6 +62,7 @@ const SignUpScreen = () => {
                 <div className="circle">
                     <p>Kanban</p>
                 </div>
+                <div className="circle-shadow"></div>
             </Right>
         </Container>
     );
@@ -146,13 +147,29 @@ export const Right = styled.div`
     }
 @keyframes bounce{
     0%{
-        bottom: 0%;
+        bottom: 3%;
     }
     50%{
-        bottom: 4%;
+        bottom: 10%;
     }
     100%{
-        bottom: 0%;
+        bottom: 3%;
     }
+}
+.circle-shadow{
+    position: absolute;
+    bottom: 0;
+    background-color: #afaeae7d;
+    height: 10px;
+    width: 65px;
+    border-radius: 50%;
+    animation: shrink 5s infinite;
+
+    @keyframes shrink{
+50%{
+    transform: scaleX(0.5);
+}
+    }
+
 }
 `;
