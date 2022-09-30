@@ -5,8 +5,8 @@ import { StyleConstants } from 'styles/StylesConstants';
 interface IButton {
     content: string,
     className?: string;
-    primaryBtnAction?: (e:any) => void;
-    secondaryBtnAction?: (e:any) => void;
+    primaryBtnAction?: (e: any) => void;
+    secondaryBtnAction?: (e: any) => void;
     style?: React.CSSProperties;
 }
 
@@ -33,7 +33,13 @@ export const BorderlessButton = ({ content, className, primaryBtnAction, style }
         </BorderlessBtn>
     )
 }
-
+export const Regbutton = ({ content, className, primaryBtnAction, style }: IButton)=>{
+    return (
+        <Bbutton onClick={primaryBtnAction}>
+            {content}
+        </Bbutton>
+    )
+}
 export const PrimaryBtn = styled.button`
         border-radius: 4px;
         border: transparent;
@@ -50,7 +56,7 @@ export const PrimaryBtn = styled.button`
 
 
 
-const TranparentBtn = styled(PrimaryBtn)`
+export const TranparentBtn = styled(PrimaryBtn)`
         color:   ${StyleConstants.ACCENT_COLOR};
         border: 1px solid  ${StyleConstants.LIGHT_LILAC};
         background-color: ${StyleConstants.LIGHT_LILAC};
@@ -60,7 +66,7 @@ const TranparentBtn = styled(PrimaryBtn)`
         }
 `;
 
-const BorderlessBtn = styled.button`
+export const BorderlessBtn = styled.button`
     color: ${StyleConstants.MEDIUM_GREY_COLOR};
     border: transparent;
     padding: 20px;
@@ -73,4 +79,8 @@ const BorderlessBtn = styled.button`
     &:hover{
         cursor: pointer;
     }
+`;
+export const Bbutton = styled(BorderlessBtn)`
+ border: transparent;
+ box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 `;

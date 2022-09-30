@@ -112,6 +112,7 @@ export const ActiveBoard = () => {
                                             key={card.id}
                                             id={card.id}
                                             title={card.title}
+                                            subtasks={card.subtasks}
                                             handleCardView={() => handleViewTaskModal(board.id, card.id)}
                                             handleDragStart={(e) => { handleDragStart(e, { boardIndex: board.id, cardIndex: card.id }) }}
                                             handleDragEnter={isDragging ? (e) => { handleDragEnter(e, { boardIndex: board.id, cardIndex: card.id }) } : null}
@@ -129,7 +130,6 @@ export const ActiveBoard = () => {
                         {isEmptyCard ? 
                         <Dialog open={isViewTaskModalOpen} onClose={handleViewTaskModal}>
                            <AddEditCard 
-                           
                            />
                         </Dialog>
                         :

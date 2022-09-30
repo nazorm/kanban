@@ -2,7 +2,8 @@ import Head from "next/head";
 import Image from "next/image";
 import styles from "styles/Home.module.css";
 import HomePage from './home';
-import Board from './board'
+import Board from './board';
+import LoginScreen from "./auth/login";
 
 export default function Home() {
   return (
@@ -13,7 +14,8 @@ export default function Home() {
         <link rel="icon" href="/favicon/favicon.ico" />
       </Head>
       {/* <HomePage /> */}
-      <Board/>
+      {/* <Board/> */}
+      <LoginScreen/>
 
       <footer className={styles.footer}>
         <a
