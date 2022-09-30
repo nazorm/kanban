@@ -8,28 +8,41 @@ import { StyleConstants } from 'styles/StylesConstants';
 import { BorderlessButton } from '../../../components/Button';
 import { boardList, newBoardList } from '../../../components/PmData';
 import { IActiveBoardProps, TaskCard } from 'src/components/TaskCard';
-import { TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
-
+import { TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Card } from '@mui/material';
+import { DescriptionCard } from './DescriptionCard';
+import { AddEditCard } from './AddEditCard';
 
 
 export const ActiveBoard = () => {
     const [isViewTaskModalOpen, setIsViewTaskModalOpen] = useState(false);
-    const [taskDescriptionData, setTaskDescriptionData] = useState<IActiveBoardProps>();
+    const [taskDescriptionData, setTaskDescriptionData] = useState<any>();
     const [isDragging, setIsDragging] = useState(false)
+    const [isEmptyCard, setIsEmptyCard] = useState(false);
     const [list, setList] = useState(newBoardList);
     const dragItem = useRef();
     const dragNode = useRef();
 
 
 
-    const handleViewTaskModal = (id: string) => {
+    const handleViewTaskModal = (boardId: number | string, cardId: number | string) => {
+        console.log('clicked')
         setIsViewTaskModalOpen(!isViewTaskModalOpen);
-        console.log(id)
-        const taskCardInfo = newBoardList.map((taskInfo) => {
-            return taskInfo.items;
-        })
-        console.log(...taskCardInfo)
+        if (boardId === 'new-card' && cardId === 'new-card') {
+            setIsEmptyCard(true)
+        } else {
+            setIsEmptyCard(false)
+            const taskboardInfo = list.find((boardInfo) => {
+                return boardInfo.id === boardId;
+            })
+            console.log('board info ==>', taskboardInfo);
 
+            const taskCardInfo = taskboardInfo?.items.find((card) => {
+                return card.id === cardId;
+            })
+
+            setTaskDescriptionData(taskCardInfo);
+            console.log('card info ==>', taskCardInfo);
+        }
     }
 
     const addCardHandler = () => {
@@ -50,13 +63,23 @@ export const ActiveBoard = () => {
             console.log('itself');
         } else {
             console.log('not itself');
-             setList(oldlist => {
+            setList(oldlist => {
                 let newList = JSON.parse(JSON.stringify(oldlist))
-                newList[params.boardIndex].items.splice(params.cardIndex,0,newList[currentItem.boardIndex].items.splice(currentItem.cardIndex, 1)[0])
+                // let newList = [...oldlist]
+                const activeBoard = newList.find((board) => {
+                    return board.id === params.boardIndex
+                })
+                const currentBoard = newList.find((board) => {
+                    return board.id === currentItem.boardIndex
+                })
+                let cardPosition = activeBoard.items.indexOf(params.cardIndex);
+                let currentCardPosition = currentBoard?.items.indexOf(currentItem.cardIndex);
+                activeBoard?.items.splice(cardPosition, 0, currentBoard.items.splice(currentCardPosition, 1)[0])
+                // newList[params.boardIndex].items.splice(params.cardIndex, 0, newList[currentItem.boardIndex].items.splice(currentItem.cardIndex, 1)[0])
                 // newList[params.boardIndex].items.splice(1 ,0,2)
                 dragItem.current = params;
                 return newList;
-             })
+            })
         }
     }
 
@@ -73,9 +96,9 @@ export const ActiveBoard = () => {
         <Wrapper>
             <CarouselContainer>
                 {list.map((board, boardIndex) => (
-                    <ActiveColumn 
-                    key={boardIndex}
-                    onDragEnter={isDragging && !board.items.length? (e)=>{handleDragEnter(e,{boardIndex, cardIndex:0}) } : null}
+                    <ActiveColumn
+                        key={board.id}
+                        onDragEnter={isDragging && !board.items.length ? (e) => { handleDragEnter(e, { boardIndex: board.id, cardIndex: 0 }) } : null}
                     >
                         <div className='active-board-head'>
                             <Image src={board.icon} alt='icon' className='icon' width={10} height={10} />
@@ -86,24 +109,40 @@ export const ActiveBoard = () => {
                                 {board.items.map((card, cardIndex) => {
                                     return (
                                         <TaskCard
-                                            key={cardIndex}
-                                            id={cardIndex}
+                                            key={card.id}
+                                            id={card.id}
                                             title={card.title}
-                                            handleDragStart={(e) => { handleDragStart(e, { boardIndex, cardIndex }) }}
-                                            handleDragEnter={isDragging ? (e) => { handleDragEnter(e, { boardIndex, cardIndex }) } : null}
+                                            handleCardView={() => handleViewTaskModal(board.id, card.id)}
+                                            handleDragStart={(e) => { handleDragStart(e, { boardIndex: board.id, cardIndex: card.id }) }}
+                                            handleDragEnter={isDragging ? (e) => { handleDragEnter(e, { boardIndex: board.id, cardIndex: card.id }) } : null}
                                         />
                                     )
                                 })}
                             </ActiveList>
-                            <Dialog open={isViewTaskModalOpen} onClose={handleViewTaskModal}>
-                                <DialogTitle>Subscribe{taskDescriptionData?.id}</DialogTitle>
-                            </Dialog>
+
                         </div>
 
                         <BorderlessButton
                             content='+ New Card'
-                            primaryBtnAction={addCardHandler}
+                            primaryBtnAction={() => handleViewTaskModal('new-card', 'new-card')}
                         />
+                        {isEmptyCard ? 
+                        <Dialog open={isViewTaskModalOpen} onClose={handleViewTaskModal}>
+                           <AddEditCard 
+                           
+                           />
+                        </Dialog>
+                        :
+                        <Dialog open={isViewTaskModalOpen} onClose={handleViewTaskModal}>
+                          <DescriptionCard
+                          cardTitle={taskDescriptionData?.title}
+                          cardDescription = {taskDescriptionData?.description}
+                          status = {taskDescriptionData?.status}
+                          subtasks = {taskDescriptionData?.subtasks}
+                          />
+                         </Dialog>
+                        }
+                        
                     </ActiveColumn>
                 ))
                 }
@@ -155,5 +194,4 @@ const CarouselContainer = styled.div`
 const ActiveList = styled.div`
         margin: 10px;
         width: 90%;
-        /* overflow-y: scroll; */
 `;

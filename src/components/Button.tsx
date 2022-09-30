@@ -5,11 +5,12 @@ import { StyleConstants } from 'styles/StylesConstants';
 interface IButton {
     content: string,
     className?: string;
-    primaryBtnAction?: () => void;
-    secondaryBtnAction?: () => void;
+    primaryBtnAction?: (e:any) => void;
+    secondaryBtnAction?: (e:any) => void;
+    style?: React.CSSProperties;
 }
 
-export const PrimaryButton = ({ content, className, primaryBtnAction }: IButton) => {
+export const PrimaryButton = ({ content, className, primaryBtnAction, style }: IButton) => {
     return (
         <PrimaryBtn onClick={primaryBtnAction}>
             {content}
@@ -17,7 +18,7 @@ export const PrimaryButton = ({ content, className, primaryBtnAction }: IButton)
     )
 }
 
-export const TransparentButton = ({ content, className, secondaryBtnAction }: IButton) => {
+export const TransparentButton = ({ content, className, secondaryBtnAction, style }: IButton) => {
     return (
         <TranparentBtn onClick={secondaryBtnAction}>
             {content}
@@ -25,7 +26,7 @@ export const TransparentButton = ({ content, className, secondaryBtnAction }: IB
     )
 }
 
-export const BorderlessButton = ({ content, className, primaryBtnAction }: IButton) => {
+export const BorderlessButton = ({ content, className, primaryBtnAction, style }: IButton) => {
     return (
         <BorderlessBtn onClick={primaryBtnAction}>
             {content}
@@ -51,11 +52,11 @@ export const PrimaryBtn = styled.button`
 
 const TranparentBtn = styled(PrimaryBtn)`
         color:   ${StyleConstants.ACCENT_COLOR};
-        border: 2px solid  ${StyleConstants.ACCENT_COLOR};
-        background-color: color: ${StyleConstants.WHITE_COLOR};
+        border: 1px solid  ${StyleConstants.LIGHT_LILAC};
+        background-color: ${StyleConstants.LIGHT_LILAC};
         :hover{
             background-color:  ${StyleConstants.ACCENT_COLOR};
-            color: color: ${StyleConstants.WHITE_COLOR};
+            color: ${StyleConstants.WHITE_COLOR};
         }
 `;
 

@@ -22,9 +22,9 @@ export interface IActiveBoardSubTaskProps {
 // const handleCard = (id)=>{
 // console.log(id)
 // }
-export const TaskCard = ({ title, handleDragStart, handleDragEnter, id}: IActiveBoardProps) => {
+export const TaskCard = ({ title, handleDragStart, handleDragEnter, handleCardView, id}: IActiveBoardProps) => {
     return (
-        <Card  onDragStart={handleDragStart} onDragEnter={handleDragEnter} draggable>
+        <Card  onDragStart={handleDragStart} onDragEnter={handleDragEnter} onClick={handleCardView} draggable>
             <p className='card-title'>{title}</p>
             {/* <span className='subtask-number'>{0} of {subtasks?.length} substasks</span> */}
         </Card>
