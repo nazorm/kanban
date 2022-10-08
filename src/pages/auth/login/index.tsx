@@ -8,8 +8,8 @@ import TextInput from '../../../components/Form/TextInput';
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import eyeOpenIcon from 'src/assets/icons/eye-open.svg';
-import eyeClosedIcon from 'src/assets/icons/eye-closed.svg';
+import eyeOpenIcon from 'src/assets/icons/open-eye-grey.svg';
+import eyeClosedIcon from 'src/assets/icons/eye-slash.svg';
 import Image from 'next/image';
 
 import { Form, Right, Left, SignInBtn } from "../signup";
