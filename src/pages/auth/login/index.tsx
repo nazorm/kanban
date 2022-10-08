@@ -5,17 +5,37 @@ import { StyleConstants } from 'styles/StylesConstants';
 import Head from "next/head";
 import Link from 'next/link';
 import { useRouter } from "next/router";
+import TextInput from '../../../components/Form/TextInput';
+import { useForm, Controller, SubmitHandler } from "react-hook-form";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 
-import { Form, Input, Right, Left, SignInBtn } from "../signup";
+import { Form, Right, Left, SignInBtn } from "../signup";
 interface ILoginScreenProps {
-
+    email: string;
+    password: string;
 }
 
+const passwordCondition = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.*)")
+const schema = yup.object().shape({
+    email: yup.string().email().required(),
+    password: yup.string().min(8).max(20).required().matches(
+        passwordCondition,
+        'Password must include letters, numbers, characters and uppercase'),
+})
+
 const LoginScreen = () => {
+    const { register, control, handleSubmit, formState: { errors }, reset } = useForm<ILoginScreenProps>({
+        resolver: yupResolver(schema)
+    })
     const router = useRouter();
-    const handleLogin = (e) => {
-        e.preventDefault();
-        router.push('/board')
+
+    // const handleLogin = (e: { preventDefault: () => void; }) => {
+    //     e.preventDefault();
+    //     router.push('/board')
+    // }
+    const onSubmit: SubmitHandler<ILoginScreenProps> = data => {
+        console.log(data);
     }
     return (
         <Container>
@@ -26,27 +46,33 @@ const LoginScreen = () => {
             </Head>
             <LoginLeft>
 
-
                 <PageTitle>
                     Welcome back!
                 </PageTitle>
-                <LoginForm>
-                    <label htmlFor="email">
-                        Email
-                    </label>
-                    <FormInput
-                        type='email'
-                        placeholder="johndoe@example.com"
+                <LoginForm onSubmit={handleSubmit(onSubmit)}>
+                    <Controller
+                        name="email"
+                        control={control}
+                        defaultValue=""
+                        render={({ field }) => <TextInput {...field}
+                            label="Email"
+                            placeholder="johndoe@example.com"
+                            error={errors?.email?.message}
+                        />}
+                    />
 
+                    <Controller
+                        name="password"
+                        control={control}
+                        defaultValue=""
+                        render={({ field }) => <TextInput {...field}
+                            label="Password"
+                            placeholder="password"
+                            type='password'
+                            error={errors?.password?.message}
+                        />}
                     />
-                    <label htmlFor="password">
-                        Password
-                    </label>
-                    <FormInput
-                        type='password'
-                        placeholder="password"
-                    />
-                    <LoginBtn onClick={handleLogin}>→</LoginBtn>
+                    <LoginBtn>→</LoginBtn>
                 </LoginForm>
                 <span className="notice">Don&apos;t have an account? <Link href={'/auth/signup'}>Sign Up</Link></span>
             </LoginLeft>
@@ -65,19 +91,18 @@ export default LoginScreen;
 
 const Container = styled.div`
 display: flex;
-padding: 0 12% 0 5%;
+padding: 0 12% 0 15%;
 justify-content: space-between;
 align-items: center;
 background-image: 
 linear-gradient(
-    to right, white, #e3e2f4 40%
+    to right, white, #e3e2f4 40%,  white 90%, #e3e2f4
     );
 height: 100vh;
 `;
 const PageTitle = styled.h1`
 
 `;
-const FormInput = styled(Input)``;
 
 const LoginBtn = styled(SignInBtn)``;
 

@@ -5,17 +5,41 @@ import { StyleConstants } from 'styles/StylesConstants';
 import Head from "next/head";
 import Link from 'next/link';
 import { useRouter } from "next/router";
+import TextInput from '../../../components/Form/TextInput';
+import { useForm, Controller, SubmitHandler } from "react-hook-form";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 interface ISignUpScreenProps {
-
+    fullName: string,
+    password: string,
+    email: string,
 }
+const passwordCondition = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.*)")
+const schema = yup.object().shape({
+    fullName: yup.string().required(),
+    email: yup.string().email().required(),
+    password: yup.string().min(8).max(20).required().matches(
+        passwordCondition, 
+        'Password must include letters, numbers, characters and uppercase')
+});
 
 const SignUpScreen = () => {
+    const { register, control, handleSubmit, formState: { errors }, reset } = useForm<ISignUpScreenProps>(
+        {
+            resolver: yupResolver(schema)
+        });
+
     const router = useRouter();
-    const handleSignup = (e) => {
-        e.preventDefault();
-        router.push('/board')
+    // const handleSignup = (e: { preventDefault: () => void; }) => {
+    //     e.preventDefault();
+    //     router.push('/board')
+    // }
+    const onSubmit: SubmitHandler<ISignUpScreenProps> = data => {
+        console.log(data);
+        reset();
     }
+
     return (
         <Container>
             <Head>
@@ -29,31 +53,41 @@ const SignUpScreen = () => {
                 <PageTitle>
                     Register
                 </PageTitle>
-                <Form>
-                    <label htmlFor="name" className="label">
-                        Full Name
-                    </label>
-                    <FormInput
-                        type='text'
-                        placeholder="John Doe"
+                <Form onSubmit={handleSubmit(onSubmit)}>
+                    <Controller
+                        name="fullName"
+                        control={control}
+                        defaultValue=''
+                        render={({ field }) => <TextInput {...field}
+                            label="Full Name"
+                            placeholder='John Doe'
+                            error={errors?.fullName?.message}
+                        />}
+                    />
+                    <Controller
+                        name='email'
+                        control={control}
+                        defaultValue=''
+                        render={({ field }) => <TextInput {...field}
+                            placeholder="johndoe@example.com"
+                            label="Email"
+                            error={errors?.email?.message}
 
+                        />}
                     />
-                    <label htmlFor="email" className="label">
-                        Email
-                    </label>
-                    <FormInput
-                        type='email'
-                        placeholder="johndoe@example.com"
 
+                    <Controller
+                        name="password"
+                        control={control}
+                        defaultValue=''
+                        render={({ field }) => <TextInput {...field}
+                            label="password"
+                            type='password'
+                            placeholder='password'
+                            error={errors?.password?.message}
+                        />}
                     />
-                    <label htmlFor="password" className="label">
-                        Password
-                    </label>
-                    <FormInput
-                        type='password'
-                        placeholder="password"
-                    />
-                    <SignInBtn onClick={handleSignup}>→</SignInBtn>
+                    <SignInBtn>→</SignInBtn>
                 </Form>
                 <span className="notice">Already have an account? <Link href={'/auth/login'} style={{ color: '#8471F2' }}>Sign In</Link></span>
             </Left>
@@ -69,19 +103,10 @@ const SignUpScreen = () => {
 }
 
 export default SignUpScreen;
-export const Input = styled.input`
-padding: 15px;
-display: block;
-border-radius: 8px;
-border: transparent;
-background-color: ${StyleConstants.LIGHT_LILAC};
-outline: 1px solid ${StyleConstants.LIGHT_LILAC};
-margin: 10px 0 20px;
-width: 80%;
-`;
+
 const Container = styled.div`
 display: flex;
-padding: 0 12% 0 5%;
+padding: 0 12% 0 15%;
 justify-content: space-between;
 align-items: center;
 background-image: 
@@ -93,9 +118,6 @@ height: 100vh;
 const PageTitle = styled.h1`
 `;
 
-const FormInput = styled(Input)`
-    
-`;
 export const SignInBtn = styled(PrimaryBtn)`
     width: 45px;
     height: 45px;
@@ -108,10 +130,6 @@ export const Form = styled.form`
     display: flex;
     flex-direction: column;
     margin: 50px 0 20px;
-    .label{
-        font-size: 13px;
-        font-weight: 700;
-    }
 `;
 export const Left = styled.div`
     width: 50%;
@@ -143,7 +161,7 @@ export const Right = styled.div`
         border-radius: 50%;
         background-color: ${StyleConstants.ACCENT_COLOR};
         position: absolute;
-        animation: bounce 5s linear infinite;
+        animation: bounce 9s linear infinite;
     }
 @keyframes bounce{
     0%{
@@ -163,12 +181,12 @@ export const Right = styled.div`
     height: 10px;
     width: 65px;
     border-radius: 50%;
-    animation: shrink 5s infinite;
+    animation: shrink 9s infinite;
 
     @keyframes shrink{
-50%{
-    transform: scaleX(0.5);
-}
+        50%{
+            transform: scaleX(0.5);
+        }
     }
 
 }
