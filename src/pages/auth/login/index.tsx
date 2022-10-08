@@ -1,5 +1,4 @@
-import React, { FunctionComponent } from "react";
-import { PrimaryBtn, Regbutton } from "src/components/Button";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { StyleConstants } from 'styles/StylesConstants';
 import Head from "next/head";
@@ -9,6 +8,9 @@ import TextInput from '../../../components/Form/TextInput';
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import eyeOpenIcon from 'src/assets/icons/eye-open.svg';
+import eyeClosedIcon from 'src/assets/icons/eye-closed.svg';
+import Image from 'next/image';
 
 import { Form, Right, Left, SignInBtn } from "../signup";
 interface ILoginScreenProps {
@@ -25,6 +27,7 @@ const schema = yup.object().shape({
 })
 
 const LoginScreen = () => {
+    const [isPasswordShown, setIsPasswordShown] = useState(false);
     const { register, control, handleSubmit, formState: { errors }, reset } = useForm<ILoginScreenProps>({
         resolver: yupResolver(schema)
     })
@@ -34,6 +37,18 @@ const LoginScreen = () => {
     //     e.preventDefault();
     //     router.push('/board')
     // }
+    const showPassword=()=>{
+        setIsPasswordShown(!isPasswordShown);
+    }
+
+    const renderPasswordIcon = () => {
+        if (isPasswordShown) {
+            return <Image src={eyeOpenIcon} alt='open eyelid'  onClick={showPassword}/>
+        } else {
+            return <Image src={eyeClosedIcon} alt='closed eyelid' onClick={showPassword}/>
+        }
+    }
+
     const onSubmit: SubmitHandler<ILoginScreenProps> = data => {
         console.log(data);
     }
@@ -68,8 +83,9 @@ const LoginScreen = () => {
                         render={({ field }) => <TextInput {...field}
                             label="Password"
                             placeholder="password"
-                            type='password'
+                            type={isPasswordShown? 'text' : 'password'}
                             error={errors?.password?.message}
+                            renderPasswordIcon={renderPasswordIcon}
                         />}
                     />
                     <LoginBtn>→</LoginBtn>

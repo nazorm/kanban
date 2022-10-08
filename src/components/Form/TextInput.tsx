@@ -5,22 +5,22 @@ import { StyleConstants } from 'styles/StylesConstants';
 interface ITextInputProps {
     label?: string,
     error?: string,
-    handlePasswordIcon?: () => void,
+    renderPasswordIcon?:() => React.ReactNode;
     [x: string]: any;
 }
 
  const TextInput = (props: ITextInputProps) => {
-    const { label, name, error, handlePasswordIcon, ref, ...textInputProps } = props
+    const { label, name, error, renderPasswordIcon, ...textInputProps } = props
     return (
         <Wrapper>
             {label && <Label htmlFor={name}>{label}</Label>}
             <Input
-                placeholder=" "
+                placeholder=""
                 {...textInputProps}
-                ref={ref}
                 id={name}
                 name={name}
             />
+             <InputIcon>{renderPasswordIcon && renderPasswordIcon()}</InputIcon>
             <ErrorText>
                 {error}
             </ErrorText>
@@ -33,6 +33,7 @@ export default TextInput;
 
 const Wrapper = styled.div`
 margin: 10px 0;
+position: relative;
 `;
 const Input = styled.input`
     padding: 15px;
@@ -56,4 +57,18 @@ const ErrorText = styled.span`
   margin-top: -15px;
   margin-bottom: 15px;
 
+`;
+const InputIcon = styled.p`
+  position: absolute;
+  right: 25%;
+  top: 10%;
+  transform: translateY(80%);
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
 `;

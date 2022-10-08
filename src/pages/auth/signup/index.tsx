@@ -1,5 +1,5 @@
-import React, { FunctionComponent } from "react";
-import { PrimaryBtn, Regbutton } from "src/components/Button";
+import React, { useState } from "react";
+import { PrimaryBtn } from "src/components/Button";
 import styled from "styled-components";
 import { StyleConstants } from 'styles/StylesConstants';
 import Head from "next/head";
@@ -9,6 +9,9 @@ import TextInput from '../../../components/Form/TextInput';
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import eyeOpenIcon from 'src/assets/icons/eye-open.svg';
+import eyeClosedIcon from 'src/assets/icons/eye-closed.svg';
+import Image from 'next/image';
 
 interface ISignUpScreenProps {
     fullName: string,
@@ -25,6 +28,7 @@ const schema = yup.object().shape({
 });
 
 const SignUpScreen = () => {
+    const [isPasswordShown, setIsPasswordShown] = useState(false);
     const { register, control, handleSubmit, formState: { errors }, reset } = useForm<ISignUpScreenProps>(
         {
             resolver: yupResolver(schema)
@@ -35,6 +39,17 @@ const SignUpScreen = () => {
     //     e.preventDefault();
     //     router.push('/board')
     // }
+    const showPassword=()=>{
+        setIsPasswordShown(!isPasswordShown);
+    }
+    const renderPasswordIcon = () => {
+        if (isPasswordShown) {
+            return <Image src={eyeOpenIcon} alt='open eyelid'  onClick={showPassword}/>
+        } else {
+            return <Image src={eyeClosedIcon} alt='closed eyelid' onClick={showPassword}/>
+        }
+    }
+    
     const onSubmit: SubmitHandler<ISignUpScreenProps> = data => {
         console.log(data);
         reset();
@@ -72,7 +87,6 @@ const SignUpScreen = () => {
                             placeholder="johndoe@example.com"
                             label="Email"
                             error={errors?.email?.message}
-
                         />}
                     />
 
@@ -82,9 +96,10 @@ const SignUpScreen = () => {
                         defaultValue=''
                         render={({ field }) => <TextInput {...field}
                             label="password"
-                            type='password'
+                            type={isPasswordShown? 'text' : 'password'}
                             placeholder='password'
                             error={errors?.password?.message}
+                            renderPasswordIcon={renderPasswordIcon}
                         />}
                     />
                     <SignInBtn>→</SignInBtn>
@@ -105,16 +120,16 @@ const SignUpScreen = () => {
 export default SignUpScreen;
 
 const Container = styled.div`
-display: flex;
-padding: 0 12% 0 15%;
-justify-content: space-between;
-align-items: center;
-background-image: 
-linear-gradient(
-    to right, white, #e3e2f4 40%
-    );
-height: 100vh;
-`;
+    display: flex;
+    padding: 0 12% 0 15%;
+    justify-content: space-between;
+    align-items: center;
+    background-image: 
+    linear-gradient(
+        to right, white, #e3e2f4 40%
+        );
+        height: 100vh;
+    `;
 const PageTitle = styled.h1`
 `;
 
