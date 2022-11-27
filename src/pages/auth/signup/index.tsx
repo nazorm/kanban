@@ -12,9 +12,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import eyeOpenIcon from 'src/assets/icons/open-eye-grey.svg';
 import eyeClosedIcon from 'src/assets/icons/eye-slash.svg';
 import Image from 'next/image';
-
+import { useAuth } from 'src/firebase/context';
 interface ISignUpScreenProps {
-    fullName: string,
+    uid?: string,
+    fullName?: string,
     password: string,
     email: string,
 }
@@ -23,36 +24,41 @@ const schema = yup.object().shape({
     fullName: yup.string().required(),
     email: yup.string().email().required(),
     password: yup.string().min(8).max(20).required().matches(
-        passwordCondition, 
+        passwordCondition,
         'Password must include letters, numbers, characters and uppercase')
 });
 
 const SignUpScreen = () => {
     const [isPasswordShown, setIsPasswordShown] = useState(false);
+    const router = useRouter();
+    const { createUserWithEmailAndPassword } = useAuth();
     const { register, control, handleSubmit, formState: { errors }, reset } = useForm<ISignUpScreenProps>(
         {
             resolver: yupResolver(schema)
         });
 
-    const router = useRouter();
-    // const handleSignup = (e: { preventDefault: () => void; }) => {
-    //     e.preventDefault();
-    //     router.push('/board')
-    // }
-    const showPassword=()=>{
+
+
+    const showPassword = () => {
         setIsPasswordShown(!isPasswordShown);
     }
     const renderPasswordIcon = () => {
         if (isPasswordShown) {
-            return <Image src={eyeOpenIcon} alt='open eyelid'  onClick={showPassword}/>
+            return <Image src={eyeOpenIcon} alt='open eyelid' onClick={showPassword} />
         } else {
-            return <Image src={eyeClosedIcon} alt='closed eyelid' onClick={showPassword}/>
+            return <Image src={eyeClosedIcon} alt='closed eyelid' onClick={showPassword} />
         }
     }
-    
+
     const onSubmit: SubmitHandler<ISignUpScreenProps> = data => {
-        console.log(data);
-        reset();
+        const userEmail = data.email;
+        const userPassword = data.password
+        createUserWithEmailAndPassword(data.email, data.password)
+            .then(response => {
+                router.push("/board");
+            })
+            .catch((error: any) => console.log(error))
+
     }
 
     return (
@@ -96,7 +102,7 @@ const SignUpScreen = () => {
                         defaultValue=''
                         render={({ field }) => <TextInput {...field}
                             label="password"
-                            type={isPasswordShown? 'text' : 'password'}
+                            type={isPasswordShown ? 'text' : 'password'}
                             placeholder='password'
                             error={errors?.password?.message}
                             renderPasswordIcon={renderPasswordIcon}

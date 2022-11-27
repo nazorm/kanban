@@ -1,6 +1,8 @@
 import 'styles/globals.css'
 import type { AppProps } from 'next/app'
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
+import {AuthUserProvider} from 'src/firebase/context';
+
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -14,12 +16,15 @@ const theme = {
   },
 }
 
+
 function MyApp({ Component, pageProps }: AppProps) {
   return <>
-    <GlobalStyle />
-    <ThemeProvider theme={theme}>
-      <Component {...pageProps} />
-    </ThemeProvider>
+  <AuthUserProvider>
+      <GlobalStyle />
+      <ThemeProvider theme={theme}>      
+        <Component {...pageProps} />
+      </ThemeProvider>
+      </AuthUserProvider>
   </>
 }
 

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useRouter } from "next/router";
 import Link from 'next/link';
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import Image from 'next/image';
 import { Switch } from '@mui/material';
 import { StyleConstants } from 'styles/StylesConstants';
@@ -11,7 +12,7 @@ import closeEyeIcon from '../../assets/icons/eye-slash.svg';
 import openEyeIcon from '../../assets/icons/open-eye.svg';
 import lightIcon from '../../assets/icons/light-icon.svg';
 import darkIcon from '../../assets/icons/dark-icon.svg';
-
+import { useAuth } from 'src/firebase/context';
 interface ISideBarLinkProps {
     route: string;
     icon: any;
@@ -32,7 +33,7 @@ const sideBarLinks = [
     },
     {
         id: 3,
-        title: 'Search Jobs',
+        title: 'Productivity',
         route: '/home',
         icon: boardIcon,
     },
@@ -44,7 +45,7 @@ const sideBarLinks = [
     },
     {
         id: 5,
-        title: 'Search Jobs',
+        title: 'Efficiency',
         route: '/home',
         icon: boardIcon,
     },
@@ -53,7 +54,6 @@ const sideBarLinks = [
 export const SideBarLink = (props: ISideBarLinkProps) => {
     const { title, route, icon } = props;
     const router = useRouter();
-
 
     return (
 
@@ -69,6 +69,7 @@ export const SideBarLink = (props: ISideBarLinkProps) => {
 
     )
 }
+
 export const SideBarIcon = (props: ISideBarLinkProps) => {
     const { route, icon } = props;
     const router = useRouter();
@@ -76,21 +77,31 @@ export const SideBarIcon = (props: ISideBarLinkProps) => {
         <li className={router.pathname == route ? "closed-active-item" : "closed-side-bar__item"}>
             <Link href={route}>
                 <div className='closed-sidebar'>
-                    <Image src={icon} alt='icon' className='icon' width={20}  height={20} />
+                    <Image src={icon} alt='icon' className='icon' width={20} height={20} />
                 </div>
             </Link>
         </li>
     )
 
 }
+
 export const SideBar = () => {
     const [isDarkTheme, setIsDarkTheme] = useState(true);
     const [isEyeOpen, setIsEyeOpen] = useState(false);
+    const { signOut } = useAuth();
+    const router = useRouter();
+
     const handleChange = () => {
         setIsDarkTheme(!isDarkTheme);
     }
+
     const changeSideBarView = () => {
         setIsEyeOpen(!isEyeOpen);
+    }
+
+    const signoutUser = () => {
+        signOut()
+        router.push('/auth/login')
     }
     return (
         <Wrapper>{isEyeOpen ?
@@ -124,6 +135,11 @@ export const SideBar = () => {
                 </ul>
             </OpenSideBar>
         }
+            <SignoutContainer onClick={signoutUser}>
+                {<ExitToAppIcon/>}
+                {!isEyeOpen && <span className='hide-sidebar-text'>Sign Out</span>}
+            </SignoutContainer>
+
             {!isEyeOpen && <ThemeWrapper>
                 <Image src={lightIcon} alt='icon' className='icon' />
                 <Switch
@@ -230,3 +246,14 @@ const Collapse = styled.div`
       }
 `;
 
+const SignoutContainer = styled.div`
+      position: absolute;
+      bottom: 20%;
+      width: 100%;
+      display: flex;
+      padding: 20px;
+      .hide-sidebar-text{
+        margin-left: 15px;
+        color: ${StyleConstants.MEDIUM_GREY_COLOR};
+      }
+`;

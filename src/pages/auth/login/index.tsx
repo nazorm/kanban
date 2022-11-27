@@ -11,8 +11,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import eyeOpenIcon from 'src/assets/icons/open-eye-grey.svg';
 import eyeClosedIcon from 'src/assets/icons/eye-slash.svg';
 import Image from 'next/image';
-
 import { Form, Right, Left, SignInBtn } from "../signup";
+import firebase from 'src/firebase/firebaseConfig';
+import {useAuth} from 'src/firebase/context';
 interface ILoginScreenProps {
     email: string;
     password: string;
@@ -32,25 +33,27 @@ const LoginScreen = () => {
         resolver: yupResolver(schema)
     })
     const router = useRouter();
+const {signInWithEmailAndPassword} = useAuth();
 
-    // const handleLogin = (e: { preventDefault: () => void; }) => {
-    //     e.preventDefault();
-    //     router.push('/board')
-    // }
-    const showPassword=()=>{
+    const showPassword = () => {
         setIsPasswordShown(!isPasswordShown);
     }
 
     const renderPasswordIcon = () => {
         if (isPasswordShown) {
-            return <Image src={eyeOpenIcon} alt='open eyelid'  onClick={showPassword}/>
+            return <Image src={eyeOpenIcon} alt='open eyelid' onClick={showPassword} />
         } else {
-            return <Image src={eyeClosedIcon} alt='closed eyelid' onClick={showPassword}/>
+            return <Image src={eyeClosedIcon} alt='closed eyelid' onClick={showPassword} />
         }
     }
 
     const onSubmit: SubmitHandler<ILoginScreenProps> = data => {
-        console.log(data);
+       signInWithEmailAndPassword(data.email, data.password)
+        .then(response => {
+            router.push('/board')
+          }
+        )
+        .catch((error)=>console.log(error.message))
     }
     return (
         <Container>
@@ -83,7 +86,7 @@ const LoginScreen = () => {
                         render={({ field }) => <TextInput {...field}
                             label="Password"
                             placeholder="password"
-                            type={isPasswordShown? 'text' : 'password'}
+                            type={isPasswordShown ? 'text' : 'password'}
                             error={errors?.password?.message}
                             renderPasswordIcon={renderPasswordIcon}
                         />}
@@ -99,6 +102,7 @@ const LoginScreen = () => {
                 </div>
                 <div className="circle-shadow"></div>
             </LoginRight>
+
         </Container>
     );
 }

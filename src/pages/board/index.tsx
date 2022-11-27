@@ -1,17 +1,27 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import styled from 'styled-components';
 import Head from "next/head";
 import { BoardHeader } from '../../components/Layout/BoardHeader';
 import { SideBar } from 'src/components/Layout/Sidebar';
 import { EmptyBoard } from 'src/components/EmptyBoard';
 import { ActiveBoard } from './components/ActiveBoard';
+import { useAuth } from 'src/firebase/context';;
+import { useRouter } from 'next/router';
+
+const boardList = [
+    {id: 1,},
+    {id:2,},
+    {id:3,},
+]
 
 const Board = () => {
-    const boardList = [
-        {id: 1,},
-        {id:2,},
-        {id:3,},
-    ]
+    const { authUser, loading } = useAuth();
+    const router = useRouter();
+    useEffect(() => {
+        if (!loading && !authUser)
+          router.push('/auth/login')
+      }, [authUser, loading])
+
     return (
         <>
             <BoardHeader />
