@@ -33,7 +33,7 @@ const LoginScreen = () => {
         resolver: yupResolver(schema)
     })
     const router = useRouter();
-const {signInWithEmailAndPassword} = useAuth();
+const {signIn} = useAuth();
 
     const showPassword = () => {
         setIsPasswordShown(!isPasswordShown);
@@ -48,12 +48,7 @@ const {signInWithEmailAndPassword} = useAuth();
     }
 
     const onSubmit: SubmitHandler<ILoginScreenProps> = data => {
-       signInWithEmailAndPassword(data.email, data.password)
-        .then(response => {
-            router.push('/board')
-          }
-        )
-        .catch((error)=>console.log(error.message))
+        signIn(data)
     }
     return (
         <Container>

@@ -15,7 +15,7 @@ import Image from 'next/image';
 import { useAuth } from 'src/firebase/context';
 interface ISignUpScreenProps {
     uid?: string,
-    fullName?: string,
+    fullName: string,
     password: string,
     email: string,
 }
@@ -31,7 +31,7 @@ const schema = yup.object().shape({
 const SignUpScreen = () => {
     const [isPasswordShown, setIsPasswordShown] = useState(false);
     const router = useRouter();
-    const { createUserWithEmailAndPassword } = useAuth();
+    const {signUp} = useAuth();
     const { register, control, handleSubmit, formState: { errors }, reset } = useForm<ISignUpScreenProps>(
         {
             resolver: yupResolver(schema)
@@ -52,13 +52,8 @@ const SignUpScreen = () => {
 
     const onSubmit: SubmitHandler<ISignUpScreenProps> = data => {
         const userEmail = data.email;
-        const userPassword = data.password
-        createUserWithEmailAndPassword(data.email, data.password)
-            .then(response => {
-                router.push("/board");
-            })
-            .catch((error: any) => console.log(error))
-
+        const userName = data.fullName;
+        signUp(data, userEmail, userName)
     }
 
     return (

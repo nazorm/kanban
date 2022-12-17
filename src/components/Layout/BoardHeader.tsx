@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import styled from 'styled-components';
 import Head from "next/head";
 import Image from 'next/image';
@@ -8,9 +8,16 @@ import moreIcon from '../../assets/icons/more-icon.svg';
 import { customMedia } from 'styles/breakpoints';
 import { useRouter } from "next/router";
 import { StyleConstants } from 'styles/StylesConstants';
+import { useAuth } from 'src/firebase/context';;
 
 export const BoardHeader = () => {
     const router = useRouter();
+
+    const { authUser, loading } = useAuth();
+    useEffect(() => {
+        if (!loading && !authUser)
+          router.push('/auth/login')
+      }, [authUser, loading])
     return (
         <Wrapper>
             <Head>
@@ -27,7 +34,7 @@ export const BoardHeader = () => {
                 </div>
                 <nav className='nav'>
                     <Link href="/home" >
-                        <a className='account'>Account</a>
+                        <a className='account'>{authUser ? authUser?.userName : 'Account'}</a>
                     </Link>
                     <Image src={moreIcon} alt='more' width={30} height={15} />
                 </nav>

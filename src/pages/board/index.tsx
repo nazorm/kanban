@@ -7,6 +7,7 @@ import { EmptyBoard } from 'src/components/EmptyBoard';
 import { ActiveBoard } from './components/ActiveBoard';
 import { useAuth } from 'src/firebase/context';;
 import { useRouter } from 'next/router';
+import { auth } from 'src/firebase/firebaseConfig';
 
 const boardList = [
     {id: 1,},
@@ -21,7 +22,7 @@ const Board = () => {
         if (!loading && !authUser)
           router.push('/auth/login')
       }, [authUser, loading])
-
+console.log('logged in user', authUser!.userName?? 'none')
     return (
         <>
             <BoardHeader />
@@ -33,7 +34,7 @@ const Board = () => {
                 </Head>
                 <Container>
                     <SideBar />
-                    {boardList.length === 0 ? <EmptyBoard/>  : <ActiveBoard/> }
+                    {authUser?.userBoard?.length !== 0 ? <EmptyBoard/>  : <ActiveBoard/> }
                 </Container>
             </Wrapper>
         </>
