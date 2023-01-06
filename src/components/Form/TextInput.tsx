@@ -51,12 +51,11 @@ const Label = styled.label`
     transition: transform 200ms;
 `;
 
-const ErrorText = styled.span`
+export const ErrorText = styled.span`
   display: block;
   color: red;
   margin-top: -15px;
   margin-bottom: 15px;
-
 `;
 const InputIcon = styled.p`
   position: absolute;

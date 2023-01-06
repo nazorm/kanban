@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef,useEffect } from 'react';
 import styled from 'styled-components';
 import doneIcon from '../../../assets/icons/done-icon.svg';
 import doingIcon from '../../../assets/icons/doing-icon.svg';
@@ -6,24 +6,33 @@ import todoIcon from '../../../assets/icons/todo-icon.svg';
 import Image from 'next/image';
 import { StyleConstants } from 'styles/StylesConstants';
 import { BorderlessButton } from '../../../components/Button';
-import { boardList, newBoardList } from '../../../components/PmData';
-import { IActiveBoardProps, TaskCard } from 'src/components/TaskCard';
+import { newBoardList } from '../../../components/PmData';
+import { IActiveBoardProps, IActiveBoardSubTaskProps, TaskCard } from 'src/components/TaskCard';
 import { TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Card } from '@mui/material';
 import { DescriptionCard } from './DescriptionCard';
 import { AddEditCard } from './AddEditCard';
+import { useAuth } from 'src/firebase/context';
+import { useRouter } from 'next/router';
 
 
 export const ActiveBoard = () => {
+    const { authUser, loading } = useAuth();
     const [isViewTaskModalOpen, setIsViewTaskModalOpen] = useState(false);
     const [taskDescriptionData, setTaskDescriptionData] = useState<any>();
     const [isDragging, setIsDragging] = useState(false)
     const [isEmptyCard, setIsEmptyCard] = useState(false);
     const [list, setList] = useState(newBoardList);
     const dragItem = useRef();
-    const dragNode = useRef();
+    const dragNode = useRef()
 
+console.log('this lists', list)
+    const router = useRouter();
+    useEffect(() => {
+        if (!loading && !authUser)
+          router.push('/auth/login')
+      }, [authUser, loading])
 
-
+console.log('tired.com', authUser.userBoard)
     const handleViewTaskModal = (boardId: number | string, cardId: number | string) => {
         console.log('clicked')
         setIsViewTaskModalOpen(!isViewTaskModalOpen);
@@ -31,12 +40,12 @@ export const ActiveBoard = () => {
             setIsEmptyCard(true)
         } else {
             setIsEmptyCard(false)
-            const taskboardInfo = list.find((boardInfo) => {
+            const taskboardInfo = list.find((boardInfo: { id: string | number; }) => {
                 return boardInfo.id === boardId;
             })
             console.log('board info ==>', taskboardInfo);
 
-            const taskCardInfo = taskboardInfo?.items.find((card) => {
+            const taskCardInfo = taskboardInfo?.items.find((card: { id: string | number; }) => {
                 return card.id === cardId;
             })
 
@@ -63,13 +72,13 @@ export const ActiveBoard = () => {
             console.log('itself');
         } else {
             console.log('not itself');
-            setList(oldlist => {
+            setList((oldlist: any) => {
                 let newList = JSON.parse(JSON.stringify(oldlist))
                 // let newList = [...oldlist]
-                const activeBoard = newList.find((board) => {
+                const activeBoard = newList.find((board: { id: number; }) => {
                     return board.id === params.boardIndex
                 })
-                const currentBoard = newList.find((board) => {
+                const currentBoard = newList.find((board: { id: any; }) => {
                     return board.id === currentItem.boardIndex
                 })
                 let cardPosition = activeBoard.items.indexOf(params.cardIndex);
@@ -95,7 +104,7 @@ export const ActiveBoard = () => {
     return (
         <Wrapper>
             <CarouselContainer>
-                {list.map((board, boardIndex) => (
+                {list?.map((board, boardIndex: any) => (
                     <ActiveColumn
                         key={board.id}
                         onDragEnter={isDragging && !board.items.length ? (e) => { handleDragEnter(e, { boardIndex: board.id, cardIndex: 0 }) } : null}
@@ -106,7 +115,7 @@ export const ActiveBoard = () => {
                         </div>
                         <div className={board.items.length > 5 ? 'active-column-scroll' : 'active-column'}>
                             <ActiveList>
-                                {board.items.map((card, cardIndex) => {
+                                {board.items.map((card: { id: React.Key | null | undefined; title: string; subtasks: IActiveBoardSubTaskProps[] | undefined; }, cardIndex: any) => {
                                     return (
                                         <TaskCard
                                             key={card.id}

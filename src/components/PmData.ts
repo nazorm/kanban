@@ -21,17 +21,17 @@ export const newBoardList = [
       subtasks: [
         {
           id: 141,
-          title: "Sign up page",
+          subtaskTitle: "Sign up page",
           isCompleted: true,
         },
         {
           id: 145,
-          title: "Sign in page",
+          subtaskTitle: "Sign in page",
           isCompleted: false,
         },
         {
           id: 146,
-          title: "Welcome page",
+          subtaskTitle: "Welcome page",
           isCompleted: false,
         },
       ],
@@ -47,17 +47,17 @@ export const newBoardList = [
       subtasks: [
         {
           id: 147,
-          title: "Sign up page",
+          subtaskTitle: "Sign up page",
           isCompleted: true,
         },
         {
           id: 148,
-          title: "Sign in page",
+          subtaskTitle: "Sign in page",
           isCompleted: false,
         },
         {
           id: 149,
-          title: "Welcome page",
+          subtaskTitle: "Welcome page",
           isCompleted: false,
         },
       ],
@@ -76,17 +76,17 @@ export const newBoardList = [
       subtasks: [
         {
           id: 150,
-          title: "Settings - Account page",
+          subtaskTitle: "Settings - Account page",
           isCompleted: true,
         },
         {
           id: 151,
-          title: "Settings - Billing page",
+          subtaskTitle: "Settings - Billing page",
           isCompleted: true,
         },
         {
           id: 152,
-          title: "Search page",
+          subtaskTitle: "Search page",
           isCompleted: false,
         },
       ],
@@ -99,17 +99,17 @@ export const newBoardList = [
       subtasks: [
         {
           id: 153,
-          title: "Upgrade plan",
+          subtaskTitle: "Upgrade plan",
           isCompleted: true,
         },
         {
           id: 154,
-          title: "Cancel plan",
+          subtaskTitle: "Cancel plan",
           isCompleted: true,
         },
         {
           id: 155,
-          title: "Update payment method",
+          subtaskTitle: "Update payment method",
           isCompleted: false,
         },
       ],
@@ -122,17 +122,17 @@ export const newBoardList = [
       subtasks: [
         {
           id: 156,
-          title: "Sign up page",
+          subtaskTitle: "Sign up page",
           isCompleted: true,
         },
         {
           id: 157,
-          title: "Sign in page",
+          subtaskTitle: "Sign in page",
           isCompleted: false,
         },
         {
           id: 158,
-          title: "Welcome page",
+          subtaskTitle: "Welcome page",
           isCompleted: false,
         },
       ],
@@ -145,12 +145,12 @@ export const newBoardList = [
       subtasks: [
         {
           id: 159,
-          title: "Add search endpoint",
+          subtaskTitle: "Add search endpoint",
           isCompleted: true,
         },
         {
           id: 159,
-          title: "Define search filters",
+          subtaskTitle: "Define search filters",
           isCompleted: false,
         },
       ],
@@ -163,12 +163,12 @@ export const newBoardList = [
       subtasks: [
         {
           id: 160,
-          title: "Define user model",
+          subtaskTitle: "Define user model",
           isCompleted: true,
         },
         {
           id: 161,
-          title: "Add auth endpoints",
+          subtaskTitle: "Add auth endpoints",
           isCompleted: false,
         },
       ],
@@ -184,17 +184,17 @@ export const newBoardList = [
       subtasks: [
         {
           id: 162,
-          title: "Research competitor pricing and business models",
+          subtaskTitle: "Research competitor pricing and business models",
           isCompleted: true,
         },
         {
           id: 163,
-          title: "Outline a business model that works for our solution",
+          subtaskTitle: "Outline a business model that works for our solution",
           isCompleted: false,
         },
         {
           id: 164,
-          title:
+          subtaskTitle:
             "Talk to potential customers about our proposed solution and ask for fair price expectancy",
           isCompleted: false,
         },
@@ -220,17 +220,17 @@ export const newBoardList = [
       subtasks: [
         {
           id: 31,
-          title: "Sign up page",
+          subtaskTitle: "Sign up page",
           isCompleted: true,
         },
         {
           id: 41,
-          title: "Sign in page",
+          subtaskTitle: "Sign in page",
           isCompleted: false,
         },
         {
           id: 51,
-          title: "Welcome page",
+          subtaskTitle: "Welcome page",
           isCompleted: false,
         },
       ],
@@ -251,7 +251,7 @@ export const newBoardList = [
       subtasks: [
         {
           id: 61,
-          title: "Complete 5 wireframe prototype tests",
+          subtaskTitle: "Complete 5 wireframe prototype tests",
           isCompleted: true,
         },
       ],
@@ -265,7 +265,7 @@ export const newBoardList = [
       subtasks: [
         {
           id: 71,
-          title: "Complete 5 wireframe prototype tests",
+          subtaskTitle: "Complete 5 wireframe prototype tests",
           isCompleted: true,
         },
       ],
@@ -279,7 +279,7 @@ export const newBoardList = [
       subtasks: [
         {
           id: 81,
-          title: "Complete 5 wireframe prototype tests",
+          subtaskTitle: "Complete 5 wireframe prototype tests",
           isCompleted: true,
         },
       ],
@@ -293,7 +293,7 @@ export const newBoardList = [
       subtasks: [
         {
           id: 91,
-          title: "Complete 5 wireframe prototype tests",
+          subtaskTitle: "Complete 5 wireframe prototype tests",
           isCompleted: true,
         },
       ],
@@ -307,7 +307,7 @@ export const newBoardList = [
       subtasks: [
         {
           id: 101,
-          title: "Complete 5 wireframe prototype tests",
+          subtaskTitle: "Complete 5 wireframe prototype tests",
           isCompleted: true,
         },
       ],
@@ -321,7 +321,7 @@ export const newBoardList = [
       subtasks: [
         {
           id: 102,
-          title: "Complete 5 wireframe prototype tests",
+          subtaskTitle: "Complete 5 wireframe prototype tests",
           isCompleted: true,
         },
       ],
@@ -335,7 +335,7 @@ export const newBoardList = [
       subtasks: [
         {
           id: 103,
-          title: "Complete 5 wireframe prototype tests",
+          subtaskTitle: "Complete 5 wireframe prototype tests",
           isCompleted: true,
         },
       ],
@@ -345,224 +345,4 @@ export const newBoardList = [
 ]
 
 
-
-
-
-export const boardList = [
-  {
-    title: "Build UI for onboarding flow",
-    description: "",
-    status: "backlog",
-    id: 104,
-    // subtasks: [
-    //   {
-    //     id: uniqueId,
-    //     title: "Sign up page",
-    //     isCompleted: true,
-    //   },
-    //   {
-    //     id: uniqueId,
-    //     title: "Sign in page",
-    //     isCompleted: false,
-    //   },
-    //   {
-    //     id: uniqueId,
-    //     title: "Welcome page",
-    //     isCompleted: false,
-    //   },
-    // ],
-  },
-  {
-    title: "Build UI for onboarding flow",
-    description: "",
-    status: "doingNext",
-    id: 105,
-    // subtasks: [
-    //   {
-    //     id: uniqueId,
-    //     title: "Sign up page",
-    //     isCompleted: true,
-    //   },
-    //   {
-    //     id: uniqueId,
-    //     title: "Sign in page",
-    //     isCompleted: false,
-    //   },
-    //   {
-    //     id: uniqueId,
-    //     title: "Welcome page",
-    //     isCompleted: false,
-    //   },
-    // ],
-  },
-  {
-    title: "Build UI for onboarding flow",
-    description: "",
-    status: "blocked",
-    id: 106,
-    // subtasks: [
-    //   {
-    //     id: uniqueId,
-    //     title: "Sign up page",
-    //     isCompleted: true,
-    //   },
-    //   {
-    //     id: uniqueId,
-    //     title: "Sign in page",
-    //     isCompleted: false,
-    //   },
-    //   {
-    //     id: uniqueId,
-    //     title: "Welcome page",
-    //     isCompleted: false,
-    //   },
-    // ],
-  },
-  {
-    title: "Design settings and search pages",
-    description: "",
-    status: "inProgress",
-    id: 107,
-    // subtasks: [
-    //   {
-    //     id: uniqueId,
-    //     title: "Settings - Account page",
-    //     isCompleted: true,
-    //   },
-    //   {
-    //     id: uniqueId,
-    //     title: "Settings - Billing page",
-    //     isCompleted: true,
-    //   },
-    //   {
-    //     id: uniqueId,
-    //     title: "Search page",
-    //     isCompleted: false,
-    //   },
-    // ],
-  },
-  {
-    title: "Add account management endpoints",
-    description: "",
-    status: "inProgress",
-    id: 108,
-    // subtasks: [
-    //   {
-    //     id: uniqueId,
-    //     title: "Upgrade plan",
-    //     isCompleted: true,
-    //   },
-    //   {
-    //     id: uniqueId,
-    //     title: "Cancel plan",
-    //     isCompleted: true,
-    //   },
-    //   {
-    //     id: uniqueId,
-    //     title: "Update payment method",
-    //     isCompleted: false,
-    //   },
-    // ],
-  },
-  {
-    title: "Design onboarding flow",
-    description: "",
-    status: "inProgress",
-    id: 109,
-    // subtasks: [
-    //   {
-    //     id: uniqueId,
-    //     title: "Sign up page",
-    //     isCompleted: true,
-    //   },
-    //   {
-    //     id: uniqueId,
-    //     title: "Sign in page",
-    //     isCompleted: false,
-    //   },
-    //   {
-    //     id: uniqueId,
-    //     title: "Welcome page",
-    //     isCompleted: false,
-    //   },
-    // ],
-  },
-  {
-    title: "Add search enpoints",
-    description: "",
-    status: "inProgress",
-    id: 110,
-    // subtasks: [
-    //   {
-    //     id: uniqueId,
-    //     title: "Add search endpoint",
-    //     isCompleted: true,
-    //   },
-    //   {
-    //     id: uniqueId,
-    //     title: "Define search filters",
-    //     isCompleted: false,
-    //   },
-    // ],
-  },
-  {
-    title: "Add authentication endpoints",
-    description: "",
-    status: "inProgress",
-    id: 111,
-    // subtasks: [
-    //   {
-    //     id: uniqueId,
-    //     title: "Define user model",
-    //     isCompleted: true,
-    //   },
-    //   {
-    //     id: uniqueId,
-    //     title: "Add auth endpoints",
-    //     isCompleted: false,
-    //   },
-    // ],
-  },
-
-  {
-    title:
-      "Research pricing points of various competitors and trial different business models",
-    description:
-      "We know what we're planning to build for version one. Now we need to finalise the first pricing model we'll use. Keep iterating the subtasks until we have a coherent proposition.",
-    status: "inProgress",
-    id: 112,
-    // subtasks: [
-    //   {
-    //     id: uniqueId,
-    //     title: "Research competitor pricing and business models",
-    //     isCompleted: true,
-    //   },
-    //   {
-    //     id: uniqueId,
-    //     title: "Outline a business model that works for our solution",
-    //     isCompleted: false,
-    //   },
-    //   {
-    //     id: uniqueId,
-    //     title:
-    //       "Talk to potential customers about our proposed solution and ask for fair price expectancy",
-    //     isCompleted: false,
-    //   },
-    // ],
-  },
-  {
-    title: "Conduct 5 wireframe tests",
-    description:
-      "Ensure the layout continues to make sense and we have strong buy-in from potential users.",
-    status: "completed",
-    id: 113,
-    // subtasks: [
-    //   {
-    //     id: uniqueId,
-    //     title: "Complete 5 wireframe prototype tests",
-    //     isCompleted: true,
-    //   },
-    // ],
-  },
-]
 

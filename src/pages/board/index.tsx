@@ -1,13 +1,12 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import Head from "next/head";
 import { BoardHeader } from '../../components/Layout/BoardHeader';
 import { SideBar } from 'src/components/Layout/Sidebar';
-import { EmptyBoard } from 'src/components/EmptyBoard';
+import { EmptyBoard } from './components/EmptyBoard';
 import { ActiveBoard } from './components/ActiveBoard';
-import { useAuth } from 'src/firebase/context';;
+import { useAuth } from 'src/firebase/context';
 import { useRouter } from 'next/router';
-import { auth } from 'src/firebase/firebaseConfig';
 
 const boardList = [
     {id: 1,},
@@ -17,12 +16,15 @@ const boardList = [
 
 const Board = () => {
     const { authUser, loading } = useAuth();
+    const [isViewTaskModalOpen, setIsViewTaskModalOpen] = useState(false);
     const router = useRouter();
     useEffect(() => {
         if (!loading && !authUser)
           router.push('/auth/login')
       }, [authUser, loading])
-console.log('logged in user', authUser!.userName?? 'none')
+console.log('logged in user', authUser.userBoard)
+
+
     return (
         <>
             <BoardHeader />
@@ -34,8 +36,9 @@ console.log('logged in user', authUser!.userName?? 'none')
                 </Head>
                 <Container>
                     <SideBar />
-                    {authUser?.userBoard?.length !== 0 ? <EmptyBoard/>  : <ActiveBoard/> }
+                    {authUser.userBoard?.length === 0 ? <EmptyBoard/>  : <ActiveBoard/> }
                 </Container>
+
             </Wrapper>
         </>
 

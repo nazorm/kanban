@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { StyleConstants } from 'styles/StylesConstants';
 import Head from "next/head";
@@ -29,11 +29,12 @@ const schema = yup.object().shape({
 
 const LoginScreen = () => {
     const [isPasswordShown, setIsPasswordShown] = useState(false);
-    const { register, control, handleSubmit, formState: { errors }, reset } = useForm<ILoginScreenProps>({
+    const { register, control, handleSubmit, formState: { errors }, getValues, reset } = useForm<ILoginScreenProps>({
         resolver: yupResolver(schema)
     })
+    const [formValidation, setFormValidation] = useState(false);
     const router = useRouter();
-const {signIn} = useAuth();
+   const {signIn} = useAuth();
 
     const showPassword = () => {
         setIsPasswordShown(!isPasswordShown);
@@ -46,10 +47,13 @@ const {signIn} = useAuth();
             return <Image src={eyeClosedIcon} alt='closed eyelid' onClick={showPassword} />
         }
     }
+ 
 
     const onSubmit: SubmitHandler<ILoginScreenProps> = data => {
         signIn(data)
     }
+    // const formValidation = getValues().email && getValues().password;
+    console.log('values ==>', getValues().email && getValues().password)
     return (
         <Container>
             <Head>
@@ -86,7 +90,7 @@ const {signIn} = useAuth();
                             renderPasswordIcon={renderPasswordIcon}
                         />}
                     />
-                    <LoginBtn>→</LoginBtn>
+                    <LoginBtn >→</LoginBtn>
                 </LoginForm>
                 <span className="notice">Don&apos;t have an account? <Link href={'/auth/signup'}>Sign Up</Link></span>
             </LoginLeft>
@@ -119,7 +123,11 @@ const PageTitle = styled.h1`
 
 `;
 
-const LoginBtn = styled(SignInBtn)``;
+const LoginBtn = styled(SignInBtn)`
+&[disabled]{
+   opacity: 0.5; 
+}
+`;
 
 const LoginForm = styled(Form)``;
 

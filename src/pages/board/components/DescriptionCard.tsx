@@ -13,7 +13,7 @@ export interface ICardDescriptionProps {
 }
 
 export interface ICardSubtasksProps {
-    title: string;
+    subtaskTitle: string;
     isCompleted: boolean;
     id: number;
 }
@@ -54,7 +54,7 @@ export const DescriptionCard = (props: ICardDescriptionProps) => {
                                 //  checked={subtask.isCompleted} 
                                 checked={isChecked.includes(subtask.id)}
                             />
-                            <span className={isChecked.includes(subtask.id) ? 'completed-subtask subtask-text' : 'subtask-text'}>{subtask.title}</span>
+                            <span className={isChecked.includes(subtask.id) ? 'completed-subtask subtask-text' : 'subtask-text'}>{subtask.subtaskTitle}</span>
                         </li>
 
                     })}

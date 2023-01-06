@@ -1,67 +1,112 @@
-import React, { useState, useEffect } from 'react';
-import { PrimaryButton, TransparentButton } from 'src/components/Button';
+import React, { useState, useEffect, ChangeEvent } from 'react';
+import { PrimaryBtn, TransparentButton } from 'src/components/Button';
 import styled from 'styled-components';
 import { StyleConstants } from 'styles/StylesConstants';
 import closeIcon from '../../../assets/icons/close.svg';
 import Image from 'next/image';
+import { useForm, Controller, SubmitHandler } from "react-hook-form";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { ICardSubtasksProps } from './DescriptionCard';
+import { ErrorText } from 'src/components/Form/TextInput';
+import CheckIcon from '@mui/icons-material/Check';
+import {useAuth} from 'src/firebase/context';
 
-export interface IEditCardProps{
-    
+export interface IEditCardProps {
+    title: string,
+    description: string,
+    subtasks: ICardSubtasksProps[],
+    status: string;
 }
 
+const schema = yup.object().shape({
+    title: yup.string().required(),
+    description: yup.string().required(),
+    status: yup.string().required(),
+})
+
 export const AddEditCard = () => {
-    const [newSubtaskList, setNewSubtaskList] = useState([{
-        id:1,
-    }])
+    const { register, control, handleSubmit, formState: { errors }, reset } = useForm<IEditCardProps>({
+        resolver: yupResolver(schema)
+    })
+    const {addNewTask, authUser} = useAuth();
+    const [subtaskList, setSubtaskList] = useState<ICardSubtasksProps[]>([])
+    const [newSubtask, setSubtask] = useState('')
 
     const handleAddSubtask = (e: { preventDefault: () => void; }) => {
         e.preventDefault();
         console.log('done');
-        // const subTaskList = document.getElementsByClassName('subtasks');
-        // const subtaskInput = document.createElement('input');
-        // const newSubtask = document.createElement('li').appendChild(subtaskInput);
-        // subTaskList?.appendChild(newSubtask);
-       const uniqueId = new Date().getTime();
-        let newSubTask = {id: uniqueId};
-        const subtaskList = [...newSubtaskList, newSubTask]
-        setNewSubtaskList(subtaskList);
+        const uniqueId = new Date().getTime();
+        let newSubTask = {
+            id: uniqueId, 
+            subtaskTitle: newSubtask,
+            isCompleted: false,
+        };
+        const newSubtasklist = [...subtaskList, newSubTask]
+        setSubtaskList(newSubtasklist);
+    }
+    const changeSubtask = (event: ChangeEvent<HTMLInputElement>) => {
+        setSubtask(event.target.value);
     }
 
     const handleRemoveSubtask = (id: number) => {
-        const newList = newSubtaskList.filter((subtask) => {
+        const newList = subtaskList.filter((subtask) => {
             return subtask.id !== id;
         })
-        setNewSubtaskList(newList);
+        setSubtaskList(newList);
     }
-    const SubmitNewTask = (e: any) => {
-        e.preventDefault();
-        console.log('submitted');
+  console.log('gotten user board',authUser!.userBoard)
+    const onSubmit: SubmitHandler<IEditCardProps> = data => {
+        const newCardData = {
+            ...data,
+            subtasks: subtaskList,
+        }
+        console.log('submitted ==>', newCardData);
+        if(authUser){
+            //...authUser.userBoard, 
+            const newBoard = [newCardData]
+            // console.log('spread user board', authUser)
+            addNewTask(newBoard)
+        }
     }
     return (
         <Box>
             <h3>Add New Task</h3>
-            <form onSubmit={SubmitNewTask}>
+            <form onSubmit={handleSubmit(onSubmit)}>
                 <label className='new-task-label'>Title</label>
-                <input type='text' placeholder='e.g Take coffee break' className='task-input' />
+                <input type='text' placeholder='e.g Take coffee break' className='task-input' {...register("title")} />
+                <ErrorSpan>
+                    {errors?.title?.message}
+                </ErrorSpan>
+
                 <label className='new-task-label'>Description</label>
-                <textarea placeholder='e.g. It’s always good to take a break. 
+                <textarea  {...register("description")} placeholder='e.g. It’s always good to take a break. 
                             This 15 minute break will 
                             recharge the batteries a little.' className='task-input' />
+                <ErrorSpan>
+                    {errors?.description?.message}
+                </ErrorSpan>
                 <SubtaskContainer>
                     <label className='subtitle-heading'>Subtasks</label>
-                    <ul className='subtasks'>
-                        {newSubtaskList.map((subtask) => {
+                    <div style={{display: 'flex', alignItems: 'center'}}>
+                    <input type='text' placeholder='e.g Make Coffee' className='task-input' onChange={changeSubtask} style={{display: 'inline'}}/>
+                    <CheckIcon onClick={handleAddSubtask} style={{color: `${StyleConstants.ACCENT_COLOR}`}}/>
+                    </div>    
+                    <ul className='subtasks' >
+                        {subtaskList.map((subtask) => {
                             return <li key={subtask.id} className='subtask'>
-                                <input type='text' placeholder='e.g Make Coffee' className='task-input' />
+                                <input type='text' placeholder='e.g Make Coffee' className='task-input' value={subtask.subtaskTitle} />
                                 <Image src={closeIcon} alt='more' width={30} height={15} onClick={() => handleRemoveSubtask(subtask.id)} />
                             </li>
                         })}
-                        <TransparentButton content='+ Add New Subtask' secondaryBtnAction={handleAddSubtask} style={{ width: '100%' }} />
+                        {/* <TransparentButton content='+ Add New Subtask' secondaryBtnAction={handleAddSubtask} style={{ width: '100%' }} /> */}
                     </ul>
                 </SubtaskContainer>
                 <StatusContainer>
                     <label className='new-task-label'>Status</label>
-                    <select style={{ width: '100%', padding: '10px' }}>
+                    <select {...register("status")}
+                        style={{ width: '100%', padding: '10px' }}>
+                        <option value=''> Status</option>
                         <option value='backlog'> Backlog</option>
                         <option value='doing next'>Doing Next</option>
                         <option value='in progress'>In Progress</option>
@@ -69,7 +114,10 @@ export const AddEditCard = () => {
                         <option value='blocked'>Blocked</option>
                     </select>
                 </StatusContainer>
-                <PrimaryButton content='+ Create Task' primaryBtnAction={SubmitNewTask} style={{ width: '100%', marginBottom: '20px' }} />
+                <ErrorSpan>
+                    {errors?.status?.message}
+                </ErrorSpan>
+                <SubmitBtn style={{ width: '100%', marginTop: '20px', marginBottom: '20px', padding: '10px' }}> + Create Task </SubmitBtn>
             </form>
         </Box>
     )
@@ -115,3 +163,9 @@ const SubtaskContainer = styled.div`
 const StatusContainer = styled.div`
   margin: 20px 0;
 `;
+
+const ErrorSpan = styled(ErrorText)`
+`;
+const SubmitBtn = styled(PrimaryBtn)`
+`;
+const Btn = styled(PrimaryBtn)``;

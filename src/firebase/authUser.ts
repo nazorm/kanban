@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 
 interface IAuthUser {
   uid?: string;
-  email: string;
+  email?: string;
   password?: string;
   userName?: string;
   userBoard?: UserBoard[];
@@ -29,10 +29,8 @@ export default function useFirebaseAuth() {
     setAuthUser(null);
     setLoading(true);
   };
+console.log('initial', authUser?.userBoard)
 
-  // const signInWithEmailAndPassword = (email: string, password: string) => {
-  //   return firebase.auth().signInWithEmailAndPassword(email, password);
-  // };
   const signIn = (data: { email: string; password: string }) => {
     firebase
       .auth()
@@ -64,9 +62,6 @@ export default function useFirebaseAuth() {
       })
       .catch((error: any) => console.log(error));
   };
-  // const createUserWithEmailAndPassword = (email: string, password: string) => {
-  //   return firebase.auth().createUserWithEmailAndPassword(email, password);
-  // };
   const signOut = () => {
     return firebase.auth().signOut().then(clear);
   };
@@ -102,6 +97,24 @@ export default function useFirebaseAuth() {
   };
   console.log(authUser);
 
+  const addNewTask = (board: any) => {
+    const updatedUser={
+      ...authUser,
+      userBoard : board,
+    }
+    // createUser(updatedUser)
+    return firebase
+      .firestore()
+      .collection("users")
+      .doc(authUser!.uid)
+      .set(updatedUser)
+      .then((response) => {
+        console.log("card submitted");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   // authstateChange listening for changes in the auth state of a user
   const authStateChanged = async (authState: any) => {
     if (!authState) {
@@ -145,5 +158,6 @@ export default function useFirebaseAuth() {
     createUser,
     getUserAdditionalData,
     setAuthUser,
+    addNewTask,
   };
 }
