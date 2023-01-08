@@ -17,7 +17,7 @@ export type UserBoard = {
     subtasks: Subtasks[]
   }
   
-  type Subtasks={
+  export type Subtasks={
     id: number,
     title: number,
     isCompleted: boolean,

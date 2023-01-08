@@ -51,9 +51,7 @@ const SignUpScreen = () => {
     }
 
     const onSubmit: SubmitHandler<ISignUpScreenProps> = data => {
-        const userEmail = data.email;
-        const userName = data.fullName;
-        signUp(data, userEmail, userName)
+        signUp(data)
     }
 
     return (

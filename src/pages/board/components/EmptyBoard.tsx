@@ -3,7 +3,12 @@ import styled from 'styled-components';
 import { PrimaryButton } from '../../../components/Button';
 import { StyleConstants } from 'styles/StylesConstants';
 import {  Dialog } from '@mui/material';
-import { AddEditCard } from './AddEditCard';
+import { AddEditBoard } from './AddEditCard';
+
+
+
+
+
 export const EmptyBoard = () => {
 
     const [isViewTaskModalOpen, setIsViewTaskModalOpen] = useState(false);
@@ -19,11 +24,11 @@ export const EmptyBoard = () => {
     return (
         <Wrapper>
             <Card>
-                <p className='text'>This board is empty. Create a new column to get started.</p>
-                <PrimaryButton content={'+ Add New Column'} primaryBtnAction={addNewColumn} />
+                <p className='text'>Let&apos;s make this fun. Create a new board to get started.</p>
+                <PrimaryButton content={'+ Add New Board'} primaryBtnAction={addNewColumn} />
             </Card>
             <Dialog open={isViewTaskModalOpen} onClose={handleViewTaskModal}>
-                <AddEditCard
+                <AddEditBoard
                 />
             </Dialog>
         </Wrapper>

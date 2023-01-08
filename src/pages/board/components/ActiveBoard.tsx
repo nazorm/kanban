@@ -25,14 +25,14 @@ export const ActiveBoard = () => {
     const dragItem = useRef();
     const dragNode = useRef()
 
-console.log('this lists', list)
+
     const router = useRouter();
+   
     useEffect(() => {
         if (!loading && !authUser)
           router.push('/auth/login')
       }, [authUser, loading])
 
-console.log('tired.com', authUser.userBoard)
     const handleViewTaskModal = (boardId: number | string, cardId: number | string) => {
         console.log('clicked')
         setIsViewTaskModalOpen(!isViewTaskModalOpen);

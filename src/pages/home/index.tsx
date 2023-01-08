@@ -4,6 +4,9 @@ import styled from 'styled-components';
 import Image from 'next/image';
 import logo from '../../assets/icons/logo-dark.svg';
 import Link from 'next/link';
+import { EmptyBoard } from '../board/components/EmptyBoard';
+import { SideBar } from 'src/components/Layout/Sidebar';
+import { BoardHeader } from 'src/components/Layout/BoardHeader';
 
 const HomePage = () => {
     return (
@@ -11,18 +14,13 @@ const HomePage = () => {
             <Head>
                 <title>Home- Kanban</title>
                 <meta name="description" content="A Project Management Board" />
-                 <link rel="icon" href="/favicon/favicon.ico" />
+                <link rel="icon" href="/favicon/favicon.ico" />
             </Head>
-            <Header>
-                <Link href="/home">
-                    <Image src={logo} alt='logo' />
-                </Link>
-
-                <nav>
-                    <button>Login</button>
-                    <button>Get Started</button>
-                </nav>
-            </Header>
+            <BoardHeader />
+            <Container>
+                <SideBar />
+                <EmptyBoard />
+            </Container>
         </Wrapper>
     )
 }
@@ -33,5 +31,8 @@ const Wrapper = styled.section`
 const Header = styled.div`
   display: flex;
   border: 1px solid green;
+`;
+const Container = styled.div`
+    display: flex;
 `
 export default HomePage;

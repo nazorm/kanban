@@ -15,15 +15,16 @@ const boardList = [
 ]
 
 const Board = () => {
-    const { authUser, loading } = useAuth();
+    const { authUser, loading, getAllBoards } = useAuth();
     const [isViewTaskModalOpen, setIsViewTaskModalOpen] = useState(false);
     const router = useRouter();
     useEffect(() => {
         if (!loading && !authUser)
           router.push('/auth/login')
       }, [authUser, loading])
-console.log('logged in user', authUser.userBoard)
-
+useEffect(()=>{
+    getAllBoards()
+},[])
 
     return (
         <>
@@ -36,7 +37,7 @@ console.log('logged in user', authUser.userBoard)
                 </Head>
                 <Container>
                     <SideBar />
-                    {authUser.userBoard?.length === 0 ? <EmptyBoard/>  : <ActiveBoard/> }
+                    <ActiveBoard/>
                 </Container>
 
             </Wrapper>

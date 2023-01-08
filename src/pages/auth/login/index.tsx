@@ -52,8 +52,6 @@ const LoginScreen = () => {
     const onSubmit: SubmitHandler<ILoginScreenProps> = data => {
         signIn(data)
     }
-    // const formValidation = getValues().email && getValues().password;
-    console.log('values ==>', getValues().email && getValues().password)
     return (
         <Container>
             <Head>

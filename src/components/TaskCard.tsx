@@ -20,9 +20,6 @@ export interface IActiveBoardSubTaskProps {
     title: string,
     isCompleted: boolean,
 }
-// const handleCard = (id)=>{
-// console.log(id)
-// }
 export const TaskCard = ({ title, handleDragStart, handleDragEnter, handleCardView, subtasks}: IActiveBoardProps) => {
     return (
         <Card  onDragStart={handleDragStart} onDragEnter={handleDragEnter} onClick={handleCardView} draggable>

@@ -18,6 +18,7 @@ export const BoardHeader = () => {
         if (!loading && !authUser)
           router.push('/auth/login')
       }, [authUser, loading])
+
     return (
         <Wrapper>
             <Head>
@@ -34,7 +35,7 @@ export const BoardHeader = () => {
                 </div>
                 <nav className='nav'>
                     <Link href="/home" >
-                        <a className='account'>{authUser ? authUser?.userName : 'Account'}</a>
+                        <a className='account'>{authUser ? authUser?.fullName : 'Account'}</a>
                     </Link>
                     <Image src={moreIcon} alt='more' width={30} height={15} />
                 </nav>

@@ -31,24 +31,24 @@ const sideBarLinks = [
         route: '/board',
         icon: boardIcon,
     },
-    {
-        id: 3,
-        title: 'Productivity',
-        route: '/home',
-        icon: boardIcon,
-    },
-    {
-        id: 4,
-        title: 'Platform',
-        route: '/home',
-        icon: boardIcon,
-    },
-    {
-        id: 5,
-        title: 'Efficiency',
-        route: '/home',
-        icon: boardIcon,
-    },
+    // {
+    //     id: 3,
+    //     title: 'Productivity',
+    //     route: '/home',
+    //     icon: boardIcon,
+    // },
+    // {
+    //     id: 4,
+    //     title: 'Platform',
+    //     route: '/home',
+    //     icon: boardIcon,
+    // },
+    // {
+    //     id: 5,
+    //     title: 'Efficiency',
+    //     route: '/home',
+    //     icon: boardIcon,
+    // },
 ]
 
 export const SideBarLink = (props: ISideBarLinkProps) => {
