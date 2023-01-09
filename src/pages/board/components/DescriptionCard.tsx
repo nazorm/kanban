@@ -3,26 +3,23 @@ import styled from 'styled-components';
 import moreIcon from '../../../assets/icons/more-icon.svg';
 import Image from 'next/image';
 import { StyleConstants } from 'styles/StylesConstants';
+import { Subtasks } from 'src/firebase/types';
 
 
 export interface ICardDescriptionProps {
     cardTitle: string,
     cardDescription: string,
     status: string,
-    subtasks?: ICardSubtasksProps[];
+    subtasks?: Subtasks[];
 }
 
-export interface ICardSubtasksProps {
-    subtaskTitle: string;
-    isCompleted: boolean;
-    id: number;
-}
+
 
 export const DescriptionCard = (props: ICardDescriptionProps) => {
     const { cardTitle, cardDescription, status, subtasks } = props;
-    const [isChecked, setIsChecked] = useState<number[]>([])
+    const [isChecked, setIsChecked] = useState<string[]>([])
 
-    const handleSubtaskCheck = (id: number) => {
+    const handleSubtaskCheck = (id: string) => {
         let checkedList = [];
         if (isChecked.includes(id)) {
             checkedList = isChecked.filter(
@@ -47,14 +44,14 @@ export const DescriptionCard = (props: ICardDescriptionProps) => {
                 <h2 className='subtitle-heading'>Subtasks ({isChecked.length} of {subtasks?.length})</h2>
                 <ul className='subtasks'>
                     {subtasks?.map((subtask) => {
-                        return <li className='subtask' key={subtask.id}>
+                        return <li className='subtask' key={subtask._id}>
                             <input
                                 type='checkbox'
-                                onChange={() => handleSubtaskCheck(subtask.id)}
+                                onChange={() => handleSubtaskCheck(subtask._id!)}
                                 //  checked={subtask.isCompleted} 
-                                checked={isChecked.includes(subtask.id)}
+                                checked={isChecked.includes(subtask._id!)}
                             />
-                            <span className={isChecked.includes(subtask.id) ? 'completed-subtask subtask-text' : 'subtask-text'}>{subtask.subtaskTitle}</span>
+                            <span className={isChecked.includes(subtask._id!) ? 'completed-subtask subtask-text' : 'subtask-text'}>{subtask.title}</span>
                         </li>
 
                     })}

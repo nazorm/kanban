@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Head from "next/head";
 import { BoardHeader } from '../../components/Layout/BoardHeader';
@@ -8,23 +8,19 @@ import { ActiveBoard } from './components/ActiveBoard';
 import { useAuth } from 'src/firebase/context';
 import { useRouter } from 'next/router';
 
-const boardList = [
-    {id: 1,},
-    {id:2,},
-    {id:3,},
-]
 
 const Board = () => {
-    const { authUser, loading, getAllBoards } = useAuth();
+    const { authUser, loading, getAllCurrentBoardTasks } = useAuth();
     const [isViewTaskModalOpen, setIsViewTaskModalOpen] = useState(false);
     const router = useRouter();
+    const boardId = router.query.boardId
     useEffect(() => {
         if (!loading && !authUser)
-          router.push('/auth/login')
-      }, [authUser, loading])
-useEffect(()=>{
-    getAllBoards()
-},[])
+            router.push('/auth/login')
+    }, [authUser, loading])
+    useEffect(() => {
+        getAllCurrentBoardTasks(boardId)
+    }, [boardId])
 
     return (
         <>
@@ -37,7 +33,8 @@ useEffect(()=>{
                 </Head>
                 <Container>
                     <SideBar />
-                    <ActiveBoard/>
+                    {authUser?.currentBoardTasks?.length === 0 ? <EmptyBoard param='task' /> : <ActiveBoard />}
+
                 </Container>
 
             </Wrapper>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useRouter } from "next/router";
 import Link from 'next/link';
@@ -18,38 +18,6 @@ interface ISideBarLinkProps {
     icon: any;
     title?: string;
 }
-const sideBarLinks = [
-    {
-        id: 1,
-        title: 'Home',
-        route: '/home',
-        icon: boardIcon,
-    },
-    {
-        id: 2,
-        title: 'Board',
-        route: '/board',
-        icon: boardIcon,
-    },
-    // {
-    //     id: 3,
-    //     title: 'Productivity',
-    //     route: '/home',
-    //     icon: boardIcon,
-    // },
-    // {
-    //     id: 4,
-    //     title: 'Platform',
-    //     route: '/home',
-    //     icon: boardIcon,
-    // },
-    // {
-    //     id: 5,
-    //     title: 'Efficiency',
-    //     route: '/home',
-    //     icon: boardIcon,
-    // },
-]
 
 export const SideBarLink = (props: ISideBarLinkProps) => {
     const { title, route, icon } = props;
@@ -57,7 +25,7 @@ export const SideBarLink = (props: ISideBarLinkProps) => {
 
     return (
 
-        <li className={router.pathname == route ? "active-item" : "side-bar__item"}>
+        <li className={router.asPath.includes(route) ? "active-item" : "side-bar__item"}>
             <Link href={route} style={{ padding: '0' }}>
                 <div className='open-sidebar'>
                     <Image src={icon} alt='icon' className='icon' />
@@ -74,7 +42,7 @@ export const SideBarIcon = (props: ISideBarLinkProps) => {
     const { route, icon } = props;
     const router = useRouter();
     return (
-        <li className={router.pathname == route ? "closed-active-item" : "closed-side-bar__item"}>
+        <li className={router.asPath.includes(route) ? "closed-active-item" : "closed-side-bar__item"}>
             <Link href={route}>
                 <div className='closed-sidebar'>
                     <Image src={icon} alt='icon' className='icon' width={20} height={20} />
@@ -88,8 +56,11 @@ export const SideBarIcon = (props: ISideBarLinkProps) => {
 export const SideBar = () => {
     const [isDarkTheme, setIsDarkTheme] = useState(true);
     const [isEyeOpen, setIsEyeOpen] = useState(false);
-    const { signOut } = useAuth();
+    const { signOut, authUser, loading, getAllBoards } = useAuth();
     const router = useRouter();
+    useEffect(() => {
+        getAllBoards();
+    }, [])
 
     const handleChange = () => {
         setIsDarkTheme(!isDarkTheme);
@@ -104,15 +75,21 @@ export const SideBar = () => {
         router.push('/auth/login')
     }
     return (
+
         <Wrapper>{isEyeOpen ?
             <ClosedSideBar>
                 <ul className='sidebar-list'>
-                    {sideBarLinks.map((item) => {
+                    <SideBarIcon
+                        key={1}
+                        route={'/home'}
+                        icon={boardIcon}
+                    />
+                    {authUser?.allBoards.map((item: any) => {
                         return (
                             <SideBarIcon
-                                key={item.id}
-                                route={item.route}
-                                icon={item.icon}
+                                key={item._id}
+                                route={`/board/${item.name}/${item._id}`}
+                                icon={boardIcon}
                             />
                         )
                     })}
@@ -121,14 +98,21 @@ export const SideBar = () => {
             :
             <OpenSideBar>
                 <ul className='sidebar-list'>
-                    {sideBarLinks.map((item) => {
+                    <SideBarLink
+                        key={1}
+                        route={'/home'}
+                        title={'Home'}
+                        icon={boardIcon}
+                    />
+                    {authUser?.allBoards?.map((item: any) => {
                         return (
                             <SideBarLink
-                                key={item.id}
-                                route={item.route}
-                                title={item.title}
-                                icon={item.icon}
+                                key={item._id}
+                                route={`/board/${item.name}?boardId=${item._id}`}
+                                title={item.name}
+                                icon={boardIcon}
                             />
+
                         )
                     })}
 
@@ -136,7 +120,7 @@ export const SideBar = () => {
             </OpenSideBar>
         }
             <SignoutContainer onClick={signoutUser}>
-                {<ExitToAppIcon/>}
+                {<ExitToAppIcon />}
                 {!isEyeOpen && <span className='hide-sidebar-text'>Sign Out</span>}
             </SignoutContainer>
 
@@ -160,7 +144,7 @@ export const SideBar = () => {
 }
 
 const Wrapper = styled.div`
-     height: 600px;
+     height: inherit;
      position: relative;
 `;
 

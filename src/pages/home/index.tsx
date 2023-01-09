@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Head from "next/head";
 import styled from 'styled-components';
 import Image from 'next/image';
@@ -7,8 +7,14 @@ import Link from 'next/link';
 import { EmptyBoard } from '../board/components/EmptyBoard';
 import { SideBar } from 'src/components/Layout/Sidebar';
 import { BoardHeader } from 'src/components/Layout/BoardHeader';
+import { useAuth } from 'src/firebase/context';
+import { useRouter } from 'next/router';
 
 const HomePage = () => {
+    const { getAllBoards } = useAuth();
+    useEffect(()=>{
+        getAllBoards();
+    },[])
     return (
         <Wrapper>
             <Head>
@@ -19,7 +25,7 @@ const HomePage = () => {
             <BoardHeader />
             <Container>
                 <SideBar />
-                <EmptyBoard />
+                <EmptyBoard param= 'board' />
             </Container>
         </Wrapper>
     )

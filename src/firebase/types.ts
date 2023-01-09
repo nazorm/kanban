@@ -14,7 +14,7 @@ export type UserBoard = {
   }
 
   export type Subtasks={
-    id?: number,
+    _id?: string,
     title?: number,
     isCompleted?: boolean,
   }

@@ -5,7 +5,7 @@ import { UserBoard } from "./board";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { NewBoard, Tasks } from "./types";
-import { json } from "stream/consumers";
+
 
 const BASE_URL = "https://kanban-task-api.cyclic.app";
 interface IAuthUser {
@@ -65,30 +65,53 @@ export default function useFirebaseAuth() {
       .catch((error: any) => console.log(error));
   };
 
-
-  const getAllBoards = async () => {
+  const getAllBoards = async ()=>{
     const token = localStorage.getItem("kanbanJwtToken");
     const userValue = localStorage.getItem('kanbanUser') as string;
     const user = JSON.parse(userValue);
   
    await axios
-      .get(`${BASE_URL}/task/allboard-tasks/${user?._id}`, {
+      .get(`${BASE_URL}/board/all`, {
         headers: {
           Authorization: `Bearer ${token}`,
           ContentType: "application/json",
         },
       })
       .then((response) => {
-        console.log("all boards", response);
-        const userBoard = response.data.data;
+        // console.log("all boards", response);
+        const allBoards = response.data.data;
         const updatedUser = {
           ...authUser,
-          userBoard,
+          allBoards,
         };
         setAuthUser(updatedUser);
       })
       .catch((error) => console.log(error));
-  };
+  }
+
+const getAllCurrentBoardTasks = async  (boardId:string)=>{
+  const token = localStorage.getItem("kanbanJwtToken");
+  // const userValue = localStorage.getItem('kanbanUser') as string;
+  // const user = JSON.parse(userValue);
+
+ await axios
+    .get(`${BASE_URL}/task/allboard-tasks/${boardId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        ContentType: "application/json",
+      },
+    })
+    .then((response) => {
+      const currentBoardTasks = response.data.data;
+      console.log("single", currentBoardTasks);
+      const updatedUser = {
+        ...authUser,
+        currentBoardTasks,
+      };
+      setAuthUser(updatedUser);
+    })
+    .catch((error) => console.log(error));
+}
 
 const createBoard = async (data:NewBoard)=>{
   const token = localStorage.getItem("kanbanJwtToken");
@@ -104,13 +127,31 @@ const createBoard = async (data:NewBoard)=>{
   .then((response)=> {
 
     console.log('board response', response)
-    router.push('/board');
+    router.push(`/board/${data.name}?boardId=${response.data.data._id}`);
   })
   .catch((error)=> console.log(error));
 }
 
+  // const getSingleBoard = async (boardId: string) => {
+  //   const token = localStorage.getItem("kanbanJwtToken");
+  
+  //  await axios
+  //     .get(`${BASE_URL}/board/${boardId}`, {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //         ContentType: "application/json",
+  //       },
+  //     })
+  //     .then((response) => {
+  //       console.log("sing board", response);
+  //     })
+  //     .catch((error) => console.log(error));
+  // };
 
-  const createTask = (data: Tasks) => {
+
+
+
+  const createTask = (data: any) => {
     const token = localStorage.getItem("kanbanJwtToken");
     axios
       .post(`${BASE_URL}/task/create-task`, 
@@ -134,85 +175,6 @@ const createBoard = async (data:NewBoard)=>{
     return firebase.auth().sendPasswordResetEmail(email);
   };
 
-  // const createUser = (user: IAuthUser) => {
-  //   return firebase
-  //     .firestore()
-  //     .collection("users")
-  //     .doc(user.uid)
-  //     .set(user)
-  //     .then((response) => {
-  //       console.log("after creation", response);
-  //       console.log("Success");
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // };
-  // const getUserAdditionalData = (user: firebase.User) => {
-  //   return firebase
-  //     .firestore()
-  //     .collection("users")
-  //     .doc(user.uid)
-  //     .get()
-  //     .then((userData) => {
-  //       if (userData.data()) {
-  //         setAuthUser(userData.data());
-  //       }
-  //     });
-  // };
-  // console.log(authUser);
-
-  // const addNewTask = (board: any) => {
-  //   const updatedUser = {
-  //     ...authUser,
-  //     userBoard: board,
-  //   };
-  //   // createUser(updatedUser)
-  //   return firebase
-  //     .firestore()
-  //     .collection("users")
-  //     .doc(authUser!.uid)
-  //     .set(updatedUser)
-  //     .then((response) => {
-  //       console.log("card submitted");
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // };
-  // authstateChange listening for changes in the auth state of a user
-  // const authStateChanged = async (authState: any) => {
-  //   if (!authState) {
-  //     setAuthUser(null);
-  //     setLoading(false);
-  //     return;
-  //   }
-  //   setLoading(true);
-  //   let formattedUser = formatAuthUser(authState);
-  //   setAuthUser(formattedUser);
-  //   // if (authUser) {
-  //   //   getUserAdditionalData(authUser);
-  //   // }
-  //   setLoading(false);
-  // };
-
-  // useEffect(() => {
-  //   const unsubscribe = firebase.auth().onAuthStateChanged(authStateChanged);
-  //   return () => unsubscribe();
-  // }, []);
-
-  // update user state whenever user makes an update
-  // useEffect(() => {
-  //   if (authUser?.uid) {
-  //     // Subscribe to user document on mount
-  //     const unsubscribe = firebase
-  //       .firestore()
-  //       .collection("users")
-  //       .doc(authUser.uid)
-  //       .onSnapshot((doc) => setAuthUser(doc.data()));
-  //     return () => unsubscribe();
-  //   }
-  // }, []);
   return {
     authUser,
     loading,
@@ -221,11 +183,9 @@ const createBoard = async (data:NewBoard)=>{
     signOut,
     sendPasswordResetEmail,
     getAllBoards,
+    getAllCurrentBoardTasks,
     createBoard,
     createTask,
-    // createUser,
-    // getUserAdditionalData,
     setAuthUser,
-    // addNewTask,
   };
 }

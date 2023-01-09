@@ -7,15 +7,18 @@ import Image from 'next/image';
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { ICardSubtasksProps } from './DescriptionCard';
+
 import { ErrorText } from 'src/components/Form/TextInput';
 import CheckIcon from '@mui/icons-material/Check';
 import { useAuth } from 'src/firebase/context';
+import { useRouter } from 'next/router';
+import { Subtasks } from 'src/firebase/types';
 
 export interface IEditCardProps {
     title: string,
     description: string,
     status: string;
+    boardId?: string;
 }
 
 const schema = yup.object().shape({
@@ -64,36 +67,41 @@ export const AddEditCard = () => {
         resolver: yupResolver(schema)
     })
     const { createTask, authUser } = useAuth();
-    const [subtaskList, setSubtaskList] = useState<ICardSubtasksProps[]>([])
-    const [newSubtask, setSubtask] = useState('')
+    const router = useRouter();
+    const boardId = router.query.boardId
+
+    const [subtaskList, setSubtaskList] = useState<string[]>([])
+    const [newSubtask, setNewSubtask] = useState('')
 
     const handleAddSubtask = (e: { preventDefault: () => void; }) => {
         e.preventDefault();
-        const uniqueId = new Date().getTime();
-        let newSubTask = {
-            id: uniqueId,
-            subtaskTitle: newSubtask,
-            isCompleted: false,
-        };
-        const newSubtasklist = [...subtaskList, newSubTask]
-        setSubtaskList(newSubtasklist);
+        // const uniqueId = new Date().getTime();
+        // let newSubTask = {
+        //     _id: JSON.stringify(uniqueId),
+        //     title: newSubtask,
+        //     isCompleted: false,
+        // };
+        // const newSubtasklist = [...subtaskList, newSubTask]
+        // setSubtaskList(newSubtasklist);
+        setSubtaskList([...subtaskList, newSubtask])
     }
     const changeSubtask = (event: ChangeEvent<HTMLInputElement>) => {
-        setSubtask(event.target.value);
+        setNewSubtask(event.target.value);
     }
 
-    const handleRemoveSubtask = (id: number) => {
-        const newList = subtaskList.filter((subtask) => {
-            return subtask.id !== id;
-        })
-        setSubtaskList(newList);
-    }
+    // const handleRemoveSubtask = (id: string) => {
+    //     const newList = subtaskList.filter((subtask) => {
+    //         return subtask._id !== id;
+    //     })
+    //     setSubtaskList(newList);
+    // }
     const onSubmit: SubmitHandler<IEditCardProps> = data => {
         const newCardData = {
             ...data,
             subtask: subtaskList,
-            boardId: ''
+            boardId: boardId
         }
+        console.log('sending task', newCardData)
         createTask(newCardData);
     }
     return (
@@ -120,10 +128,10 @@ export const AddEditCard = () => {
                         <CheckIcon onClick={handleAddSubtask} style={{ color: `${StyleConstants.ACCENT_COLOR}` }} />
                     </div>
                     <ul className='subtasks' >
-                        {subtaskList.map((subtask) => {
-                            return <li key={subtask.id} className='subtask'>
-                                <input type='text' placeholder='e.g Make Coffee' className='task-input' value={subtask.subtaskTitle} />
-                                <Image src={closeIcon} alt='more' width={30} height={15} onClick={() => handleRemoveSubtask(subtask.id)} />
+                        {subtaskList?.map((subtask, index) => {
+                            return <li key={index} className='subtask'>
+                                <input type='text' placeholder='e.g Make Coffee' className='task-input' value={subtask} />
+                                {/* <Image src={closeIcon} alt='more' width={30} height={15} onClick={() => handleRemoveSubtask(subtask?._id!)} /> */}
                             </li>
                         })}
                         {/* <TransparentButton content='+ Add New Subtask' secondaryBtnAction={handleAddSubtask} style={{ width: '100%' }} /> */}

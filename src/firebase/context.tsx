@@ -10,9 +10,9 @@ const authUserContext = createContext({
   signOut: async ()=> {},
   sendPasswordResetEmail: async ()=>{},
   setAuthUser: async (arg:any)=> {},
-  // addNewTask: async (arg:any)=>{},
-  getAllBoards:async () => {},
-  createTask:async (data:Tasks) => {},
+  getAllBoards:async()=>{},
+  getAllCurrentBoardTasks:async (data:string | string[] | undefined) => {},
+  createTask:async (data:any) => {},
   createBoard: async (data:NewBoard) => {},
 
 });

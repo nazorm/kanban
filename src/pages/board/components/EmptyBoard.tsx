@@ -2,15 +2,14 @@ import react, { useState } from 'react';
 import styled from 'styled-components';
 import { PrimaryButton } from '../../../components/Button';
 import { StyleConstants } from 'styles/StylesConstants';
-import {  Dialog } from '@mui/material';
-import { AddEditBoard } from './AddEditCard';
+import { Dialog } from '@mui/material';
+import { AddEditBoard, AddEditCard } from './AddEditCard';
 
 
 
 
 
-export const EmptyBoard = () => {
-
+export const EmptyBoard = ({param}) => {
     const [isViewTaskModalOpen, setIsViewTaskModalOpen] = useState(false);
 
     const addNewColumn = () => {
@@ -25,11 +24,11 @@ export const EmptyBoard = () => {
         <Wrapper>
             <Card>
                 <p className='text'>Let&apos;s make this fun. Create a new board to get started.</p>
-                <PrimaryButton content={'+ Add New Board'} primaryBtnAction={addNewColumn} />
+                <PrimaryButton content={param === 'task' ? '+ Add Task' : '+ Add New Board'} primaryBtnAction={addNewColumn} />
             </Card>
             <Dialog open={isViewTaskModalOpen} onClose={handleViewTaskModal}>
-                <AddEditBoard
-                />
+                {param === 'task' ? <AddEditCard /> : <AddEditBoard/>}
+
             </Dialog>
         </Wrapper>
     )
