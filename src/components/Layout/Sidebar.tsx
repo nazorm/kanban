@@ -12,7 +12,7 @@ import closeEyeIcon from '../../assets/icons/eye-slash.svg';
 import openEyeIcon from '../../assets/icons/open-eye.svg';
 import lightIcon from '../../assets/icons/light-icon.svg';
 import darkIcon from '../../assets/icons/dark-icon.svg';
-import { useAuth } from 'src/firebase/context';
+import { useAuth } from 'src/api/context';
 interface ISideBarLinkProps {
     route: string;
     icon: any;
@@ -56,7 +56,7 @@ export const SideBarIcon = (props: ISideBarLinkProps) => {
 export const SideBar = () => {
     const [isDarkTheme, setIsDarkTheme] = useState(true);
     const [isEyeOpen, setIsEyeOpen] = useState(false);
-    const { signOut, authUser, loading, getAllBoards } = useAuth();
+    const {authUser, loading, getAllBoards } = useAuth();
     const router = useRouter();
     useEffect(() => {
         getAllBoards();
@@ -71,7 +71,7 @@ export const SideBar = () => {
     }
 
     const signoutUser = () => {
-        signOut()
+        // signOut()
         router.push('/auth/login')
     }
     return (

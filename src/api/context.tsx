@@ -1,5 +1,5 @@
 import { createContext, useContext, Context } from 'react';
-import useFirebaseAuth from './authUser';
+import useUser from './authUser';
 import { NewBoard, Tasks } from './types';
 
 const authUserContext = createContext({
@@ -7,8 +7,8 @@ const authUserContext = createContext({
   loading: true,
   signIn:async(data: any)=>{},
   signUp:async(data:any)=>{},
-  signOut: async ()=> {},
-  sendPasswordResetEmail: async ()=>{},
+  // signOut: async ()=> {},
+  // sendPasswordResetEmail: async ()=>{},
   setAuthUser: async (arg:any)=> {},
   getAllBoards:async()=>{},
   getAllCurrentBoardTasks:async (data:string | string[] | undefined) => {},
@@ -18,7 +18,7 @@ const authUserContext = createContext({
 });
 
 export const AuthUserProvider = ({ children }: any) => {
-  const auth = useFirebaseAuth();
+  const auth = useUser();
   return (
     <authUserContext.Provider value={auth}>{children}</authUserContext.Provider>
 );

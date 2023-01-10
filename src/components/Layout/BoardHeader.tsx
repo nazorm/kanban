@@ -8,7 +8,7 @@ import moreIcon from '../../assets/icons/more-icon.svg';
 import { customMedia } from 'styles/breakpoints';
 import { useRouter } from "next/router";
 import { StyleConstants } from 'styles/StylesConstants';
-import { useAuth } from 'src/firebase/context';;
+import { useAuth } from 'src/api/context';;
 
 export const BoardHeader = () => {
     const router = useRouter();

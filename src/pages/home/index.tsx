@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { EmptyBoard } from '../board/components/EmptyBoard';
 import { SideBar } from 'src/components/Layout/Sidebar';
 import { BoardHeader } from 'src/components/Layout/BoardHeader';
-import { useAuth } from 'src/firebase/context';
+import { useAuth } from 'src/api/context';
 import { useRouter } from 'next/router';
 
 const HomePage = () => {

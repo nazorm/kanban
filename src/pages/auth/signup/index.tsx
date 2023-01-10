@@ -12,7 +12,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import eyeOpenIcon from 'src/assets/icons/open-eye-grey.svg';
 import eyeClosedIcon from 'src/assets/icons/eye-slash.svg';
 import Image from 'next/image';
-import { useAuth } from 'src/firebase/context';
+import { useAuth } from 'src/api/context';
 interface ISignUpScreenProps {
     uid?: string,
     fullName: string,

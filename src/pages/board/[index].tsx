@@ -5,7 +5,7 @@ import { BoardHeader } from '../../components/Layout/BoardHeader';
 import { SideBar } from 'src/components/Layout/Sidebar';
 import { EmptyBoard } from './components/EmptyBoard';
 import { ActiveBoard } from './components/ActiveBoard';
-import { useAuth } from 'src/firebase/context';
+import { useAuth } from 'src/api/context';
 import { useRouter } from 'next/router';
 
 
