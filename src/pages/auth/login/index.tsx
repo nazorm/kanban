@@ -12,8 +12,8 @@ import eyeOpenIcon from 'src/assets/icons/open-eye-grey.svg';
 import eyeClosedIcon from 'src/assets/icons/eye-slash.svg';
 import Image from 'next/image';
 import { Form, Right, Left, SignInBtn } from "../signup";
-import firebase from 'src/firebase/firebaseConfig';
-import {useAuth} from 'src/firebase/context';
+import firebase from 'src/api/firebaseConfig';
+import {useAuth} from 'src/api/context';
 interface ILoginScreenProps {
     email: string;
     password: string;

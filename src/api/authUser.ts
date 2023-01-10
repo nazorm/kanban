@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
-import firebase from "./firebaseConfig";
 import "firebase/compat/firestore";
-import { UserBoard } from "./board";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { NewBoard, Tasks } from "./types";
@@ -15,7 +13,7 @@ interface IAuthUser {
   fullName?: string;
 }
 
-export default function useFirebaseAuth() {
+export default function useUser() {
   const router = useRouter();
   const [authUser, setAuthUser] = useState<IAuthUser | null>(null);
   const [loading, setLoading] = useState(true);
@@ -168,20 +166,20 @@ const createBoard = async (data:NewBoard)=>{
       });
   };
 
-  const signOut = () => {
-    return firebase.auth().signOut().then(clear);
-  };
-  const sendPasswordResetEmail = (email: string) => {
-    return firebase.auth().sendPasswordResetEmail(email);
-  };
+  // const signOut = () => {
+  //   return firebase.auth().signOut().then(clear);
+  // };
+  // const sendPasswordResetEmail = (email: string) => {
+  //   return firebase.auth().sendPasswordResetEmail(email);
+  // };
 
   return {
     authUser,
     loading,
     signIn,
     signUp,
-    signOut,
-    sendPasswordResetEmail,
+    // signOut,
+    // sendPasswordResetEmail,
     getAllBoards,
     getAllCurrentBoardTasks,
     createBoard,

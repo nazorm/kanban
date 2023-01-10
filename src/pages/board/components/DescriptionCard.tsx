@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import moreIcon from '../../../assets/icons/more-icon.svg';
 import Image from 'next/image';
 import { StyleConstants } from 'styles/StylesConstants';
-import { Subtasks } from 'src/firebase/types';
+import { Subtasks } from 'src/api/types';
 
 
 export interface ICardDescriptionProps {

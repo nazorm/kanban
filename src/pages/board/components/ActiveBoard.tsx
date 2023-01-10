@@ -11,7 +11,7 @@ import { IActiveBoardProps, IActiveBoardSubTaskProps, TaskCard } from 'src/compo
 import { TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Card } from '@mui/material';
 import { DescriptionCard } from './DescriptionCard';
 import { AddEditCard } from './AddEditCard';
-import { useAuth } from 'src/firebase/context';
+import { useAuth } from 'src/api/context';
 import { useRouter } from 'next/router';
 
 

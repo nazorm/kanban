@@ -10,9 +10,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 import { ErrorText } from 'src/components/Form/TextInput';
 import CheckIcon from '@mui/icons-material/Check';
-import { useAuth } from 'src/firebase/context';
+import { useAuth } from 'src/api/context';
 import { useRouter } from 'next/router';
-import { Subtasks } from 'src/firebase/types';
+import { Subtasks } from 'src/api/types';
 
 export interface IEditCardProps {
     title: string,

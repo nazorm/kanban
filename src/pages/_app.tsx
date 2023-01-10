@@ -1,7 +1,7 @@
 import 'styles/globals.css'
 import type { AppProps } from 'next/app'
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
-import {AuthUserProvider} from 'src/firebase/context';
+import {AuthUserProvider} from 'src/api/context';
 
 
 const GlobalStyle = createGlobalStyle`

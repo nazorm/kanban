@@ -8,7 +8,6 @@ import { AddEditBoard, AddEditCard } from './AddEditCard';
 
 
 
-
 export const EmptyBoard = ({param}) => {
     const [isViewTaskModalOpen, setIsViewTaskModalOpen] = useState(false);
 
