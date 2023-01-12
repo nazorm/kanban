@@ -8,7 +8,8 @@ import { AddEditBoard, AddEditCard } from './AddEditCard';
 
 
 
-export const EmptyBoard = ({param}) => {
+export const EmptyBoard = (props: { param: any; }) => {
+    const {param} = props
     const [isViewTaskModalOpen, setIsViewTaskModalOpen] = useState(false);
 
     const addNewColumn = () => {
@@ -26,7 +27,7 @@ export const EmptyBoard = ({param}) => {
                 <PrimaryButton content={param === 'task' ? '+ Add Task' : '+ Add New Board'} primaryBtnAction={addNewColumn} />
             </Card>
             <Dialog open={isViewTaskModalOpen} onClose={handleViewTaskModal}>
-                {param === 'task' ? <AddEditCard /> : <AddEditBoard/>}
+                {param === 'task' ? <AddEditCard  /> : <AddEditBoard boardParam = 'new'/>}
 
             </Dialog>
         </Wrapper>
