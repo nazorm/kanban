@@ -7,11 +7,10 @@ import Image from 'next/image';
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-
+import { useRouter } from "next/router";
 import { ErrorText } from 'src/components/Form/TextInput';
 import CheckIcon from '@mui/icons-material/Check';
 import { useAuth } from 'src/api/context';
-import { useRouter } from 'next/router';
 import { Subtasks } from 'src/api/types';
 
 export interface IEditCardProps {
@@ -29,25 +28,80 @@ const schema = yup.object().shape({
 const boardSchema = yup.object().shape({
     name: yup.string().required(),
 })
+const collaboratorSchema = yup.object().shape({
+    collaboratorEmail: yup.string().required(),
+})
 export interface INewBoardProps {
     name: string
 }
 
-export const AddEditBoard = () => {
-    const { register, control, handleSubmit, formState: { errors }, reset } = useForm<INewBoardProps>({
-        resolver: yupResolver(boardSchema)
+export interface ICollaboratorProps {
+    collaboratorEmail: string;
+}
+
+export const AddCollaboratorCard = () => {
+    const router = useRouter();
+    const boardId = router.query.boardId
+    const { addCollaborator } = useAuth();
+    const { register, control, handleSubmit, formState: { errors }, reset } = useForm<ICollaboratorProps>({
+        resolver: yupResolver(collaboratorSchema)
     })
-    const { createBoard, authUser } = useAuth();
-    const onSubmit: SubmitHandler<INewBoardProps> = data => {
-        createBoard(data);
+
+
+    const onSubmit: SubmitHandler<ICollaboratorProps> = (data) => {
+        const collaborationData = {
+            email: data.collaboratorEmail,
+            boardId: boardId
+        }
+        addCollaborator(collaborationData)
     }
     return (
         <Box>
             <h3>
-                create your board
+                Add Collaborator
+
             </h3>
             <form onSubmit={handleSubmit(onSubmit)}>
-            <label className='new-task-label'>Name</label>
+                <label className='new-task-label'>Collaborator Email</label>
+                <input type='text' placeholder='jahn@gmail.com' className='task-input' {...register("collaboratorEmail")} />
+                <ErrorSpan>
+                    {errors?.collaboratorEmail?.message}
+                </ErrorSpan>
+                <SubmitBtn style={{ width: '100%', marginTop: '20px', marginBottom: '20px', padding: '10px' }}> Submit </SubmitBtn>
+
+            </form>
+        </Box>
+    )
+}
+
+export const AddEditBoard = (props: { boardParam: any; }) => {
+    const router = useRouter();
+    const boardId = router.query.boardId
+    const { boardParam } = props
+    const { register, control, handleSubmit, formState: { errors }, reset } = useForm<INewBoardProps>({
+        resolver: yupResolver(boardSchema)
+    })
+    const { createBoard, authUser, updateBoard } = useAuth();
+    const onSubmit: SubmitHandler<INewBoardProps> = data => {
+        if (boardParam === 'new') {
+            createBoard(data);
+        } else {
+            const updateData = {
+                name: data.name,
+            }
+
+            updateBoard({ boardId, updateData })
+        }
+    }
+
+    return (
+        <Box>
+            <h3>
+                {boardParam === 'new' ? 'Create board' : 'Update board'}
+
+            </h3>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <label className='new-task-label'>Name</label>
                 <input type='text' placeholder='e.g Work' className='task-input' {...register("name")} />
                 <ErrorSpan>
                     {errors?.name?.message}
