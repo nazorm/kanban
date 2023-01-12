@@ -14,7 +14,9 @@ const authUserContext = createContext({
   getAllCurrentBoardTasks:async (data:string | string[] | undefined) => {},
   createTask:async (data:any) => {},
   createBoard: async (data:NewBoard) => {},
-
+  deleteBoard: async (data:string | string[] | undefined)=>{},
+  updateBoard: async (data:any)=> {},
+  addCollaborator:async (data:any) => {}
 });
 
 export const AuthUserProvider = ({ children }: any) => {

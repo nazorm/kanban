@@ -4,7 +4,6 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import { NewBoard, Tasks } from "./types";
 
-
 const BASE_URL = "https://kanban-task-api.cyclic.app";
 interface IAuthUser {
   _id?: string;
@@ -36,7 +35,7 @@ export default function useUser() {
         localStorage.setItem("kanbanUser", JSON.stringify(response.data.user));
         setAuthUser(response.data.user);
         setLoading(false);
-        router.push('/home');
+        router.push("/home");
       })
       .catch((error: any) => console.log(error));
   };
@@ -58,17 +57,17 @@ export default function useUser() {
         localStorage.setItem("kanbanUser", JSON.stringify(response.data.user));
         setAuthUser(response.data.user);
         setLoading(false);
-        router.push('/home');
+        router.push("/home");
       })
       .catch((error: any) => console.log(error));
   };
 
-  const getAllBoards = async ()=>{
+  const getAllBoards = async () => {
     const token = localStorage.getItem("kanbanJwtToken");
-    const userValue = localStorage.getItem('kanbanUser') as string;
+    const userValue = localStorage.getItem("kanbanUser") as string;
     const user = JSON.parse(userValue);
-  
-   await axios
+
+    await axios
       .get(`${BASE_URL}/board/all`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -85,54 +84,111 @@ export default function useUser() {
         setAuthUser(updatedUser);
       })
       .catch((error) => console.log(error));
-  }
+  };
 
-const getAllCurrentBoardTasks = async  (boardId:string)=>{
-  const token = localStorage.getItem("kanbanJwtToken");
-  // const userValue = localStorage.getItem('kanbanUser') as string;
-  // const user = JSON.parse(userValue);
+  const getAllCurrentBoardTasks = async (boardId: string) => {
+    const token = localStorage.getItem("kanbanJwtToken");
+    // const userValue = localStorage.getItem('kanbanUser') as string;
+    // const user = JSON.parse(userValue);
 
- await axios
-    .get(`${BASE_URL}/task/allboard-tasks/${boardId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        ContentType: "application/json",
-      },
-    })
-    .then((response) => {
-      const currentBoardTasks = response.data.data;
-      console.log("single", currentBoardTasks);
-      const updatedUser = {
-        ...authUser,
-        currentBoardTasks,
-      };
-      setAuthUser(updatedUser);
-    })
-    .catch((error) => console.log(error));
-}
+    await axios
+      .get(`${BASE_URL}/task/allboard-tasks/${boardId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          ContentType: "application/json",
+        },
+      })
+      .then((response) => {
+        const currentBoardTasks = response.data.data;
+        console.log("single", currentBoardTasks);
+        const updatedUser = {
+          ...authUser,
+          currentBoardTasks,
+        };
+        setAuthUser(updatedUser);
+      })
+      .catch((error) => console.log(error));
+  };
 
-const createBoard = async (data:NewBoard)=>{
-  const token = localStorage.getItem("kanbanJwtToken");
-  await axios.post(`${BASE_URL}/board/create`,
-  data,
-  {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      ContentType: "application/json",
-    },
-  }
-  )
-  .then((response)=> {
+  const createBoard = async (data: NewBoard) => {
+    const token = localStorage.getItem("kanbanJwtToken");
+    await axios
+      .post(`${BASE_URL}/board/create`, data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          ContentType: "application/json",
+        },
+      })
+      .then((response) => {
+        console.log("board response", response);
+        router.push(`/board/${data.name}?boardId=${response.data.data._id}`);
+      })
+      .catch((error) => console.log(error));
+  };
 
-    console.log('board response', response)
-    router.push(`/board/${data.name}?boardId=${response.data.data._id}`);
-  })
-  .catch((error)=> console.log(error));
-}
+  const deleteBoard = async (data: string) => {
+    const token = localStorage.getItem("kanbanJwtToken");
+    await axios
+      .delete(`${BASE_URL}/board/${data}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          ContentType: "application/json",
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        if (response.status === 200) {
+          router.push("/home");
+          // const newBoardList = authUser?.allBoards
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const updateBoard = async ({boardId, updateData}) => {
+    const token = localStorage.getItem("kanbanJwtToken");
+    await axios
+      .put(`${BASE_URL}/board/${boardId}`, updateData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          ContentType: "application/json",
+        },
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          console.log(response);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const addCollaborator = async (data) => {
+    const token = localStorage.getItem("kanbanJwtToken");
+    await axios
+      .post(`${BASE_URL}/board/add-collaborator`, data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          ContentType: "application/json",
+        },
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          console.log(response);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
 
   // const getSingleBoard = async (boardId: string) => {
   //   const token = localStorage.getItem("kanbanJwtToken");
-  
+
   //  await axios
   //     .get(`${BASE_URL}/board/${boardId}`, {
   //       headers: {
@@ -146,20 +202,14 @@ const createBoard = async (data:NewBoard)=>{
   //     .catch((error) => console.log(error));
   // };
 
-
-
-
   const createTask = (data: any) => {
     const token = localStorage.getItem("kanbanJwtToken");
     axios
-      .post(`${BASE_URL}/task/create-task`, 
-      data,
-      {
+      .post(`${BASE_URL}/task/create-task`, data, {
         headers: {
           Authorization: `Bearer ${token}`,
           ContentType: "application/json",
         },
-
       })
       .then((response) => {
         console.log("task response", response);
@@ -185,5 +235,8 @@ const createBoard = async (data:NewBoard)=>{
     createBoard,
     createTask,
     setAuthUser,
+    deleteBoard,
+    updateBoard,
+    addCollaborator
   };
 }
