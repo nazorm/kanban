@@ -1,7 +1,7 @@
 import 'styles/globals.css'
 import type { AppProps } from 'next/app'
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
-import {AuthUserProvider} from 'src/api/context';
+import { wrapper } from 'store/store'
 
 
 const GlobalStyle = createGlobalStyle`
@@ -19,13 +19,11 @@ const theme = {
 
 function MyApp({ Component, pageProps }: AppProps) {
   return <>
-  <AuthUserProvider>
       <GlobalStyle />
       <ThemeProvider theme={theme}>      
         <Component {...pageProps} />
       </ThemeProvider>
-      </AuthUserProvider>
   </>
 }
 
-export default MyApp
+export default wrapper.withRedux(MyApp);

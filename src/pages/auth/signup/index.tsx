@@ -13,6 +13,8 @@ import eyeOpenIcon from 'src/assets/icons/open-eye-grey.svg';
 import eyeClosedIcon from 'src/assets/icons/eye-slash.svg';
 import Image from 'next/image';
 import { useAuth } from 'src/api/context';
+import { signUp } from "../slice/call";
+import { useDispatch, useSelector } from "react-redux";
 interface ISignUpScreenProps {
     uid?: string,
     fullName: string,
@@ -31,7 +33,9 @@ const schema = yup.object().shape({
 const SignUpScreen = () => {
     const [isPasswordShown, setIsPasswordShown] = useState(false);
     const router = useRouter();
-    const {signUp} = useAuth();
+    // const {signUp} = useAuth();
+    const dispatch = useDispatch()
+    const [loading, setLoading] = useState()
     const { register, control, handleSubmit, formState: { errors }, reset } = useForm<ISignUpScreenProps>(
         {
             resolver: yupResolver(schema)
@@ -51,7 +55,7 @@ const SignUpScreen = () => {
     }
 
     const onSubmit: SubmitHandler<ISignUpScreenProps> = data => {
-        signUp(data)
+        signUp(data, router, setLoading, dispatch);
     }
 
     return (

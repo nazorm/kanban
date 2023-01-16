@@ -8,23 +8,26 @@ import moreIcon from '../../assets/icons/more-icon.svg';
 import { customMedia } from 'styles/breakpoints';
 import { useRouter } from "next/router";
 import { StyleConstants } from 'styles/StylesConstants';
-import { useAuth } from 'src/api/context';
 import { Popover } from '@mui/material';
 import { Dialog } from '@mui/material';
 import { AddCollaboratorCard, AddEditBoard, AddEditCard } from 'src/pages/board/components/AddEditCard';
+import { userSelector } from 'src/pages/auth/slice';
+import { useSelector } from 'react-redux';
+import { deleteBoard } from 'src/pages/board/slice/call';
 
 export const BoardHeader = () => {
   const router = useRouter();
-  const { authUser, loading, deleteBoard, updateBoard, addCollaborator } = useAuth();
+  const user = useSelector(userSelector);
+  // const { authUser, loading, deleteBoard, } = useAuth();
   const boardId = router.query.boardId
   const [isPopoverOpen, setIsPopoverOpen] = useState(false)
   const [isViewTaskModalOpen, setIsViewTaskModalOpen] = useState(false);
   const [activeModal, setActiveModal] = useState('')
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
-  useEffect(() => {
-    if (!loading && !authUser)
-      router.push('/auth/login')
-  }, [authUser, loading])
+  // useEffect(() => {
+  //   if (!loading && !authUser)
+  //     router.push('/auth/login')
+  // }, [authUser, loading])
 
   const handleMoreActions = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -32,14 +35,13 @@ export const BoardHeader = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  console.log('really', authUser)
 
   const handleCollaborator = () => {
     setActiveModal('collaborator')
     setIsViewTaskModalOpen(!isViewTaskModalOpen)
   }
   const handleDeleteBoard = () => {
-    deleteBoard(boardId)
+    deleteBoard(boardId, router)
   }
   const handleUpdateBoard = () => {
     setActiveModal('board-update')
@@ -67,7 +69,7 @@ export const BoardHeader = () => {
         </div>
         <nav className='nav'>
           <Link href="/home" >
-            <a className='account'>{authUser ? authUser?.fullName : 'Account'}</a>
+            <a className='account'>{user ? user?.fullName : 'Account'}</a>
           </Link>
           {router.pathname !== '/home' &&
             <MoreActions>
