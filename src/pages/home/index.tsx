@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Head from "next/head";
 import styled from 'styled-components';
 import Image from 'next/image';
@@ -9,11 +9,16 @@ import { SideBar } from 'src/components/Layout/Sidebar';
 import { BoardHeader } from 'src/components/Layout/BoardHeader';
 import { useAuth } from 'src/api/context';
 import { useRouter } from 'next/router';
+import { useDispatch, useSelector } from "react-redux";
+import { getAllBoards } from "./slice/call";
 
 const HomePage = () => {
-    const { getAllBoards } = useAuth();
+    const router = useRouter();
+    const dispatch = useDispatch();
+    const [loading, setLoading] = useState(false)
+    // const { getAllBoards } = useAuth();
     useEffect(()=>{
-        getAllBoards();
+        getAllBoards(dispatch, setLoading);
     },[])
     return (
         <Wrapper>

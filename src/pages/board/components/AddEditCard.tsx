@@ -10,9 +10,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/router";
 import { ErrorText } from 'src/components/Form/TextInput';
 import CheckIcon from '@mui/icons-material/Check';
-import { useAuth } from 'src/api/context';
 import { Subtasks } from 'src/api/types';
-
+import { createBoard, updateBoard, addCollaborator } from '../slice/call';
 export interface IEditCardProps {
     title: string,
     description: string,
@@ -42,7 +41,7 @@ export interface ICollaboratorProps {
 export const AddCollaboratorCard = () => {
     const router = useRouter();
     const boardId = router.query.boardId
-    const { addCollaborator } = useAuth();
+    // const { addCollaborator } = useAuth();
     const { register, control, handleSubmit, formState: { errors }, reset } = useForm<ICollaboratorProps>({
         resolver: yupResolver(collaboratorSchema)
     })
@@ -81,16 +80,15 @@ export const AddEditBoard = (props: { boardParam: any; }) => {
     const { register, control, handleSubmit, formState: { errors }, reset } = useForm<INewBoardProps>({
         resolver: yupResolver(boardSchema)
     })
-    const { createBoard, authUser, updateBoard } = useAuth();
     const onSubmit: SubmitHandler<INewBoardProps> = data => {
         if (boardParam === 'new') {
-            createBoard(data);
+            createBoard(data, router);
         } else {
             const updateData = {
                 name: data.name,
             }
 
-            updateBoard({ boardId, updateData })
+            updateBoard( boardId, updateData )
         }
     }
 
@@ -120,7 +118,6 @@ export const AddEditCard = () => {
     const { register, control, handleSubmit, formState: { errors }, reset } = useForm<IEditCardProps>({
         resolver: yupResolver(schema)
     })
-    const { createTask, authUser } = useAuth();
     const router = useRouter();
     const boardId = router.query.boardId
 
@@ -156,7 +153,7 @@ export const AddEditCard = () => {
             boardId: boardId
         }
         console.log('sending task', newCardData)
-        createTask(newCardData);
+        // createTask(newCardData);
     }
     return (
         <Box>

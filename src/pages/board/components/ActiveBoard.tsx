@@ -11,12 +11,10 @@ import { IActiveBoardProps, IActiveBoardSubTaskProps, TaskCard } from 'src/compo
 import { TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Card } from '@mui/material';
 import { DescriptionCard } from './DescriptionCard';
 import { AddEditCard } from './AddEditCard';
-import { useAuth } from 'src/api/context';
 import { useRouter } from 'next/router';
 
 
 export const ActiveBoard = () => {
-    const { authUser, loading } = useAuth();
     const [isViewTaskModalOpen, setIsViewTaskModalOpen] = useState(false);
     const [taskDescriptionData, setTaskDescriptionData] = useState<any>();
     const [isDragging, setIsDragging] = useState(false)
@@ -28,10 +26,10 @@ export const ActiveBoard = () => {
 
     const router = useRouter();
    
-    useEffect(() => {
-        if (!loading && !authUser)
-          router.push('/auth/login')
-      }, [authUser, loading])
+    // useEffect(() => {
+    //     if (!loading && !authUser)
+    //       router.push('/auth/login')
+    //   }, [authUser, loading])
 
     const handleViewTaskModal = (boardId: number | string, cardId: number | string) => {
         console.log('clicked')

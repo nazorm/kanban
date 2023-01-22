@@ -12,7 +12,9 @@ import closeEyeIcon from '../../assets/icons/eye-slash.svg';
 import openEyeIcon from '../../assets/icons/open-eye.svg';
 import lightIcon from '../../assets/icons/light-icon.svg';
 import darkIcon from '../../assets/icons/dark-icon.svg';
-import { useAuth } from 'src/api/context';
+import { useDispatch, useSelector} from 'react-redux';
+import { getAllBoards } from 'src/pages/home/slice/call';
+import { userBoardSelector } from 'src/pages/home/slice';
 interface ISideBarLinkProps {
     route: string;
     icon: any;
@@ -56,11 +58,13 @@ export const SideBarIcon = (props: ISideBarLinkProps) => {
 export const SideBar = () => {
     const [isDarkTheme, setIsDarkTheme] = useState(true);
     const [isEyeOpen, setIsEyeOpen] = useState(false);
-    const {authUser, loading, getAllBoards } = useAuth();
+    const [loading, setLoading] = useState(false);
+    const dispatch= useDispatch();
     const router = useRouter();
-    useEffect(() => {
-        getAllBoards();
-    }, [])
+const allBoards = useSelector(userBoardSelector);
+    useEffect(()=>{
+        getAllBoards(dispatch, setLoading);
+    },[])
 
     const handleChange = () => {
         setIsDarkTheme(!isDarkTheme);
@@ -84,7 +88,7 @@ export const SideBar = () => {
                         route={'/home'}
                         icon={boardIcon}
                     />
-                    {authUser?.allBoards.map((item: any) => {
+                    {allBoards?.map((item: any) => {
                         return (
                             <SideBarIcon
                                 key={item._id}
@@ -104,7 +108,7 @@ export const SideBar = () => {
                         title={'Home'}
                         icon={boardIcon}
                     />
-                    {authUser?.allBoards?.map((item: any) => {
+                    {allBoards?.map((item: any) => {
                         return (
                             <SideBarLink
                                 key={item._id}

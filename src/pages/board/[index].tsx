@@ -5,23 +5,35 @@ import { BoardHeader } from '../../components/Layout/BoardHeader';
 import { SideBar } from 'src/components/Layout/Sidebar';
 import { EmptyBoard } from './components/EmptyBoard';
 import { ActiveBoard } from './components/ActiveBoard';
-import { useAuth } from 'src/api/context';
 import { useRouter } from 'next/router';
-
+import { getAllCurrentBoardTasks } from './slice/call';
+import { useDispatch, useSelector } from 'react-redux';
+import { currentBoardSelector } from './slice';
+import { authStateSelector } from '../auth/slice';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const Board = () => {
-    const { authUser, loading, getAllCurrentBoardTasks } = useAuth();
     const [isViewTaskModalOpen, setIsViewTaskModalOpen] = useState(false);
+    const [loading, setLoading] = useState('false')
     const router = useRouter();
+    const dispatch= useDispatch();
+    const currentBoardList = useSelector(currentBoardSelector)
+    const userAuthState = useSelector(authStateSelector);
     const boardId = router.query.boardId
+
     useEffect(() => {
-        if (!loading && !authUser)
+        if (!loading && !userAuthState)
             router.push('/auth/login')
-    }, [authUser, loading])
+    }, [userAuthState, loading])
+
     useEffect(() => {
-        getAllCurrentBoardTasks(boardId)
+        getAllCurrentBoardTasks(boardId, dispatch, setLoading)
     }, [boardId])
 
+    if (loading) {
+        return <CircularProgress color="inherit" />
+    }
+    
     return (
         <>
             <BoardHeader />
@@ -33,7 +45,7 @@ const Board = () => {
                 </Head>
                 <Container>
                     <SideBar />
-                    {authUser?.currentBoardTasks?.length === 0 ? <EmptyBoard param='task' /> : <ActiveBoard />}
+                    {currentBoardList?.length === 0 ? <EmptyBoard param='task' /> : <ActiveBoard />}
 
                 </Container>
 

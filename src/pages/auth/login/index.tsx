@@ -12,8 +12,10 @@ import eyeOpenIcon from 'src/assets/icons/open-eye-grey.svg';
 import eyeClosedIcon from 'src/assets/icons/eye-slash.svg';
 import Image from 'next/image';
 import { Form, Right, Left, SignInBtn } from "../signup";
-import firebase from 'src/api/firebaseConfig';
-import {useAuth} from 'src/api/context';
+import { signIn } from "../slice/call";
+import { useDispatch, useSelector } from "react-redux";
+import CircularProgress from '@mui/material/CircularProgress';
+
 interface ILoginScreenProps {
     email: string;
     password: string;
@@ -28,13 +30,15 @@ const schema = yup.object().shape({
 })
 
 const LoginScreen = () => {
+    const router = useRouter();
+    const dispatch = useDispatch()
+    const [loading, setLoading] = useState()
     const [isPasswordShown, setIsPasswordShown] = useState(false);
     const { register, control, handleSubmit, formState: { errors }, getValues, reset } = useForm<ILoginScreenProps>({
         resolver: yupResolver(schema)
     })
     const [formValidation, setFormValidation] = useState(false);
-    const router = useRouter();
-   const {signIn} = useAuth();
+
 
     const showPassword = () => {
         setIsPasswordShown(!isPasswordShown);
@@ -47,11 +51,16 @@ const LoginScreen = () => {
             return <Image src={eyeClosedIcon} alt='closed eyelid' onClick={showPassword} />
         }
     }
- 
+
 
     const onSubmit: SubmitHandler<ILoginScreenProps> = data => {
-        signIn(data)
+        signIn(data, router, setLoading, dispatch)
     }
+    
+    if (loading) {
+        return <CircularProgress color="inherit" />
+    }
+
     return (
         <Container>
             <Head>
