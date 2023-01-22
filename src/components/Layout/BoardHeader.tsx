@@ -17,18 +17,15 @@ import { deleteBoard } from 'src/pages/board/slice/call';
 
 export const BoardHeader = () => {
   const router = useRouter();
-  const user = useSelector(userSelector);
-  // const { authUser, loading, deleteBoard, } = useAuth();
+  // const user = useSelector(userSelector);
   const boardId = router.query.boardId
   const [isPopoverOpen, setIsPopoverOpen] = useState(false)
   const [isViewTaskModalOpen, setIsViewTaskModalOpen] = useState(false);
   const [activeModal, setActiveModal] = useState('')
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
-  // useEffect(() => {
-  //   if (!loading && !authUser)
-  //     router.push('/auth/login')
-  // }, [authUser, loading])
 
+  const userValue = localStorage.getItem("kanbanUser") as string;
+  const user = JSON.parse(userValue);
   const handleMoreActions = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -67,7 +64,7 @@ export const BoardHeader = () => {
           </Link>
           <p className='page'>{router.pathname}</p>
         </div>
-        <nav className='nav'>
+        <div className='nav'>
           <Link href="/home" >
             <a className='account'>{user ? user?.fullName : 'Account'}</a>
           </Link>
@@ -98,7 +95,7 @@ export const BoardHeader = () => {
             </MoreActions>}
 
 
-        </nav>
+        </div>
 
       </Header>
       <Dialog open={isViewTaskModalOpen} onClose={handleViewTaskModal}>
@@ -152,12 +149,14 @@ const Header = styled.div`
     font-weight: 700;
     font-size: 15px;
     line-height: 19px;
+    border: 1px solid green;
     ${customMedia.lessThan("medium")`
          font-size: 12px;
   `};
   }
   .nav{
-    width: 100px;
+    border: 1px solid green;
+    width: 150px;
     display: flex:
     justify-content: space-between;
     align-items: center;
@@ -166,6 +165,8 @@ const Header = styled.div`
 const MoreButton = styled.button`
   background: transparent;
   border: transparent;
+  border: 1px solid green;
+  display: inline;
 `;
 const PopoverButton = styled.button`
  display: block;
@@ -177,4 +178,5 @@ const PopoverButton = styled.button`
   }
 `;
 const MoreActions = styled.div`
+   display: inline;
 `;

@@ -12,10 +12,10 @@ import eyeOpenIcon from 'src/assets/icons/open-eye-grey.svg';
 import eyeClosedIcon from 'src/assets/icons/eye-slash.svg';
 import Image from 'next/image';
 import { Form, Right, Left, SignInBtn } from "../signup";
-import {useAuth} from 'src/api/context';
 import { signIn } from "../slice/call";
 import { useDispatch, useSelector } from "react-redux";
-import { authStateSelector, setAuthState } from "../slice";
+import CircularProgress from '@mui/material/CircularProgress';
+
 interface ILoginScreenProps {
     email: string;
     password: string;
@@ -51,11 +51,16 @@ const LoginScreen = () => {
             return <Image src={eyeClosedIcon} alt='closed eyelid' onClick={showPassword} />
         }
     }
- 
+
 
     const onSubmit: SubmitHandler<ILoginScreenProps> = data => {
         signIn(data, router, setLoading, dispatch)
     }
+    
+    if (loading) {
+        return <CircularProgress color="inherit" />
+    }
+
     return (
         <Container>
             <Head>
