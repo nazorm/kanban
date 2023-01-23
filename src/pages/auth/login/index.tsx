@@ -29,12 +29,12 @@ const schema = yup.object().shape({
         'Password must include letters, numbers, characters and uppercase'),
 })
 
-const LoginScreen = () => {
+   const LoginScreen = () => {
     const router = useRouter();
     const dispatch = useDispatch()
     const [loading, setLoading] = useState()
     const [isPasswordShown, setIsPasswordShown] = useState(false);
-    const { register, control, handleSubmit, formState: { errors }, getValues, reset } = useForm<ILoginScreenProps>({
+    const { register, control, handleSubmit, formState: { errors, isDirty }, getValues, reset } = useForm<ILoginScreenProps>({
         resolver: yupResolver(schema)
     })
     const [formValidation, setFormValidation] = useState(false);
@@ -97,7 +97,7 @@ const LoginScreen = () => {
                             renderPasswordIcon={renderPasswordIcon}
                         />}
                     />
-                    <LoginBtn >→</LoginBtn>
+                    <LoginBtn disabled={!isDirty} >→</LoginBtn>
                 </LoginForm>
                 <span className="notice">Don&apos;t have an account? <Link href={'/auth/signup'}>Sign Up</Link></span>
             </LoginLeft>

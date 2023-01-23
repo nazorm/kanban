@@ -3,7 +3,6 @@ import type { AppProps } from 'next/app'
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
 import { wrapper } from 'store/store'
 
-
 const GlobalStyle = createGlobalStyle`
   body {
     margin: 0;

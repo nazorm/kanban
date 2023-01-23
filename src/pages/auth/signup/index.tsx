@@ -12,7 +12,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import eyeOpenIcon from 'src/assets/icons/open-eye-grey.svg';
 import eyeClosedIcon from 'src/assets/icons/eye-slash.svg';
 import Image from 'next/image';
-import { useAuth } from 'src/api/context';
 import { signUp } from "../slice/call";
 import { useDispatch, useSelector } from "react-redux";
 interface ISignUpScreenProps {
@@ -36,7 +35,7 @@ const SignUpScreen = () => {
     // const {signUp} = useAuth();
     const dispatch = useDispatch()
     const [loading, setLoading] = useState()
-    const { register, control, handleSubmit, formState: { errors }, reset } = useForm<ISignUpScreenProps>(
+    const { register, control, handleSubmit, formState: { errors, isDirty }, reset } = useForm<ISignUpScreenProps>(
         {
             resolver: yupResolver(schema)
         });
@@ -105,7 +104,7 @@ const SignUpScreen = () => {
                             renderPasswordIcon={renderPasswordIcon}
                         />}
                     />
-                    <SignInBtn>→</SignInBtn>
+                    <SignInBtn disabled={!isDirty}>→</SignInBtn>
                 </Form>
                 <span className="notice">Already have an account? <Link href={'/auth/login'} style={{ color: '#8471F2' }}>Sign In</Link></span>
             </Left>

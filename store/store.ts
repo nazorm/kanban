@@ -24,3 +24,5 @@ export type AppThunk<ReturnType = void> = ThunkAction<
 >;
 
 export const wrapper = createWrapper<AppStore>(makeStore);
+
+// const store = createStore(rootReducer);
