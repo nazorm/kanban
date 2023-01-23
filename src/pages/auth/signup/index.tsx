@@ -14,6 +14,8 @@ import eyeClosedIcon from 'src/assets/icons/eye-slash.svg';
 import Image from 'next/image';
 import { signUp } from "../slice/call";
 import { useDispatch, useSelector } from "react-redux";
+import { Loader } from "src/components/Loader";
+
 interface ISignUpScreenProps {
     uid?: string,
     fullName: string,
@@ -55,6 +57,10 @@ const SignUpScreen = () => {
 
     const onSubmit: SubmitHandler<ISignUpScreenProps> = data => {
         signUp(data, router, setLoading, dispatch);
+    }
+
+    if (loading) {
+        return <Loader/>
     }
 
     return (

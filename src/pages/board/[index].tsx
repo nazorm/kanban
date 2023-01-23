@@ -10,7 +10,7 @@ import { getAllCurrentBoardTasks } from './slice/call';
 import { useDispatch, useSelector } from 'react-redux';
 import { currentBoardSelector } from './slice';
 import { authStateSelector } from '../auth/slice';
-import CircularProgress from '@mui/material/CircularProgress';
+import { Loader } from "src/components/Loader";
 
 const Board = () => {
     const [isViewTaskModalOpen, setIsViewTaskModalOpen] = useState(false);
@@ -31,7 +31,7 @@ const Board = () => {
     }, [boardId])
 
     if (loading) {
-        return <CircularProgress color="inherit" />
+        return <Loader/>
     }
     
     return (

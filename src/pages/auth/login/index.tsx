@@ -14,8 +14,8 @@ import Image from 'next/image';
 import { Form, Right, Left, SignInBtn } from "../signup";
 import { signIn } from "../slice/call";
 import { useDispatch, useSelector } from "react-redux";
-import CircularProgress from '@mui/material/CircularProgress';
 
+import { Loader } from "src/components/Loader";
 interface ILoginScreenProps {
     email: string;
     password: string;
@@ -29,7 +29,7 @@ const schema = yup.object().shape({
         'Password must include letters, numbers, characters and uppercase'),
 })
 
-   const LoginScreen = () => {
+const LoginScreen = () => {
     const router = useRouter();
     const dispatch = useDispatch()
     const [loading, setLoading] = useState()
@@ -56,9 +56,9 @@ const schema = yup.object().shape({
     const onSubmit: SubmitHandler<ILoginScreenProps> = data => {
         signIn(data, router, setLoading, dispatch)
     }
-    
+
     if (loading) {
-        return <CircularProgress color="inherit" />
+        return <Loader/>
     }
 
     return (

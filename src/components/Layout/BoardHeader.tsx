@@ -62,11 +62,12 @@ export const BoardHeader = () => {
           <Link href="/home">
             <Image src={logo} alt='logo' className='logo' height={30} />
           </Link>
+          {/* <p className='page'>{router.pathname === '/home' ? router.pathname : router.asPath}</p> */}
           <p className='page'>{router.pathname}</p>
         </div>
         <div className='nav'>
           <Link href="/home" >
-            <a className='account'>{user ? user?.fullName : 'Account'}</a>
+            <a className='account'>{user ? user?.fullName : 'Account'} </a>
           </Link>
           {router.pathname !== '/home' &&
             <MoreActions>
@@ -92,9 +93,8 @@ export const BoardHeader = () => {
                   Delete Board
                 </PopoverButton>
               </Popover>
-            </MoreActions>}
-
-
+            </MoreActions>
+          }
         </div>
 
       </Header>
@@ -149,14 +149,11 @@ const Header = styled.div`
     font-weight: 700;
     font-size: 15px;
     line-height: 19px;
-    border: 1px solid green;
     ${customMedia.lessThan("medium")`
          font-size: 12px;
   `};
   }
   .nav{
-    border: 1px solid green;
-    width: 150px;
     display: flex:
     justify-content: space-between;
     align-items: center;
@@ -165,7 +162,6 @@ const Header = styled.div`
 const MoreButton = styled.button`
   background: transparent;
   border: transparent;
-  border: 1px solid green;
   display: inline;
 `;
 const PopoverButton = styled.button`
