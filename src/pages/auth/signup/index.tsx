@@ -5,7 +5,7 @@ import { StyleConstants } from 'styles/StylesConstants';
 import Head from "next/head";
 import Link from 'next/link';
 import { useRouter } from "next/router";
-import TextInput from '../../../components/Form/TextInput';
+import TextInput from '@components/Form/TextInput';
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -13,7 +13,7 @@ import eyeOpenIcon from 'src/assets/icons/open-eye-grey.svg';
 import eyeClosedIcon from 'src/assets/icons/eye-slash.svg';
 import Image from 'next/image';
 import { signUp } from "../slice/call";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Loader } from "src/components/Loader";
 
 interface ISignUpScreenProps {
@@ -147,7 +147,9 @@ export const SignInBtn = styled(PrimaryBtn)`
     border-radius: 8px;
     margin: 30px 0;
     padding: 10px;
-    
+    &[disabled]{
+     opacity: 0.5; 
+    }
 `;
 export const Form = styled.form`
     display: flex;

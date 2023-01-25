@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import SignUpScreen from '../../../../src/pages/auth/signup';
+import SignUpScreen from 'src/pages/auth/signup';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 
