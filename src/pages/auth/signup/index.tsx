@@ -5,7 +5,7 @@ import { StyleConstants } from 'styles/StylesConstants';
 import Head from "next/head";
 import Link from 'next/link';
 import { useRouter } from "next/router";
-import TextInput from '@components/Form/TextInput';
+import TextInput from 'src/components/Form/TextInput';
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";

@@ -16,59 +16,27 @@ describe('signup page', () => {
                 <SignUpScreen />
             </Provider>
         );
+        const inputEL = screen.getByPlaceholderText(/John Doe/i)
+        expect(inputEL).toBeInTheDocument();
+
+        const emailInputEl = screen.getByLabelText(/Email/i);
+        expect(emailInputEl).toBeInTheDocument();
+
+        const passWordInputEl = screen.getByPlaceholderText(/password/i);
+        expect(passWordInputEl).toBeInTheDocument();
+
+
         const signInBtn = screen.getByRole('button');
         const buttonText = '→';
         expect(signInBtn).toHaveTextContent(buttonText);
-    });
 
-    it('should initially be disabled', () => {
-        render(
-            <Provider store={store}>
-                <SignUpScreen />
-            </Provider>
-        );
         const buttonElement = screen.getByRole('button');
         expect(buttonElement).toBeDisabled();
-    })
-    it('should include username input field', ()=>{
-        render(
-            <Provider store={store}>
-            <SignUpScreen />
-        </Provider>
-        )
-        const inputEL = screen.getByPlaceholderText(/John Doe/i)
-        expect(inputEL).toBeInTheDocument()
-    });
-    it ('should include email input field', ()=>{
-        render(
-            <Provider store={store}>
-            <SignUpScreen />
-        </Provider>
-        )
-        const inputEl = screen.getByLabelText(/Email/i);
-        expect(inputEl).toBeInTheDocument();
-    })
-     
-    it('should include password input feild', ()=>{
-        render(
-            <Provider store={store}>
-            <SignUpScreen />
-        </Provider>
-        )
-        const inputEl = screen.getByPlaceholderText(/password/i);
-        expect(inputEl).toBeInTheDocument();
-    })
 
-    it('should be enabled after input values', ()=>{
-        render(
-            <Provider store={store}>
-            <SignUpScreen />
-        </Provider>
-        )
         fireEvent.change(screen.getByPlaceholderText(/John Doe/i), {target:{value:'John'}});
         fireEvent.change(screen.getByLabelText(/Email/i), {target:{value: 'john'}});
         fireEvent.change(screen.getByPlaceholderText(/password/i), {target:{value:'T'}});
         expect(screen.getByRole('button')).toBeEnabled();
-    })
+    });
 
 })
