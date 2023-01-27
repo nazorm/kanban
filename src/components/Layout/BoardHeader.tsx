@@ -14,6 +14,7 @@ import { AddCollaboratorCard, AddEditBoard, AddEditCard } from 'src/pages/board/
 import { userSelector } from 'src/pages/auth/slice';
 import { useSelector } from 'react-redux';
 import { deleteBoard } from 'src/pages/board/slice/call';
+import { Loader } from "src/components/Loader";
 
 export const BoardHeader = () => {
   const router = useRouter();
@@ -23,7 +24,7 @@ export const BoardHeader = () => {
   const [isViewTaskModalOpen, setIsViewTaskModalOpen] = useState(false);
   const [activeModal, setActiveModal] = useState('')
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
-
+const [loading, setLoading] = useState(false);
   const userValue = localStorage.getItem("kanbanUser") as string;
   const user = JSON.parse(userValue);
   const handleMoreActions = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -38,7 +39,7 @@ export const BoardHeader = () => {
     setIsViewTaskModalOpen(!isViewTaskModalOpen)
   }
   const handleDeleteBoard = () => {
-    deleteBoard(boardId, router)
+    deleteBoard(boardId, router, setLoading)
   }
   const handleUpdateBoard = () => {
     setActiveModal('board-update')
@@ -49,7 +50,9 @@ export const BoardHeader = () => {
   const handleViewTaskModal = () => {
     setIsViewTaskModalOpen(!isViewTaskModalOpen)
   }
-
+if(loading){
+  <Loader/>
+}
   return (
     <Wrapper>
       <Head>
@@ -99,7 +102,7 @@ export const BoardHeader = () => {
 
       </Header>
       <Dialog open={isViewTaskModalOpen} onClose={handleViewTaskModal}>
-        {activeModal === 'collaborator' ? <AddCollaboratorCard /> : <AddEditBoard boardParam='edit' />}
+        {activeModal === 'collaborator' ? <AddCollaboratorCard /> : <AddEditBoard boardParam='edit' setIsViewTaskModalOpen={setIsViewTaskModalOpen} isViewTaskModalOpen={isViewTaskModalOpen} />}
 
       </Dialog>
     </Wrapper>

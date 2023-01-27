@@ -2,7 +2,7 @@ import { NextRouter, useRouter } from "next/router";
 import axios from "axios";
 import { getCurrentBoard } from "../slice";
 import { Dispatch, AnyAction } from "@reduxjs/toolkit";
-import { SetStateAction } from "react";
+// import { Dispatch, SetStateAction } from "react";
 import { NewBoard } from "src/api/types";
 const BASE_URL = "https://kanban-task-api.cyclic.app";
 
@@ -28,12 +28,16 @@ export const getAllCurrentBoardTasks = async (
         dispatch(getCurrentBoard(response.data.data));
       }
     })
-    .catch((error) => console.log(error));
+    .catch((error) => {
+      setLoading(false)
+      console.log(error)
+    });
 };
 
 
-export const createBoard = async (data: NewBoard, router: string[] | NextRouter) => {
+export const createBoard = async (data: NewBoard, router: string[] | NextRouter, setLoading: any) => {
     const token = localStorage.getItem("kanbanJwtToken");
+    setLoading(true)
     await axios
       .post(`${BASE_URL}/board/create`, data, {
         headers: {
@@ -42,14 +46,22 @@ export const createBoard = async (data: NewBoard, router: string[] | NextRouter)
         },
       })
       .then((response) => {
-        console.log("board response", response);
-        router.push(`/board/${data.name}?boardId=${response.data.data._id}`);
+        if(response.status === 200){
+          setLoading(false);
+          console.log("board response", response);
+          router.push(`/board/${data.name}?boardId=${response.data.data._id}`);
+        }
+
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        setLoading(false)
+        console.log(error)
+      });
   };
 
-  export const updateBoard = async (boardId: string | string[] | undefined, updateData: { name: string; }) => {
+  export const updateBoard = async (boardId: string | string[] | undefined, updateData: { name: string; }, setLoading: any) => {
     const token = localStorage.getItem("kanbanJwtToken");
+    setLoading(true);
     await axios
       .put(`${BASE_URL}/board/${boardId}`, updateData, {
         headers: {
@@ -59,16 +71,19 @@ export const createBoard = async (data: NewBoard, router: string[] | NextRouter)
       })
       .then((response) => {
         if (response.status === 200) {
+          setLoading(false);
           console.log(response);
         }
       })
       .catch((error) => {
-        console.log(error);
+        setLoading(false);
+        console.log(error)
       });
   };
 
-  export const addCollaborator = async (data: { email: string; boardId: string | string[] | undefined; }) => {
+  export const addCollaborator = async (data: { email: string; boardId: string | string[] | undefined; }, setLoading: any) => {
     const token = localStorage.getItem("kanbanJwtToken");
+    setLoading(true)
     await axios
       .post(`${BASE_URL}/board/add-collaborator`, data, {
         headers: {
@@ -78,16 +93,19 @@ export const createBoard = async (data: NewBoard, router: string[] | NextRouter)
       })
       .then((response) => {
         if (response.status === 200) {
+          setLoading(false)
           console.log(response);
         }
       })
       .catch((error) => {
+        setLoading(false)
         console.log(error);
       });
   };
 
-  export const deleteBoard = async (data: string | string[] | undefined, router: NextRouter | string[]) => {
+  export const deleteBoard = async (data: string | string[] | undefined, router: NextRouter | string[], setLoading: any) => {
     const token = localStorage.getItem("kanbanJwtToken");
+    setLoading(true)
     await axios
       .delete(`${BASE_URL}/board/${data}`, {
         headers: {
@@ -98,11 +116,13 @@ export const createBoard = async (data: NewBoard, router: string[] | NextRouter)
       .then((response) => {
         console.log(response);
         if (response.status === 200) {
+          setLoading(false)
           router.push("/home");
           // const newBoardList = authUser?.allBoards
         }
       })
       .catch((error) => {
+        setLoading(false)
         console.log(error);
       });
   };

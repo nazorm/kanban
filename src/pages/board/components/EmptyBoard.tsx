@@ -27,7 +27,7 @@ export const EmptyBoard = (props: { param: any; }) => {
                 <PrimaryButton content={param === 'task' ? '+ Add Task' : '+ Add New Board'} primaryBtnAction={addNewColumn} />
             </Card>
             <Dialog open={isViewTaskModalOpen} onClose={handleViewTaskModal}>
-                {param === 'task' ? <AddEditCard  /> : <AddEditBoard boardParam = 'new'/>}
+                {param === 'task' ? <AddEditCard  /> : <AddEditBoard boardParam = 'new' setIsViewTaskModalOpen={setIsViewTaskModalOpen} isViewTaskModalOpen={isViewTaskModalOpen}/>}
 
             </Dialog>
         </Wrapper>

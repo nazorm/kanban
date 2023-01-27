@@ -14,13 +14,15 @@ export const signIn = (data: { email: string; password: string }, router: any, s
         password: data.password,
       })
       .then((response) => {
-        setLoading(false)
+    
         if (response.status === 200){
+          setLoading(false)
           dispatch(setAuthState(true))
           localStorage.setItem("kanbanJwtToken", response.data.token);
           localStorage.setItem("kanbanUser", JSON.stringify(response.data.user));
           router.push("/home");
         }else{
+            setLoading(false)
             dispatch(setAuthState(false))
         }
         // setAuthUser(response.data.user);
@@ -38,8 +40,8 @@ export const signIn = (data: { email: string; password: string }, router: any, s
       email: data.email,
     })
     .then((response) => {
-        setLoading(false)
         if (response.status === 200){
+          setLoading(false)
             dispatch(setAuthState(true))
             localStorage.setItem("kanbanJwtToken", response.data.token);
             localStorage.setItem("kanbanUser", JSON.stringify(response.data.user));
@@ -47,6 +49,7 @@ export const signIn = (data: { email: string; password: string }, router: any, s
             setLoading(false);
             router.push("/home");
           }else{
+              setLoading(false)
               dispatch(setAuthState(false))
           }
     })

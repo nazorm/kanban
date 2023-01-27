@@ -12,6 +12,8 @@ import { ErrorText } from 'src/components/Form/TextInput';
 import CheckIcon from '@mui/icons-material/Check';
 import { Subtasks } from 'src/api/types';
 import { createBoard, updateBoard, addCollaborator } from '../slice/call';
+import { Loader } from "src/components/Loader";
+
 export interface IEditCardProps {
     title: string,
     description: string,
@@ -41,6 +43,7 @@ export interface ICollaboratorProps {
 export const AddCollaboratorCard = () => {
     const router = useRouter();
     const boardId = router.query.boardId
+    const [loading, setLoading] = useState(false);
     // const { addCollaborator } = useAuth();
     const { register, control, handleSubmit, formState: { errors }, reset } = useForm<ICollaboratorProps>({
         resolver: yupResolver(collaboratorSchema)
@@ -52,13 +55,17 @@ export const AddCollaboratorCard = () => {
             email: data.collaboratorEmail,
             boardId: boardId
         }
-        addCollaborator(collaborationData)
+        addCollaborator(collaborationData, setLoading)
     }
+
+    if (loading) {
+        return <Loader/>
+    }
+
     return (
         <Box>
             <h3>
                 Add Collaborator
-
             </h3>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <label className='new-task-label'>Collaborator Email</label>
@@ -73,25 +80,29 @@ export const AddCollaboratorCard = () => {
     )
 }
 
-export const AddEditBoard = (props: { boardParam: any; }) => {
+export const AddEditBoard = (props: { boardParam: any; setIsViewTaskModalOpen: any, isViewTaskModalOpen: any }) => {
     const router = useRouter();
-    const boardId = router.query.boardId
-    const { boardParam } = props
+    const boardId = router.query.boardId;
+    const { boardParam, setIsViewTaskModalOpen, isViewTaskModalOpen } = props;
+    const [loading, setLoading] = useState(false);
     const { register, control, handleSubmit, formState: { errors }, reset } = useForm<INewBoardProps>({
         resolver: yupResolver(boardSchema)
     })
     const onSubmit: SubmitHandler<INewBoardProps> = data => {
+        setIsViewTaskModalOpen(!isViewTaskModalOpen);
         if (boardParam === 'new') {
-            createBoard(data, router);
+            createBoard(data, router, setLoading);
         } else {
             const updateData = {
                 name: data.name,
             }
-
-            updateBoard( boardId, updateData )
+            updateBoard( boardId, updateData, setLoading );
+            
         }
     }
-
+    if (loading) {
+        return <Loader/>
+    }
     return (
         <Box>
             <h3>
