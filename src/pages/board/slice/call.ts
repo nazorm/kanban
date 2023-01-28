@@ -59,7 +59,7 @@ export const createBoard = async (data: NewBoard, router: string[] | NextRouter,
       });
   };
 
-  export const updateBoard = async (boardId: string | string[] | undefined, updateData: { name: string; }, setLoading: any) => {
+  export const updateBoard = async (boardId: string | string[] | undefined, updateData: { name: string; }, setLoading: any, router: string[] | NextRouter,) => {
     const token = localStorage.getItem("kanbanJwtToken");
     setLoading(true);
     await axios
@@ -71,6 +71,7 @@ export const createBoard = async (data: NewBoard, router: string[] | NextRouter,
       })
       .then((response) => {
         if (response.status === 200) {
+          router.push(`/board/${updateData.name}?boardId=${response.data.data._id}`);
           setLoading(false);
           console.log(response);
         }

@@ -102,7 +102,7 @@ if(loading){
 
       </Header>
       <Dialog open={isViewTaskModalOpen} onClose={handleViewTaskModal}>
-        {activeModal === 'collaborator' ? <AddCollaboratorCard /> : <AddEditBoard boardParam='edit' setIsViewTaskModalOpen={setIsViewTaskModalOpen} isViewTaskModalOpen={isViewTaskModalOpen} />}
+        {activeModal === 'collaborator' ? <AddCollaboratorCard setIsViewTaskModalOpen={setIsViewTaskModalOpen} isViewTaskModalOpen={isViewTaskModalOpen} /> : <AddEditBoard boardParam='edit' setIsViewTaskModalOpen={setIsViewTaskModalOpen} isViewTaskModalOpen={isViewTaskModalOpen} />}
 
       </Dialog>
     </Wrapper>

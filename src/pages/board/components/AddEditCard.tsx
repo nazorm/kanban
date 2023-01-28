@@ -40,7 +40,7 @@ export interface ICollaboratorProps {
     collaboratorEmail: string;
 }
 
-export const AddCollaboratorCard = () => {
+export const AddCollaboratorCard = ({setIsViewTaskModalOpen,isViewTaskModalOpen}) => {
     const router = useRouter();
     const boardId = router.query.boardId
     const [loading, setLoading] = useState(false);
@@ -55,7 +55,9 @@ export const AddCollaboratorCard = () => {
             email: data.collaboratorEmail,
             boardId: boardId
         }
+        setIsViewTaskModalOpen(!isViewTaskModalOpen)
         addCollaborator(collaborationData, setLoading)
+      
     }
 
     if (loading) {
@@ -96,7 +98,7 @@ export const AddEditBoard = (props: { boardParam: any; setIsViewTaskModalOpen: a
             const updateData = {
                 name: data.name,
             }
-            updateBoard( boardId, updateData, setLoading );
+            updateBoard( boardId, updateData, setLoading, router );
             
         }
     }
