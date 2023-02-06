@@ -25,7 +25,7 @@ export const BoardHeader = () => {
   const [activeModal, setActiveModal] = useState('')
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
 const [loading, setLoading] = useState(false);
-  const userValue = localStorage.getItem("kanbanUser") as string;
+  const userValue = window.localStorage.getItem("kanbanUser") as string;
   const user = JSON.parse(userValue);
   const handleMoreActions = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);

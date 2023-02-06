@@ -12,6 +12,7 @@ import { TextField, Dialog, DialogActions, DialogContent, DialogContentText, Dia
 import { DescriptionCard } from './DescriptionCard';
 import { AddEditCard } from './AddEditCard';
 import { useRouter } from 'next/router';
+// import {DragDropContext, Draggable, Droppable} from 'react-beautiful-dnd';
 
 
 export const ActiveBoard = () => {
@@ -72,23 +73,27 @@ export const ActiveBoard = () => {
             console.log('not itself');
             setList((oldlist: any) => {
                 let newList = JSON.parse(JSON.stringify(oldlist))
-                // let newList = [...oldlist]
                 const activeBoard = newList.find((board: { id: number; }) => {
                     return board.id === params.boardIndex
                 })
                 const currentBoard = newList.find((board: { id: any; }) => {
                     return board.id === currentItem.boardIndex
                 })
-                let cardPosition = activeBoard.items.indexOf(params.cardIndex);
-                let currentCardPosition = currentBoard?.items.indexOf(currentItem.cardIndex);
-                activeBoard?.items.splice(cardPosition, 0, currentBoard.items.splice(currentCardPosition, 1)[0])
-                // newList[params.boardIndex].items.splice(params.cardIndex, 0, newList[currentItem.boardIndex].items.splice(currentItem.cardIndex, 1)[0])
-                // newList[params.boardIndex].items.splice(1 ,0,2)
+                newList[params.boardIndex].items.splice(params.cardIndex, 0, newList[currentItem.boardIndex].items.splice(currentItem.cardIndex, 1)[0])
                 dragItem.current = params;
                 return newList;
             })
         }
     }
+
+const styleActiveCard = (params)=>{
+const currentItem = dragItem.current;
+if(currentItem?.boardIndex! === params.boardIndex && currentItem.cardIndex === params.cardIndex){
+    return 'current-dnd-item'
+}
+return ''
+}
+
 
     const handleDragEnd = () => {
         console.log('drag end')
@@ -101,61 +106,62 @@ export const ActiveBoard = () => {
 
     return (
         <Wrapper>
-            <CarouselContainer>
-                {list?.map((board, boardIndex: any) => (
-                    <ActiveColumn
-                        key={board.id}
-                        onDragEnter={isDragging && !board.items.length ? (e) => { handleDragEnter(e, { boardIndex: board.id, cardIndex: 0 }) } : null}
-                    >
-                        <div className='active-board-head'>
-                            <Image src={board.icon} alt='icon' className='icon' width={10} height={10} />
-                            <span className='active-board-text'>{board.boardTitle} {`(${board.items.length})`} </span>
-                        </div>
-                        <div className={board.items.length > 5 ? 'active-column-scroll' : 'active-column'}>
-                            <ActiveList>
-                                {board.items.map((card: { id: React.Key | null | undefined; title: string; subtasks: IActiveBoardSubTaskProps[] | undefined; }, cardIndex: any) => {
-                                    return (
-                                        <TaskCard
-                                            key={card.id}
-                                            id={card.id}
-                                            title={card.title}
-                                            subtasks={card.subtasks}
-                                            handleCardView={() => handleViewTaskModal(board.id, card.id)}
-                                            handleDragStart={(e) => { handleDragStart(e, { boardIndex: board.id, cardIndex: card.id }) }}
-                                            handleDragEnter={isDragging ? (e) => { handleDragEnter(e, { boardIndex: board.id, cardIndex: card.id }) } : null}
-                                        />
-                                    )
-                                })}
-                            </ActiveList>
+        <CarouselContainer>
+            {list?.map((board, boardIndex: any) => (
+                <ActiveColumn
+                    key={board.id}
+                    onDragEnter={isDragging && !board.items.length ? (e) => { handleDragEnter(e, { boardIndex, cardIndex: 0 }) } : null}
+                >
+                    <div className='active-board-head'>
+                        <Image src={board.icon} alt='icon' className='icon' width={10} height={10} />
+                        <span className='active-board-text'>{board.boardTitle} {`(${board.items.length})`} </span>
+                    </div>
+                    <div className={board.items.length > 5 ? 'active-column-scroll' : 'active-column'}>
+                        <ActiveList>
+                            {board.items.map((card, cardIndex) => {
+                                return (
+                                    <TaskCard
+                                        key={card.id}
+                                        id={card.id}
+                                        ClassName={isDragging?styleActiveCard({boardIndex, cardIndex}): ''}
+                                        title={card.title}
+                                        subtasks={card.subtasks}
+                                        handleCardView={() => handleViewTaskModal(board.id, card.id)}
+                                        handleDragStart={(e) => { handleDragStart(e, { boardIndex, cardIndex }) }}
+                                        handleDragEnter={isDragging ? (e) => { handleDragEnter(e, { boardIndex, cardIndex }) } : null}
+                                    />
+                                )
+                            })}
+                        </ActiveList>
 
-                        </div>
+                    </div>
 
-                        <BorderlessButton
-                            content='+ New Card'
-                            primaryBtnAction={() => handleViewTaskModal('new-card', 'new-card')}
-                        />
-                        {isEmptyCard ? 
-                        <Dialog open={isViewTaskModalOpen} onClose={handleViewTaskModal}>
-                           <AddEditCard 
-                           />
-                        </Dialog>
-                        :
-                        <Dialog open={isViewTaskModalOpen} onClose={handleViewTaskModal}>
-                          <DescriptionCard
-                          cardTitle={taskDescriptionData?.title}
-                          cardDescription = {taskDescriptionData?.description}
-                          status = {taskDescriptionData?.status}
-                          subtasks = {taskDescriptionData?.subtasks}
-                          />
-                         </Dialog>
-                        }
-                        
-                    </ActiveColumn>
-                ))
-                }
+                    <BorderlessButton
+                        content='+ New Card'
+                        primaryBtnAction={() => handleViewTaskModal('new-card', 'new-card')}
+                    />
+                    {isEmptyCard ? 
+                    <Dialog open={isViewTaskModalOpen} onClose={handleViewTaskModal}>
+                       <AddEditCard 
+                       />
+                    </Dialog>
+                    :
+                    <Dialog open={isViewTaskModalOpen} onClose={handleViewTaskModal}>
+                      <DescriptionCard
+                      cardTitle={taskDescriptionData?.title}
+                      cardDescription = {taskDescriptionData?.description}
+                      status = {taskDescriptionData?.status}
+                      subtasks = {taskDescriptionData?.subtasks}
+                      />
+                     </Dialog>
+                    }
+                    
+                </ActiveColumn>
+            ))
+            }
 
-            </CarouselContainer>
-        </Wrapper >
+        </CarouselContainer>
+    </Wrapper >
     )
 }
 

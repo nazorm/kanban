@@ -2,7 +2,7 @@ import { NextRouter, useRouter } from "next/router";
 import axios from "axios";
 import { getCurrentBoard } from "../slice";
 import { Dispatch, AnyAction } from "@reduxjs/toolkit";
-// import { Dispatch, SetStateAction } from "react";
+import { toast } from 'react-toastify';
 import { NewBoard } from "src/api/types";
 const BASE_URL = "https://kanban-task-api.cyclic.app";
 
@@ -26,11 +26,13 @@ export const getAllCurrentBoardTasks = async (
       setLoading(false);
       if (response.status === 200) {
         dispatch(getCurrentBoard(response.data.data));
+        toast.success('Successful');
       }
     })
     .catch((error) => {
       setLoading(false)
       console.log(error)
+      toast.error('something went wrong')
     });
 };
 
@@ -50,12 +52,14 @@ export const createBoard = async (data: NewBoard, router: string[] | NextRouter,
           setLoading(false);
           console.log("board response", response);
           router.push(`/board/${data.name}?boardId=${response.data.data._id}`);
+          toast.success('Successful');
         }
 
       })
       .catch((error) => {
         setLoading(false)
         console.log(error)
+        toast.error('something went wrong')
       });
   };
 
@@ -74,11 +78,13 @@ export const createBoard = async (data: NewBoard, router: string[] | NextRouter,
           router.push(`/board/${updateData.name}?boardId=${response.data.data._id}`);
           setLoading(false);
           console.log(response);
+          toast.success('Successful');
         }
       })
       .catch((error) => {
         setLoading(false);
         console.log(error)
+        toast.error('something went wrong')
       });
   };
 
@@ -96,11 +102,13 @@ export const createBoard = async (data: NewBoard, router: string[] | NextRouter,
         if (response.status === 200) {
           setLoading(false)
           console.log(response);
+          toast.success('Successful');
         }
       })
       .catch((error) => {
         setLoading(false)
         console.log(error);
+        toast.error('something went wrong')
       });
   };
 
@@ -119,12 +127,13 @@ export const createBoard = async (data: NewBoard, router: string[] | NextRouter,
         if (response.status === 200) {
           setLoading(false)
           router.push("/home");
-          // const newBoardList = authUser?.allBoards
+          toast.success('Successful');
         }
       })
       .catch((error) => {
         setLoading(false)
         console.log(error);
+        toast.error('something went wrong')
       });
   };
 
@@ -138,6 +147,14 @@ export const createBoard = async (data: NewBoard, router: string[] | NextRouter,
         },
       })
       .then((response) => {
-        console.log("task response", response);
-      });
+        if (response.status === 200){
+          console.log("task response", response);
+          toast.success('Successful');
+        }
+       
+      })
+      .catch((error)=>{
+        console.log(error);
+        toast.error('something went wrong')
+      })
   };

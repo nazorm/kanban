@@ -8,8 +8,8 @@ const BASE_URL = "https://kanban-task-api.cyclic.app";
 
 
 export const getAllBoards = async (dispatch: Dispatch<AnyAction>, setLoading: any) => {
-    const token = localStorage.getItem("kanbanJwtToken");
-    const userValue = localStorage.getItem("kanbanUser") as string;
+    const token = window.localStorage.getItem("kanbanJwtToken");
+    const userValue = window.localStorage.getItem("kanbanUser") as string;
     const user = JSON.parse(userValue);
     setLoading(true)
     await axios

@@ -9,10 +9,10 @@ export interface IActiveBoardProps {
     description?: string,
     status?: string,
     subtasks?: IActiveBoardSubTaskProps[],
-    // subtasks?: IActiveBoardSubTaskProps[],
     handleDragStart: (e:any)=>void
     handleDragEnter: (e:any )=>void | null,
     handleCardView?: () => void,
+    ClassName: any;
 }
 
 export interface IActiveBoardSubTaskProps {
@@ -20,9 +20,9 @@ export interface IActiveBoardSubTaskProps {
     title: string,
     isCompleted: boolean,
 }
-export const TaskCard = ({ title, handleDragStart, handleDragEnter, handleCardView, subtasks}: IActiveBoardProps) => {
+export const TaskCard = ({ title, handleDragStart, handleDragEnter, handleCardView, subtasks, ClassName}: IActiveBoardProps) => {
     return (
-        <Card  onDragStart={handleDragStart} onDragEnter={handleDragEnter} onClick={handleCardView} draggable>
+        <Card  onDragStart={handleDragStart} onDragEnter={handleDragEnter} onClick={handleCardView} draggable className={ClassName}>
             <p className='card-title'>{title}</p>
             <span className='subtask-number'>{0} of {subtasks?.length} substasks</span>
         </Card>
@@ -38,7 +38,7 @@ const Card = styled.div`
     background-color: ${StyleConstants.WHITE_COLOR};
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
     &:hover{
-        cursor:pointer;
+        cursor:move;
         background-color: rgba(142, 142, 148, 0.2);
     }
 .class-title{
