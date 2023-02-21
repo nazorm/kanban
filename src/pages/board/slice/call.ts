@@ -162,3 +162,29 @@ export const createBoard = async (data: NewBoard, router: string[] | NextRouter,
         toast.error('something went wrong')
       })
   };
+
+  export const updateTask = async(cardId:string | number, data:any, setLoading:any)=>{
+    const token = localStorage.getItem("kanbanJwtToken");
+    console.log(token)
+    setLoading(true)
+    await axios
+      .patch(`${BASE_URL}/task/update/${cardId}`, data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          ContentType: "application/json",
+        },
+      })
+      .then((response) => {
+        if (response.status === 200){
+          setLoading(false)
+          console.log("task response", response);
+          toast.success('Successful');
+        }
+       
+      })
+      .catch((error)=>{
+        setLoading(false)
+        console.log(error);
+        toast.error('something went wrong')
+      })
+  }
