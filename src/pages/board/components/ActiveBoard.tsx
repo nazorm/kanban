@@ -42,21 +42,20 @@ export const ActiveBoard = () => {
         getAllCurrentBoardTasks(boardId, dispatch, setLoading)
     }, [boardId])
 
-//bId ==> board id for selected card, cid selected card Id
-    const handleViewTaskModal = (bId: number | string, cId: number | string) => {
-        console.log('clicked', bId, cId)
+    const handleViewTaskModal = (columnId: number | string, cardId: number | string) => {
+        console.log('clicked', columnId, cardId)
         setIsViewTaskModalOpen(!isViewTaskModalOpen);
-        if (bId === 'new-card' && cId === 'new-card') {
+        if (columnId === 'new-card' && cardId === 'new-card') {
             setIsEmptyCard(true)
         } else {
             setIsEmptyCard(false)
             const taskboardInfo = list.find((boardInfo: { _id: string | number; }) => {
-                return boardInfo._id === bId;
+                return boardInfo._id === columnId;
             })
             console.log('board info ==>', taskboardInfo);
 
             const taskCardInfo = taskboardInfo?.tasks.find((card: { _id: string | number; }) => {
-                return card._id === cId;
+                return card._id === cardId;
             })
 
             setTaskDescriptionData(taskCardInfo);
