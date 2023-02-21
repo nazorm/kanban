@@ -51,7 +51,7 @@ export const DescriptionCard = (props: ICardDescriptionProps) => {
                                 //  checked={subtask.isCompleted} 
                                 checked={isChecked.includes(subtask._id!)}
                             />
-                            <span className={isChecked.includes(subtask._id!) ? 'completed-subtask subtask-text' : 'subtask-text'}>{subtask.title}</span>
+                            <span className={isChecked.includes(subtask._id!) ? 'completed-subtask subtask-text' : 'subtask-text'}>{subtask.name}</span>
                         </li>
 
                     })}

@@ -42,20 +42,21 @@ export const ActiveBoard = () => {
         getAllCurrentBoardTasks(boardId, dispatch, setLoading)
     }, [boardId])
 
-    const handleViewTaskModal = (boardId: number | string, cardId: number | string) => {
-        console.log('clicked')
+//bId ==> board id for selected card, cid selected card Id
+    const handleViewTaskModal = (bId: number | string, cId: number | string) => {
+        console.log('clicked', bId, cId)
         setIsViewTaskModalOpen(!isViewTaskModalOpen);
-        if (boardId === 'new-card' && cardId === 'new-card') {
+        if (bId === 'new-card' && cId === 'new-card') {
             setIsEmptyCard(true)
         } else {
             setIsEmptyCard(false)
-            const taskboardInfo = list.find((boardInfo: { id: string | number; }) => {
-                return boardInfo.id === boardId;
+            const taskboardInfo = list.find((boardInfo: { _id: string | number; }) => {
+                return boardInfo._id === bId;
             })
             console.log('board info ==>', taskboardInfo);
 
-            const taskCardInfo = taskboardInfo?.tasks.find((card: { id: string | number; }) => {
-                return card.id === cardId;
+            const taskCardInfo = taskboardInfo?.tasks.find((card: { _id: string | number; }) => {
+                return card._id === cId;
             })
 
             setTaskDescriptionData(taskCardInfo);
@@ -93,7 +94,9 @@ export const ActiveBoard = () => {
                 dragItem.current = params;
                 return newList;
             })
+            //update task status
         }
+
     }
 
 const styleActiveCard = (params: { boardIndex: any; cardIndex: any; })=>{
@@ -122,7 +125,7 @@ return ''
                     onDragEnter={isDragging && !board.tasks!.length ? (e) => { handleDragEnter(e, { boardIndex, cardIndex: 0 }) } : null}
                 >
                     <div className='active-board-head'>
-                        <Image src={board.icon} alt='icon' className='icon' width={10} height={10} />
+                        {/* <Image src={board.icon} alt='icon' className='icon' width={10} height={10} /> */}
                         <span className='active-board-text'>{board.columnTitle.charAt(0).toUpperCase() + board.columnTitle.slice(1)} {`(${board.tasks!.length})`} </span>
                     </div>
                     <div className={board.tasks!.length > 5 ? 'active-column-scroll' : 'active-column'}>
@@ -134,7 +137,7 @@ return ''
                                         ClassName={isDragging?styleActiveCard({boardIndex, cardIndex}): ''}
                                         title={card.title}
                                         subtasks={card.subtask}
-                                        handleCardView={() => handleViewTaskModal(board._id, card._id)}
+                                        handleCardView={() => handleViewTaskModal(board._id!, card._id!)}
                                         handleDragStart={(e) => { handleDragStart(e, { boardIndex, cardIndex }) }}
                                         handleDragEnter={isDragging ? (e) => { handleDragEnter(e, { boardIndex, cardIndex }) } : null}
                                     />
@@ -159,7 +162,7 @@ return ''
                       cardTitle={taskDescriptionData?.title}
                       cardDescription = {taskDescriptionData?.description}
                       status = {taskDescriptionData?.status}
-                      subtasks = {taskDescriptionData?.subtasks}
+                      subtasks = {taskDescriptionData?.subtask}
                       />
                      </Dialog>
                     }

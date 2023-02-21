@@ -135,7 +135,7 @@ export const AddEditCard = () => {
     const boardId = router.query.boardId
     const [loading, setLoading] = useState(false);
 
-    const [subtaskList, setSubtaskList] = useState<(Subtasks | { _id?: string; title?: string; isCompleted?: boolean; })[]>([])
+    const [subtaskList, setSubtaskList] = useState<(Subtasks | { _id?: string; name?: string; isCompleted?: boolean; })[]>([])
     const [newSubtask, setNewSubtask] = useState('')
 
     const handleAddSubtask = (e: { preventDefault: () => void; }) => {
@@ -143,7 +143,7 @@ export const AddEditCard = () => {
         const uniqueId = new Date().getTime();
         let newSubTask = {
             // _id: JSON.stringify(uniqueId),
-            title: newSubtask,
+            name: newSubtask,
             // isCompleted: false,
         };
         const newSubtasklist = [...subtaskList, newSubTask]
@@ -200,7 +200,7 @@ export const AddEditCard = () => {
                     <ul className='subtasks' >
                         {subtaskList?.map((subtask, index) => {
                             return <li key={index} className='subtask'>
-                                <input type='text' placeholder='e.g Make Coffee' className='task-input' defaultValue={subtask.title} readOnly/>
+                                <input type='text' placeholder='e.g Make Coffee' className='task-input' defaultValue={subtask.name} readOnly/>
                                 {/* <Image src={closeIcon} alt='more' width={30} height={15} onClick={() => handleRemoveSubtask(subtask?._id!)} /> */}
                             </li>
                         })}
