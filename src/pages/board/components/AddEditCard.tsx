@@ -11,7 +11,7 @@ import { useRouter } from "next/router";
 import { ErrorText } from 'src/components/Form/TextInput';
 import CheckIcon from '@mui/icons-material/Check';
 import { Subtasks } from 'src/api/types';
-import { createBoard, updateBoard, addCollaborator } from '../slice/call';
+import { createBoard, updateBoard, addCollaborator, createTask } from '../slice/call';
 import { Loader } from "src/components/Loader";
 
 export interface IEditCardProps {
@@ -40,7 +40,7 @@ export interface ICollaboratorProps {
     collaboratorEmail: string;
 }
 
-export const AddCollaboratorCard = ({setIsViewTaskModalOpen,isViewTaskModalOpen}) => {
+export const AddCollaboratorCard = (setIsViewTaskModalOpen:any,isViewTaskModalOpen:any) => {
     const router = useRouter();
     const boardId = router.query.boardId
     const [loading, setLoading] = useState(false);
@@ -133,21 +133,22 @@ export const AddEditCard = () => {
     })
     const router = useRouter();
     const boardId = router.query.boardId
+    const [loading, setLoading] = useState(false);
 
-    const [subtaskList, setSubtaskList] = useState<string[]>([])
+    const [subtaskList, setSubtaskList] = useState<(Subtasks | { _id?: string; title?: string; isCompleted?: boolean; })[]>([])
     const [newSubtask, setNewSubtask] = useState('')
 
     const handleAddSubtask = (e: { preventDefault: () => void; }) => {
         e.preventDefault();
-        // const uniqueId = new Date().getTime();
-        // let newSubTask = {
-        //     _id: JSON.stringify(uniqueId),
-        //     title: newSubtask,
-        //     isCompleted: false,
-        // };
-        // const newSubtasklist = [...subtaskList, newSubTask]
-        // setSubtaskList(newSubtasklist);
-        setSubtaskList([...subtaskList, newSubtask])
+        const uniqueId = new Date().getTime();
+        let newSubTask = {
+            // _id: JSON.stringify(uniqueId),
+            title: newSubtask,
+            // isCompleted: false,
+        };
+        const newSubtasklist = [...subtaskList, newSubTask]
+        setSubtaskList(newSubtasklist);
+        // setSubtaskList([...subtaskList, newSubtask])
     }
     const changeSubtask = (event: ChangeEvent<HTMLInputElement>) => {
         setNewSubtask(event.target.value);
@@ -166,8 +167,13 @@ export const AddEditCard = () => {
             boardId: boardId
         }
         console.log('sending task', newCardData)
-        // createTask(newCardData);
+        createTask(newCardData, setLoading);
     }
+
+    if (loading) {
+        return <Loader/>
+    }
+
     return (
         <Box>
             <h3>Add New Task</h3>
@@ -194,7 +200,7 @@ export const AddEditCard = () => {
                     <ul className='subtasks' >
                         {subtaskList?.map((subtask, index) => {
                             return <li key={index} className='subtask'>
-                                <input type='text' placeholder='e.g Make Coffee' className='task-input' value={subtask} />
+                                <input type='text' placeholder='e.g Make Coffee' className='task-input' defaultValue={subtask.title} readOnly/>
                                 {/* <Image src={closeIcon} alt='more' width={30} height={15} onClick={() => handleRemoveSubtask(subtask?._id!)} /> */}
                             </li>
                         })}
@@ -206,11 +212,14 @@ export const AddEditCard = () => {
                     <select {...register("status")}
                         style={{ width: '100%', padding: '10px' }}>
                         <option value=''> Status</option>
-                        <option value='backlog'> Backlog</option>
+                        <option value='todo'> Todo</option>
+                        <option value='doing'>Doing</option>
+                        <option value='done'>Done</option>
+                        {/* <option value='backlog'> Backlog</option>
                         <option value='doing next'>Doing Next</option>
                         <option value='in progress'>In Progress</option>
                         <option value='completed'>Completed</option>
-                        <option value='blocked'>Blocked</option>
+                        <option value='blocked'>Blocked</option> */}
                     </select>
                 </StatusContainer>
                 <ErrorSpan>

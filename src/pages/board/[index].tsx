@@ -45,7 +45,7 @@ const Board = () => {
                 </Head>
                 <Container>
                     <SideBar />
-                    {currentBoardList?.length !== 0 ? <EmptyBoard param='task' /> : <ActiveBoard />}
+                    {currentBoardList?.length === 0 ? <EmptyBoard param='task' /> : <ActiveBoard />}
 
                 </Container>
 

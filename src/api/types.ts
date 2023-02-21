@@ -1,11 +1,13 @@
 export type UserBoard = {
-    boardTitle: string,
-    id: number,
-    icon: any,
-    status: string,
-    items : Tasks[]
+  columnTitle: string,
+    _id?: number,
+    // icon: any,
+    status?: string,
+    tasks?:Tasks[],
+    items? : Tasks[]
   }
   export type Tasks = {
+    _id?:string,
     title:string,
     description: string,
     status: string,
@@ -21,3 +23,29 @@ export type UserBoard = {
   export type NewBoard={
     name:string;
   }
+
+
+
+  const applicationBoard=[
+    {
+      columnTitle:'todo',
+      tasks:[
+        {},
+        {}
+      ]
+    },
+    {
+      columnTitle: 'doing',
+      tasks:[
+        {},
+        {}
+      ]
+    },
+    {
+      columnTitle: 'done',
+      tasks:[
+        {},
+        {}
+      ]
+    }
+  ]

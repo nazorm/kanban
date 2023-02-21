@@ -12,7 +12,11 @@ const uniqueId = JSON.stringify(new Date().getTime());
 
 
 export const newBoardList = [
-  {boardTitle: "BACKLOG", id:1, icon: backLogIcon, status: "backlog", items:[
+  {columnTitle: "TODO", 
+   id:1,
+   icon: backLogIcon, 
+   status: "todo", 
+   tasks:[
     {
       title: "Build UI for onboarding flow",
       description: "We know what we're planning to build for version one. Now we need to finalise the first pricing model we'll use. Keep iterating the subtasks until we have a coherent proposition.",
@@ -38,7 +42,7 @@ export const newBoardList = [
     },
   ]},
 
-  {boardTitle: "DOING NEXT", icon: todoIcon, status: "doingNext", id:2, items:[
+  {columnTitle: "DOING NEXT", icon: todoIcon, status: "doingNext", id:2, items:[
     {
       title: "Build UI for onboarding flow",
       description: "We know what we're planning to build for version one. Now we need to finalise the first pricing model we'll use. Keep iterating the subtasks until we have a coherent proposition.",
@@ -67,7 +71,7 @@ export const newBoardList = [
 
 
 
-  {boardTitle: "IN PROGRESS", icon: doingIcon, status: "inProgress", id:5, items:[
+  {columnTitle: "IN PROGRESS", icon: doingIcon, status: "inProgress", id:5, items:[
     {
       title: "Design settings and search pages",
       description: "We know what we're planning to build for version one. Now we need to finalise the first pricing model we'll use. Keep iterating the subtasks until we have a coherent proposition.",
@@ -208,7 +212,7 @@ export const newBoardList = [
 
 
 
-  {boardTitle: "BLOCKED", icon: blockedIcon,
+  {columnTitle: "BLOCKED", icon: blockedIcon,
   status: "blocked",
   id:3,
    items:[
@@ -238,7 +242,7 @@ export const newBoardList = [
   ]},  
 
 
-  {boardTitle: "COMPLETED", icon: doneIcon,
+  {columnTitle: "COMPLETED", icon: doneIcon,
    id:4,
    status: "completed",
    items:[

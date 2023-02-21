@@ -137,9 +137,11 @@ export const createBoard = async (data: NewBoard, router: string[] | NextRouter,
       });
   };
 
-  const createTask = (data: any) => {
+  export const createTask = async (data: any, setLoading:any) => {
     const token = localStorage.getItem("kanbanJwtToken");
-    axios
+    console.log(token)
+    setLoading(true)
+    await axios
       .post(`${BASE_URL}/task/create-task`, data, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -148,12 +150,14 @@ export const createBoard = async (data: NewBoard, router: string[] | NextRouter,
       })
       .then((response) => {
         if (response.status === 200){
+          setLoading(false)
           console.log("task response", response);
           toast.success('Successful');
         }
        
       })
       .catch((error)=>{
+        setLoading(false)
         console.log(error);
         toast.error('something went wrong')
       })
