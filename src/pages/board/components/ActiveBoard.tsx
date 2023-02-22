@@ -73,12 +73,6 @@ export const ActiveBoard = () => {
             // console.log('not itself');
             setList((oldlist: any) => {
                 let newList = JSON.parse(JSON.stringify(oldlist))
-                const activeColumn = newList.find((board: { _id: number; }) => {
-                    return board._id === params.boardIndex
-                })
-                const currentColumn = newList.find((board: { _id: number; }) => {
-                    return board._id === currentItem.boardIndex
-                })
                 newList[params.boardIndex].tasks.splice(params.cardIndex, 0, newList[currentItem.boardIndex].tasks.splice(currentItem.cardIndex, 1)[0])
                 dragItem.current = params;
                 return newList;
