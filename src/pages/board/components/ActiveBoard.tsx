@@ -7,8 +7,8 @@ import Image from 'next/image';
 import { StyleConstants } from 'styles/StylesConstants';
 import { BorderlessButton } from '../../../components/Button';
 import { newBoardList } from '../../../components/PmData';
-import { IActiveBoardProps, IActiveBoardSubTaskProps, TaskCard } from 'src/components/TaskCard';
-import { TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Card } from '@mui/material';
+import {  TaskCard } from 'src/components/TaskCard';
+import { Dialog } from '@mui/material';
 import { DescriptionCard } from './DescriptionCard';
 import { AddEditCard } from './AddEditCard';
 import { useRouter } from 'next/router';
@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { currentBoardSelector } from '../slice';
 import { getAllCurrentBoardTasks, updateTask } from '../slice/call';
 import { UserBoard } from 'src/api/types';
+import { Loader } from "src/components/Loader";
 
 export const ActiveBoard = () => {
     const router = useRouter();
@@ -96,6 +97,10 @@ const updateTaskStatus = ( cardId: string | number, columnTitle:string)=>{
         dragItem.current = null;
         dragNode.current = null;
         setIsDragging(false);
+    }
+
+    if (loading) {
+        return <Loader/>
     }
 
     return (
