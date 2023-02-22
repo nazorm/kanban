@@ -12,8 +12,6 @@ export const getAllCurrentBoardTasks = async (
   setLoading: any
 ) => {
   const token = localStorage.getItem("kanbanJwtToken");
-  // const userValue = localStorage.getItem('kanbanUser') as string;
-  // const user = JSON.parse(userValue);
   setLoading(true);
   await axios
     .get(`${BASE_URL}/task/allboard-tasks/${boardId}`, {
@@ -50,7 +48,6 @@ export const createBoard = async (data: NewBoard, router: string[] | NextRouter,
       .then((response) => {
         if(response.status === 200){
           setLoading(false);
-          console.log("board response", response);
           router.push(`/board/${data.name}?boardId=${response.data.data._id}`);
           toast.success('Successful');
         }
@@ -77,7 +74,6 @@ export const createBoard = async (data: NewBoard, router: string[] | NextRouter,
         if (response.status === 200) {
           router.push(`/board/${updateData.name}?boardId=${response.data.data._id}`);
           setLoading(false);
-          console.log(response);
           toast.success('Successful');
         }
       })
@@ -101,7 +97,6 @@ export const createBoard = async (data: NewBoard, router: string[] | NextRouter,
       .then((response) => {
         if (response.status === 200) {
           setLoading(false)
-          console.log(response);
           toast.success('Successful');
         }
       })
@@ -123,7 +118,6 @@ export const createBoard = async (data: NewBoard, router: string[] | NextRouter,
         },
       })
       .then((response) => {
-        console.log(response);
         if (response.status === 200) {
           setLoading(false)
           router.push("/home");
@@ -139,7 +133,6 @@ export const createBoard = async (data: NewBoard, router: string[] | NextRouter,
 
   export const createTask = async (data: any, setLoading:any) => {
     const token = localStorage.getItem("kanbanJwtToken");
-    console.log(token)
     setLoading(true)
     await axios
       .post(`${BASE_URL}/task/create-task`, data, {
@@ -151,7 +144,6 @@ export const createBoard = async (data: NewBoard, router: string[] | NextRouter,
       .then((response) => {
         if (response.status === 200){
           setLoading(false)
-          console.log("task response", response);
           toast.success('Successful');
         }
        
@@ -165,7 +157,6 @@ export const createBoard = async (data: NewBoard, router: string[] | NextRouter,
 
   export const updateTask = async(cardId:string | number, data:any, setLoading:any)=>{
     const token = localStorage.getItem("kanbanJwtToken");
-    console.log(token)
     setLoading(true)
     await axios
       .patch(`${BASE_URL}/task/update/${cardId}`, data, {
@@ -177,7 +168,6 @@ export const createBoard = async (data: NewBoard, router: string[] | NextRouter,
       .then((response) => {
         if (response.status === 200){
           setLoading(false)
-          console.log("task response", response);
           toast.success('Successful');
         }
        

@@ -35,11 +35,9 @@ export const ActiveBoard = () => {
 
     useMemo(() => {
         getAllCurrentBoardTasks(boardId, dispatch, setLoading)
-        console.log('board', currentBoardList)
     }, [boardId])
 
     const handleViewTaskModal = (columnId: number | string, cardId: number | string) => {
-        console.log('clicked', columnId, cardId)
         setIsViewTaskModalOpen(!isViewTaskModalOpen);
         if (columnId === 'new-card' && cardId === 'new-card') {
             setIsEmptyCard(true)
@@ -48,36 +46,31 @@ export const ActiveBoard = () => {
             const taskboardInfo = list.find((boardInfo: { _id: string | number; }) => {
                 return boardInfo._id === columnId;
             })
-            console.log('board info ==>', taskboardInfo);
 
             const taskCardInfo = taskboardInfo?.tasks.find((card: { _id: string | number; }) => {
                 return card._id === cardId;
             })
 
             setTaskDescriptionData(taskCardInfo);
-            console.log('card info ==>', taskCardInfo);
         }
     }
 
-    const addCardHandler = () => {
-        console.log('new card')
-    }
     const handleDragStart = (e: any, params: { boardIndex: number; cardIndex: number; columnTitle: string }) => {
-        console.log('drag starting', params);
+        // console.log('drag starting', params);
         dragItem.current = params;
         dragNode.current = e.target;
         dragNode.current.addEventListener('dragend', handleDragEnd);
         setIsDragging(true);
     }
 
-    const handleDragEnter = (e: any, params: { boardIndex: number; cardIndex: number; columnTitle: string; columnId: number | string, cardId: number | string }) => {
-        console.log('entering', params);
+    const handleDragEnter = (e: any, params: { boardIndex: number; cardIndex: number; columnTitle: string;  cardId: number | string }) => {
+        // console.log('entering', params);
         const currentItem = dragItem.current;
         if (e.target === dragNode.current) {
-            console.log('itself');
+            // console.log('itself');
             return;
         } else {
-            console.log('not itself');
+            // console.log('not itself');
             setList((oldlist: any) => {
                 let newList = JSON.parse(JSON.stringify(oldlist))
                 const activeColumn = newList.find((board: { _id: number; }) => {
@@ -91,20 +84,12 @@ export const ActiveBoard = () => {
                 return newList;
             })
             //update task status
-            updateTaskStatus(params.columnId, params.cardId, params.columnTitle)
+            updateTaskStatus(params.cardId, params.columnTitle)
         }
 
     }
 
-const updateTaskStatus = (columnId:string | number, cardId: string | number, columnTitle:string)=>{
-    const taskboardInfo = list.find((boardInfo: { _id: string | number; }) => {
-        return boardInfo._id === columnId;
-    })
-    console.log('board info ==>', taskboardInfo);
-
-    const taskCardInfo = taskboardInfo?.tasks.find((card: { _id: string | number; }) => {
-        return card._id === cardId;
-    })
+const updateTaskStatus = ( cardId: string | number, columnTitle:string)=>{
     const updateData={
         status: columnTitle
     }
@@ -129,7 +114,6 @@ const updateTaskStatus = (columnId:string | number, cardId: string | number, col
                             handleDragEnter(e, {
                                 boardIndex, cardIndex: 0,
                                 columnTitle: board.columnTitle,
-                                columnId: board._id!,
                                 cardId: 0
                             })
                         } : null}
@@ -150,7 +134,6 @@ const updateTaskStatus = (columnId:string | number, cardId: string | number, col
                                             handleDragStart={(e) => { handleDragStart(e, { boardIndex, cardIndex, columnTitle: board.columnTitle }) }}
                                             handleDragEnter={isDragging ? (e) => { handleDragEnter(e, {
                                                 boardIndex, cardIndex, columnTitle: board.columnTitle,
-                                                columnId: board._id!,
                                                 cardId: card._id!
                                             }) } : null}
                                         />
