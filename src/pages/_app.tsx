@@ -21,9 +21,9 @@ const theme = {
 function MyApp({ Component, pageProps }: AppProps) {
   return <>
     <GlobalStyle />
-    <ToastContainer
-    />
+   
     <ThemeProvider theme={theme}>
+    <ToastContainer/>
       <Component {...pageProps} />
     </ThemeProvider>
   </>

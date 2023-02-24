@@ -30,9 +30,9 @@ export const ActiveBoard = () => {
     const [list, setList] = useState(currentBoardList);
     const boardId = router.query.boardId
     const dragItem = useRef();
-    const dragNode = useRef()
+    const dragNode = useRef();
 
-    useMemo(() => {
+    useEffect(() => {
         getAllCurrentBoardTasks(boardId, dispatch, setLoading)
     }, [boardId])
 
@@ -42,16 +42,6 @@ export const ActiveBoard = () => {
             setIsEmptyCard(true)
         } else {
             getSelectedSingleTask(cardId, setLoading, dispatch)
-            // setIsEmptyCard(false)
-            // const taskboardInfo = list.find((boardInfo: { _id: string | number; }) => {
-            //     return boardInfo._id === columnId;
-            // })
-
-            // const taskCardInfo = taskboardInfo?.tasks.find((card: { _id: string | number; }) => {
-            //     return card._id === cardId;
-            // })
-
-            // setTaskDescriptionData(taskCardInfo);
         }
     }
 
