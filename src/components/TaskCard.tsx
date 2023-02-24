@@ -26,7 +26,7 @@ export const TaskCard = ({ title, handleDragStart, handleDragEnter, handleCardVi
     useEffect(() => {
         const newCheckedList = subtasks?.filter((task) => task.isCompleted === 'true');
         setCompletedSubtasks(newCheckedList!);
-    }, [])
+    }, [subtasks])
 
     return (
         <Card onDragStart={handleDragStart} onDragEnter={handleDragEnter} onClick={handleCardView} draggable>
