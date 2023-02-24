@@ -14,8 +14,9 @@ import Image from 'next/image';
 import { Form, Right, Left, SignInBtn } from "../signup";
 import { signIn } from "../slice/call";
 import { useDispatch, useSelector } from "react-redux";
-
 import { Loader } from "src/components/Loader";
+import { customMedia } from "styles/breakpoints";
+
 interface ILoginScreenProps {
     email: string;
     password: string;
@@ -125,6 +126,11 @@ linear-gradient(
     to right, white, #e3e2f4 40%,  white 90%, #e3e2f4
     );
 height: 100vh;
+${customMedia.lessThan("medium")`
+   background-image: linear-gradient(
+    to right, white, #e3e2f4 
+    );
+  `};
 `;
 const PageTitle = styled.h1`
 
@@ -136,8 +142,17 @@ const LoginBtn = styled(SignInBtn)`
     }
 `;
 
-const LoginForm = styled(Form)``;
+const LoginForm = styled(Form)`
+    ${customMedia.lessThan("medium")`
+       margin: 50px 0 0;
+  `};
+`;
 
-const LoginLeft = styled(Left)``;
+const LoginLeft = styled(Left)`
+`;
 
-const LoginRight = styled(Right)``;
+const LoginRight = styled(Right)`
+${customMedia.lessThan("medium")`
+      display: none;
+  `};
+`;

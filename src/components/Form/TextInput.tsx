@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { customMedia } from 'styles/breakpoints';
 import { StyleConstants } from 'styles/StylesConstants';
 
 interface ITextInputProps {
@@ -44,6 +45,9 @@ const Input = styled.input`
     outline: 1px solid ${StyleConstants.LIGHT_LILAC};
     margin: 10px 0 20px;
     width: 80%;
+    ${customMedia.lessThan("medium")`
+      width: 100%;
+  `};
 `;
 const Label = styled.label`
     font-size: 13px;
@@ -65,6 +69,9 @@ const InputIcon = styled.p`
   width: 20px;
   height: 20px;
   cursor: pointer;
+  ${customMedia.lessThan("medium")`
+     right: 5%;
+  `};
 
   svg {
     width: 20px;

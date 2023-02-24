@@ -15,6 +15,7 @@ import Image from 'next/image';
 import { signUp } from "../slice/call";
 import { useDispatch } from "react-redux";
 import { Loader } from "src/components/Loader";
+import { customMedia } from "styles/breakpoints";
 
 interface ISignUpScreenProps {
     uid?: string,
@@ -112,7 +113,7 @@ const SignUpScreen = () => {
                     />
                     <SignInBtn disabled={!isDirty}>→</SignInBtn>
                 </Form>
-                <span className="notice">Already have an account? <Link href={'/auth/login'} style={{ color: '#8471F2' }}>Sign In</Link></span>
+                <span className="notice">Already have an account? <Link href={'/auth/login'} className='notice-cta'>Sign In</Link></span>
             </Left>
             <Right>
                 <h3 className="catchphrase">Take organizing to the next Level</h3>
@@ -155,13 +156,22 @@ export const Form = styled.form`
     display: flex;
     flex-direction: column;
     margin: 50px 0 20px;
+    ${customMedia.lessThan("medium")`
+       margin: 50px 0 0;
+  `};
 `;
 export const Left = styled.div`
     width: 50%;
     padding: 20px;
+    ${customMedia.lessThan("medium")`
+      width: 100%;
+      padding: 10px 0;
+     `};
     .notice{
         font-size: 13px;
     }
+  
+
 `;
 export const Right = styled.div`
     width: 30%;
@@ -215,4 +225,7 @@ export const Right = styled.div`
     }
 
 }
+${customMedia.lessThan("medium")`
+      display: none;
+  `};
 `;
