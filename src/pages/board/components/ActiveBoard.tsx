@@ -13,8 +13,8 @@ import { DescriptionCard } from './DescriptionCard';
 import { AddEditCard } from './AddEditCard';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
-import { currentBoardSelector } from '../slice';
-import { getAllCurrentBoardTasks, updateTask } from '../slice/call';
+import { currentBoardSelector, singleTaskSelector } from '../slice';
+import { getAllCurrentBoardTasks, updateTask, getSelectedSingleTask } from '../slice/call';
 import { UserBoard } from 'src/api/types';
 import { Loader } from "src/components/Loader";
 
@@ -23,16 +23,14 @@ export const ActiveBoard = () => {
     const dispatch = useDispatch();
     const [loading, setLoading] = useState('false')
     const [isViewTaskModalOpen, setIsViewTaskModalOpen] = useState(false);
-    const [taskDescriptionData, setTaskDescriptionData] = useState<any>();
     const [isDragging, setIsDragging] = useState(false)
     const [isEmptyCard, setIsEmptyCard] = useState(false);
     const currentBoardList = useSelector(currentBoardSelector)
+    const taskDescriptionData = useSelector(singleTaskSelector);
     const [list, setList] = useState(currentBoardList);
     const boardId = router.query.boardId
     const dragItem = useRef();
     const dragNode = useRef()
-
-
 
     useMemo(() => {
         getAllCurrentBoardTasks(boardId, dispatch, setLoading)
@@ -43,16 +41,17 @@ export const ActiveBoard = () => {
         if (columnId === 'new-card' && cardId === 'new-card') {
             setIsEmptyCard(true)
         } else {
-            setIsEmptyCard(false)
-            const taskboardInfo = list.find((boardInfo: { _id: string | number; }) => {
-                return boardInfo._id === columnId;
-            })
+            getSelectedSingleTask(cardId, setLoading, dispatch)
+            // setIsEmptyCard(false)
+            // const taskboardInfo = list.find((boardInfo: { _id: string | number; }) => {
+            //     return boardInfo._id === columnId;
+            // })
 
-            const taskCardInfo = taskboardInfo?.tasks.find((card: { _id: string | number; }) => {
-                return card._id === cardId;
-            })
+            // const taskCardInfo = taskboardInfo?.tasks.find((card: { _id: string | number; }) => {
+            //     return card._id === cardId;
+            // })
 
-            setTaskDescriptionData(taskCardInfo);
+            // setTaskDescriptionData(taskCardInfo);
         }
     }
 
@@ -92,7 +91,7 @@ const updateTaskStatus = ( cardId: string | number, columnTitle:string)=>{
 }
 
     const handleDragEnd = () => {
-        console.log('drag end')
+        // console.log('drag end')
         dragNode.current.removeEventListener('dragend', handleDragEnd);
         dragItem.current = null;
         dragNode.current = null;
@@ -154,6 +153,7 @@ const updateTaskStatus = ( cardId: string | number, columnTitle:string)=>{
                             :
                             <Dialog open={isViewTaskModalOpen} onClose={handleViewTaskModal}>
                                 <DescriptionCard
+                                    _id={taskDescriptionData?._id}
                                     cardTitle={taskDescriptionData?.title}
                                     cardDescription={taskDescriptionData?.description}
                                     status={taskDescriptionData?.status}

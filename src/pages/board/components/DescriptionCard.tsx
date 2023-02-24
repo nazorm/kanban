@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import moreIcon from '../../../assets/icons/more-icon.svg';
 import Image from 'next/image';
 import { StyleConstants } from 'styles/StylesConstants';
 import { Subtasks } from 'src/api/types';
-
+import { updateSubtaskStatus, getSelectedSingleTask } from '../slice/call';
 
 export interface ICardDescriptionProps {
+    _id: string;
     cardTitle: string,
     cardDescription: string,
     status: string,
@@ -16,21 +17,29 @@ export interface ICardDescriptionProps {
 
 
 export const DescriptionCard = (props: ICardDescriptionProps) => {
-    const { cardTitle, cardDescription, status, subtasks } = props;
-    const [isChecked, setIsChecked] = useState<string[]>([])
+    const { cardTitle, cardDescription, status, subtasks, _id } = props;
+    const [isCheckedList, setIsCheckedList] = useState<any[]>([])
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        const newCheckedList = subtasks?.filter((task) => task.isCompleted === 'true');
+        const checkedIds = newCheckedList?.map(task => task._id)
+        setIsCheckedList(checkedIds!);
+    }, [])
 
     const handleSubtaskCheck = (id: string) => {
-        let checkedList = [];
-        if (isChecked.includes(id)) {
-            checkedList = isChecked.filter(
+        let checkedList;
+        if (isCheckedList.includes(id)) {
+            checkedList = isCheckedList.filter(
                 (checkedId) => checkedId !== id
             );
-            // setIsChecked(newCheckedList);
         } else {
-            checkedList = [...isChecked, id]
-            // setIsChecked([...isChecked, id]);
+            checkedList = [...isCheckedList, id]
         }
-        setIsChecked(checkedList);
+
+        setIsCheckedList(checkedList);
+        updateSubtaskStatus(id, setLoading)
+
     }
 
     return (
@@ -41,17 +50,16 @@ export const DescriptionCard = (props: ICardDescriptionProps) => {
             </header>
             <p className='description'>{cardDescription}</p>
             <SubtaskContainer>
-                <h2 className='subtitle-heading'>Subtasks ({isChecked.length} of {subtasks?.length})</h2>
+                <h2 className='subtitle-heading'>Subtasks {isCheckedList.length} of {subtasks?.length}</h2>
                 <ul className='subtasks'>
                     {subtasks?.map((subtask) => {
                         return <li className='subtask' key={subtask._id}>
                             <input
                                 type='checkbox'
                                 onChange={() => handleSubtaskCheck(subtask._id!)}
-                                //  checked={subtask.isCompleted} 
-                                checked={isChecked.includes(subtask._id!)}
+                                checked={isCheckedList.includes(subtask._id!)}
                             />
-                            <span className={isChecked.includes(subtask._id!) ? 'completed-subtask subtask-text' : 'subtask-text'}>{subtask.name}</span>
+                            <span className={isCheckedList.includes(subtask._id!) ? 'completed-subtask subtask-text' : 'subtask-text'}>{subtask.name}</span>
                         </li>
 
                     })}

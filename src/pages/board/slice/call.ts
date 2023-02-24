@@ -1,6 +1,6 @@
 import { NextRouter, useRouter } from "next/router";
 import axios from "axios";
-import { getCurrentBoard } from "../slice";
+import { getCurrentBoard, getSingleTask } from "../slice";
 import { Dispatch, AnyAction } from "@reduxjs/toolkit";
 import { toast } from 'react-toastify';
 import { NewBoard } from "src/api/types";
@@ -169,6 +169,56 @@ export const createBoard = async (data: NewBoard, router: string[] | NextRouter,
         if (response.status === 200){
           setLoading(false)
           toast.success('Successful');
+        }
+       
+      })
+      .catch((error)=>{
+        setLoading(false)
+        console.log(error);
+        toast.error('something went wrong')
+      })
+  }
+
+  export const updateSubtaskStatus =async (subtaskId:string, setLoading: any) => {
+    const token = localStorage.getItem("kanbanJwtToken");
+    setLoading(true)
+    await axios
+      .get(`${BASE_URL}/task/update-subtask-status/${subtaskId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          ContentType: "application/json",
+        },
+      })
+      .then((response) => {
+        if (response.status === 200){
+          setLoading(false)
+          toast.success('Successful');
+        }
+       
+      })
+      .catch((error)=>{
+        setLoading(false)
+        console.log(error);
+        toast.error('something went wrong')
+      })
+  }
+
+  export const getSelectedSingleTask = async (taskId: string | number, setLoading:any,  dispatch: Dispatch<AnyAction>,)=>{
+    const token = localStorage.getItem("kanbanJwtToken");
+    setLoading(true)
+    await axios
+      .get(`${BASE_URL}/task/single-task/${taskId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          ContentType: "application/json",
+        },
+      })
+      .then((response) => {
+        if (response.status === 200){
+          dispatch(getSingleTask(response.data.data));
+          setLoading(false)
+          toast.success('Successful');
+          console.log('selected', response.data.data)
         }
        
       })

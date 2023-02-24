@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { StyleConstants } from 'styles/StylesConstants';
 import { useDropzone } from "react-dropzone";
@@ -10,22 +10,28 @@ export interface IActiveBoardProps {
     description?: string,
     status?: string,
     subtasks?: Subtasks[],
-    handleDragStart: (e:any)=>void
-    handleDragEnter: (e:any )=>void | null,
+    handleDragStart: (e: any) => void
+    handleDragEnter: (e: any) => void | null,
     handleCardView?: () => void,
-    ClassName: any;
 }
 
 export interface IActiveBoardSubTaskProps {
-    _id: number;
-    title: string,
-    isCompleted: boolean,
+    _id?: string;
+    name?: string,
+    isCompleted?: boolean,
 }
-export const TaskCard = ({ title, handleDragStart, handleDragEnter, handleCardView, subtasks, ClassName}: IActiveBoardProps) => {
+export const TaskCard = ({ title, handleDragStart, handleDragEnter, handleCardView, subtasks }: IActiveBoardProps) => {
+    const [completedSubtasks, setCompletedSubtasks] = useState<Subtasks[]>([]);
+
+    useEffect(() => {
+        const newCheckedList = subtasks?.filter((task) => task.isCompleted === 'true');
+        setCompletedSubtasks(newCheckedList!);
+    }, [])
+
     return (
-        <Card  onDragStart={handleDragStart} onDragEnter={handleDragEnter} onClick={handleCardView} draggable className={ClassName}>
+        <Card onDragStart={handleDragStart} onDragEnter={handleDragEnter} onClick={handleCardView} draggable>
             <p className='card-title'>{title}</p>
-            <span className='subtask-number'>{0} of {subtasks?.length} substasks</span>
+            <span className='subtask-number'>{completedSubtasks?.length} of {subtasks?.length} substasks</span>
         </Card>
 
     )
