@@ -5,13 +5,13 @@ import { useDropzone } from "react-dropzone";
 import { Subtasks } from 'src/api/types';
 
 export interface IActiveBoardProps {
-    _id: number;
+    _id?: number;
     title: string,
     description?: string,
     status?: string,
     subtasks?: Subtasks[],
     handleDragStart: (e: any) => void
-    handleDragEnter: (e: any) => void | null,
+    handleDragEnter: any,
     handleCardView?: () => void,
 }
 

@@ -92,7 +92,7 @@ const allBoards = useSelector(userBoardSelector);
                         return (
                             <SideBarIcon
                                 key={item._id}
-                                route={`/board/${item.name}/${item._id}`}
+                                route={`/board/${item.name}?boardId=${item._id}`}
                                 icon={boardIcon}
                             />
                         )
@@ -128,7 +128,7 @@ const allBoards = useSelector(userBoardSelector);
                 {!isEyeOpen && <span className='hide-sidebar-text'>Sign Out</span>}
             </SignoutContainer>
 
-            {!isEyeOpen && <ThemeWrapper>
+            {/* {!isEyeOpen && <ThemeWrapper>
                 <Image src={lightIcon} alt='icon' className='icon' />
                 <Switch
                     checked={isDarkTheme}
@@ -136,7 +136,7 @@ const allBoards = useSelector(userBoardSelector);
                     color='primary'
                 />
                 <Image src={darkIcon} alt='icon' className='icon' />
-            </ThemeWrapper>}
+            </ThemeWrapper>} */}
 
             <Collapse>
                 <Image src={isEyeOpen ? openEyeIcon : closeEyeIcon} alt='icon' className='icon' onClick={changeSideBarView} />

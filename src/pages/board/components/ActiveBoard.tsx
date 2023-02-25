@@ -29,8 +29,8 @@ export const ActiveBoard = () => {
     const taskDescriptionData = useSelector(singleTaskSelector);
     const [list, setList] = useState(currentBoardList);
     const boardId = router.query.boardId
-    const dragItem = useRef();
-    const dragNode = useRef();
+    const dragItem = useRef<any>();
+    const dragNode = useRef<any>();
 
     useEffect(() => {
         getAllCurrentBoardTasks(boardId, dispatch, setLoading)
@@ -120,7 +120,7 @@ const updateTaskStatus = ( cardId: string | number, columnTitle:string)=>{
                                             subtasks={card.subtask}
                                             handleCardView={() => handleViewTaskModal(board._id!, card._id!)}
                                             handleDragStart={(e) => { handleDragStart(e, { boardIndex, cardIndex, columnTitle: board.columnTitle }) }}
-                                            handleDragEnter={isDragging ? (e) => { handleDragEnter(e, {
+                                            handleDragEnter={isDragging ? (e: any) => { handleDragEnter(e, {
                                                 boardIndex, cardIndex, columnTitle: board.columnTitle,
                                                 cardId: card._id!
                                             }) } : null}
