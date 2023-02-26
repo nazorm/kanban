@@ -17,6 +17,7 @@ import { currentBoardSelector, singleTaskSelector } from '../slice';
 import { getAllCurrentBoardTasks, updateTask, getSelectedSingleTask } from '../slice/call';
 import { UserBoard } from 'src/api/types';
 import { Loader } from "src/components/Loader";
+import { BoardColumn } from '@components/BoardColumn';
 
 export const ActiveBoard = () => {
     const router = useRouter();
@@ -77,7 +78,7 @@ const updateTaskStatus = ( cardId: string | number, columnTitle:string)=>{
     const updateData={
         status: columnTitle
     }
-    updateTask(cardId, updateData, setLoading )
+    updateTask(cardId, updateData )
 }
 
     const handleDragEnd = () => {
@@ -96,16 +97,17 @@ const updateTaskStatus = ( cardId: string | number, columnTitle:string)=>{
         <Wrapper>
             <CarouselContainer>
                 {list?.map((board: UserBoard, boardIndex: any) => (
-                    <ActiveColumn
-                        key={board._id}
-                        onDragEnter={isDragging && !board.tasks!.length ? (e) => {
-                            handleDragEnter(e, {
-                                boardIndex, cardIndex: 0,
-                                columnTitle: board.columnTitle,
-                                cardId: 0
-                            })
-                        } : null}
-                    >
+                    <BoardColumn
+                    key={board._id}
+                    handleDragEnter ={isDragging && !board.tasks!.length ? (e:any) => {
+                        handleDragEnter(e, {
+                            boardIndex, cardIndex: 0,
+                            columnTitle: board.columnTitle,
+                            cardId: 0
+                        })
+                    } : null}
+                    content ={
+                        <>
                         <div className='active-board-head'>
                             {/* <Image src={board.icon} alt='icon' className='icon' width={10} height={10} /> */}
                             <span className='active-board-text'>{board.columnTitle.charAt(0).toUpperCase() + board.columnTitle.slice(1)} {`(${board.tasks!.length})`} </span>
@@ -151,8 +153,10 @@ const updateTaskStatus = ( cardId: string | number, columnTitle:string)=>{
                                 />
                             </Dialog>
                         }
-
-                    </ActiveColumn>
+                        </>
+                    }
+                />
+                
                 ))
                 }
 
@@ -167,10 +171,10 @@ const Wrapper = styled.section`
         scroll-snap-type: x mandatory;
         overflow-x: scroll;
         scroll-behavior: smooth;
+        
 `;
 
 const ActiveColumn = styled.div`
-
         .active-board-head{
             padding: 10px;
             text-align: center;
@@ -195,6 +199,7 @@ const ActiveColumn = styled.div`
         width: 300px;
     }
 `;
+
 const CarouselContainer = styled.div`
         width: 100%;
         display: flex;

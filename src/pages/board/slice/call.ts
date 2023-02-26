@@ -155,9 +155,8 @@ export const createBoard = async (data: NewBoard, router: string[] | NextRouter,
       })
   };
 
-  export const updateTask = async(cardId:string | number, data:any, setLoading:any)=>{
+  export const updateTask = async(cardId:string | number, data:any)=>{
     const token = localStorage.getItem("kanbanJwtToken");
-    setLoading(true)
     await axios
       .patch(`${BASE_URL}/task/update/${cardId}`, data, {
         headers: {
@@ -167,13 +166,11 @@ export const createBoard = async (data: NewBoard, router: string[] | NextRouter,
       })
       .then((response) => {
         if (response.status === 200){
-          setLoading(false)
           toast.success('Successful');
         }
        
       })
       .catch((error)=>{
-        setLoading(false)
         console.log(error);
         toast.error('something went wrong')
       })
