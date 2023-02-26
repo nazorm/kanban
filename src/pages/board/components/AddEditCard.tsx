@@ -44,7 +44,6 @@ export const AddCollaboratorCard = (setIsViewTaskModalOpen:any,isViewTaskModalOp
     const router = useRouter();
     const boardId = router.query.boardId
     const [loading, setLoading] = useState(false);
-    // const { addCollaborator } = useAuth();
     const { register, control, handleSubmit, formState: { errors }, reset } = useForm<ICollaboratorProps>({
         resolver: yupResolver(collaboratorSchema)
     })

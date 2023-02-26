@@ -15,7 +15,6 @@ const HomePage = () => {
     const router = useRouter();
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false)
-    // const { getAllBoards } = useAuth();
     useEffect(()=>{
         getAllBoards(dispatch, setLoading);
     },[])

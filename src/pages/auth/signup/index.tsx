@@ -35,7 +35,6 @@ const schema = yup.object().shape({
 const SignUpScreen = () => {
     const [isPasswordShown, setIsPasswordShown] = useState(false);
     const router = useRouter();
-    // const {signUp} = useAuth();
     const dispatch = useDispatch()
     const [loading, setLoading] = useState()
     const { register, control, handleSubmit, formState: { errors, isDirty }, reset } = useForm<ISignUpScreenProps>(
