@@ -13,7 +13,6 @@ import { authStateSelector } from '../../../store/authSlice';
 import { Loader } from "src/components/Loader";
 
 const Board = () => {
-    const [isViewTaskModalOpen, setIsViewTaskModalOpen] = useState(false);
     const [loading, setLoading] = useState('false')
     const router = useRouter();
     const dispatch= useDispatch();

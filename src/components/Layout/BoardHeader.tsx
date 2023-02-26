@@ -16,6 +16,12 @@ import { useSelector } from 'react-redux';
 import { deleteBoard } from 'store/boardSlice/call';
 import { Loader } from "src/components/Loader";
 
+interface IUser{
+  _id: string;
+  email:string;
+  fullName: string;
+}
+
 export const BoardHeader = () => {
   const router = useRouter();
   // const user = useSelector(userSelector);
@@ -24,9 +30,19 @@ export const BoardHeader = () => {
   const [isViewTaskModalOpen, setIsViewTaskModalOpen] = useState(false);
   const [activeModal, setActiveModal] = useState('')
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
-const [loading, setLoading] = useState(false);
-  const userValue = window.localStorage.getItem("kanbanUser") as string;
-  const user = JSON.parse(userValue);
+  const [loading, setLoading] = useState(false);
+  const [userValue, setUserValue] = useState<IUser>();
+
+useEffect(()=>{
+  let user;
+  if (typeof window !== 'undefined') {
+    user = window.localStorage.getItem("kanbanUser") as string;
+    } else {
+      user = localStorage.getItem("kanbanUser") as string;
+   }
+   setUserValue(JSON.parse(user))
+},[])
+
   const handleMoreActions = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -70,7 +86,7 @@ if(loading){
         </div>
         <div className='nav'>
           <Link href="/home" >
-            <a className='account'>{user ? user?.fullName : 'Account'} </a>
+            <a className='account'>{userValue ? userValue?.fullName : 'Account'} </a>
           </Link>
           {router.pathname !== '/home' &&
             <MoreActions>
