@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Head from "next/head";
-import { BoardHeader } from '../../components/Layout/BoardHeader';
+import { BoardHeader } from 'src/components/Layout/BoardHeader';
 import { SideBar } from 'src/components/Layout/Sidebar';
-import { EmptyBoard } from './components/EmptyBoard';
-import { ActiveBoard } from './components/ActiveBoard';
+import EmptyBoard from './components/EmptyBoard';
+import ActiveBoard from './components/ActiveBoard';
 import { useRouter } from 'next/router';
-import { getAllCurrentBoardTasks } from './slice/call';
+import { getAllCurrentBoardTasks } from '../../../store/boardSlice/call';
 import { useDispatch, useSelector } from 'react-redux';
-import { currentBoardSelector } from './slice';
-import { authStateSelector } from '../auth/slice';
+import { currentBoardSelector } from '../../../store/boardSlice';
+import { authStateSelector } from '../../../store/authSlice';
 import { Loader } from "src/components/Loader";
 
 const Board = () => {

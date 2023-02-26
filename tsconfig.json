@@ -23,6 +23,6 @@
       }
     },
   
-    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src", "cypress/e2e/board_spec.cy.tsx"],
+    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src", "cypress/e2e/board_spec.cy.tsx", "store/authSlice", "store/boardSlice", "store/landingSlice"],
     "exclude": ["node_modules"]
   }

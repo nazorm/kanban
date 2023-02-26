@@ -11,7 +11,7 @@ import { useRouter } from "next/router";
 import { ErrorText } from 'src/components/Form/TextInput';
 import CheckIcon from '@mui/icons-material/Check';
 import { Subtasks } from 'src/api/types';
-import { createBoard, updateBoard, addCollaborator, createTask } from '../slice/call';
+import { createBoard, updateBoard, addCollaborator, createTask } from '../../store/boardSlice/call';
 import { Loader } from "src/components/Loader";
 
 export interface IEditCardProps {

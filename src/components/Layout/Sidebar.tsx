@@ -13,8 +13,8 @@ import openEyeIcon from '../../assets/icons/open-eye.svg';
 import lightIcon from '../../assets/icons/light-icon.svg';
 import darkIcon from '../../assets/icons/dark-icon.svg';
 import { useDispatch, useSelector} from 'react-redux';
-import { getAllBoards } from 'src/pages/home/slice/call';
-import { userBoardSelector } from 'src/pages/home/slice';
+import { getAllBoards } from 'store/landingSlice/call';
+import { userBoardSelector } from 'store/landingSlice';
 interface ISideBarLinkProps {
     route: string;
     icon: any;

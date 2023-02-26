@@ -3,12 +3,12 @@ import styled from 'styled-components';
 import { PrimaryButton } from '../../../components/Button';
 import { StyleConstants } from 'styles/StylesConstants';
 import { Dialog } from '@mui/material';
-import { AddEditBoard, AddEditCard } from './AddEditCard';
+import { AddEditBoard, AddEditCard } from '../../../components/AddEditCard';
 
 
 
 
-export const EmptyBoard = (props: { param: any; }) => {
+const EmptyBoard = (props: { param: any; }) => {
     const {param} = props
     const [isViewTaskModalOpen, setIsViewTaskModalOpen] = useState(false);
 
@@ -33,6 +33,7 @@ export const EmptyBoard = (props: { param: any; }) => {
         </Wrapper>
     )
 }
+export default EmptyBoard;
 
 const Wrapper = styled.section`
 display: flex;

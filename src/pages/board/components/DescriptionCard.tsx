@@ -4,7 +4,7 @@ import moreIcon from '../../../assets/icons/more-icon.svg';
 import Image from 'next/image';
 import { StyleConstants } from 'styles/StylesConstants';
 import { Subtasks } from 'src/api/types';
-import { updateSubtaskStatus, getSelectedSingleTask } from '../slice/call';
+import { updateSubtaskStatus, getSelectedSingleTask } from '../../../../store/boardSlice/call';
 
 export interface ICardDescriptionProps {
     _id: string;
@@ -16,7 +16,7 @@ export interface ICardDescriptionProps {
 
 
 
-export const DescriptionCard = (props: ICardDescriptionProps) => {
+const DescriptionCard = (props: ICardDescriptionProps) => {
     const { cardTitle, cardDescription, status, subtasks, _id } = props;
     const [isCheckedList, setIsCheckedList] = useState<any[]>([])
     const [loading, setLoading] = useState(false);
@@ -70,7 +70,7 @@ export const DescriptionCard = (props: ICardDescriptionProps) => {
         </Box>
     )
 }
-
+export default DescriptionCard;
 const Box = styled.div`
   padding: 20px 50px;
   height: 370px;

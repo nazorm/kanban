@@ -4,12 +4,12 @@ import styled from 'styled-components';
 import Image from 'next/image';
 import logo from '../../assets/icons/logo-dark.svg';
 import Link from 'next/link';
-import { EmptyBoard } from '../board/components/EmptyBoard';
+import EmptyBoard from '../board/components/EmptyBoard';
 import { SideBar } from 'src/components/Layout/Sidebar';
 import { BoardHeader } from 'src/components/Layout/BoardHeader';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from "react-redux";
-import { getAllBoards } from "./slice/call";
+import { getAllBoards } from "../../../store/landingSlice/call";
 
 const HomePage = () => {
     const router = useRouter();

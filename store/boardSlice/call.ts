@@ -1,6 +1,6 @@
 import { NextRouter, useRouter } from "next/router";
 import axios from "axios";
-import { getCurrentBoard, getSingleTask } from "../slice";
+import { getCurrentBoard, getSingleTask } from ".";
 import { Dispatch, AnyAction } from "@reduxjs/toolkit";
 import { toast } from 'react-toastify';
 import { NewBoard } from "src/api/types";

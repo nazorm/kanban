@@ -1,7 +1,7 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
-import { authSlice } from "src/pages/auth/slice";
-import { allBoardSlice } from "src/pages/home/slice";
-import { activeBoard } from "src/pages/board/slice";
+import { authSlice } from "store/authSlice";
+import { allBoardSlice } from "store/landingSlice";
+import { activeBoard } from "store/boardSlice";
 import { createWrapper } from "next-redux-wrapper";
 
 const makeStore = () =>

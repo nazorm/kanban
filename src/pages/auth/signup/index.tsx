@@ -12,7 +12,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import eyeOpenIcon from 'src/assets/icons/open-eye-grey.svg';
 import eyeClosedIcon from 'src/assets/icons/eye-slash.svg';
 import Image from 'next/image';
-import { signUp } from "../slice/call";
+import { signUp } from "../../../../store/authSlice/call";
 import { useDispatch } from "react-redux";
 import { Loader } from "src/components/Loader";
 import { customMedia } from "styles/breakpoints";

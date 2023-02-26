@@ -1,6 +1,6 @@
 
 import axios from "axios";
-import {  setAuthState, setUser } from "../slice";
+import {  setAuthState, setUser } from ".";
 import { Dispatch, AnyAction } from "@reduxjs/toolkit";
 import { SetStateAction } from "react";
 const BASE_URL = "https://kanban-task-api.cyclic.app";

@@ -9,17 +9,17 @@ import { BorderlessButton } from '../../../components/Button';
 import { newBoardList } from '../../../components/PmData';
 import {  TaskCard } from 'src/components/TaskCard';
 import { Dialog } from '@mui/material';
-import { DescriptionCard } from './DescriptionCard';
-import { AddEditCard } from './AddEditCard';
+import DescriptionCard from './DescriptionCard';
+import { AddEditCard } from '../../../components/AddEditCard';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
-import { currentBoardSelector, singleTaskSelector } from '../slice';
-import { getAllCurrentBoardTasks, updateTask, getSelectedSingleTask } from '../slice/call';
+import { currentBoardSelector, singleTaskSelector } from '../../../../store/boardSlice';
+import { getAllCurrentBoardTasks, updateTask, getSelectedSingleTask } from '../../../../store/boardSlice/call';
 import { UserBoard } from 'src/api/types';
 import { Loader } from "src/components/Loader";
 import { BoardColumn } from '@components/BoardColumn';
 
-export const ActiveBoard = () => {
+const ActiveBoard = () => {
     const router = useRouter();
     const dispatch = useDispatch();
     const [loading, setLoading] = useState('false')
@@ -164,6 +164,7 @@ const updateTaskStatus = ( cardId: string | number, columnTitle:string)=>{
         </Wrapper >
     )
 }
+export default ActiveBoard;
 
 const Wrapper = styled.section`
         width: 90%;

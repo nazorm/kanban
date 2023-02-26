@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import axios from "axios";
-import {  getAllUserBoard } from "../slice";
+import {  getAllUserBoard } from ".";
 import { Dispatch, AnyAction } from "@reduxjs/toolkit";
 import { SetStateAction } from "react";
 const BASE_URL = "https://kanban-task-api.cyclic.app";

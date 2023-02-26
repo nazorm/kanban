@@ -10,10 +10,10 @@ import { useRouter } from "next/router";
 import { StyleConstants } from 'styles/StylesConstants';
 import { Popover } from '@mui/material';
 import { Dialog } from '@mui/material';
-import { AddCollaboratorCard, AddEditBoard, AddEditCard } from 'src/pages/board/components/AddEditCard';
-import { userSelector } from 'src/pages/auth/slice';
+import { AddCollaboratorCard, AddEditBoard, AddEditCard } from '@components/AddEditCard';
+import { userSelector } from 'store/authSlice';
 import { useSelector } from 'react-redux';
-import { deleteBoard } from 'src/pages/board/slice/call';
+import { deleteBoard } from 'store/boardSlice/call';
 import { Loader } from "src/components/Loader";
 
 export const BoardHeader = () => {
