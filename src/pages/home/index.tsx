@@ -7,7 +7,6 @@ import Link from 'next/link';
 import { EmptyBoard } from '../board/components/EmptyBoard';
 import { SideBar } from 'src/components/Layout/Sidebar';
 import { BoardHeader } from 'src/components/Layout/BoardHeader';
-import { useAuth } from 'src/api/context';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from "react-redux";
 import { getAllBoards } from "./slice/call";
