@@ -24,7 +24,6 @@ export const getAllCurrentBoardTasks = async (
       setLoading(false);
       if (response.status === 200) {
         dispatch(getCurrentBoard(response.data.data));
-        toast.success('Successful');
       }
     })
     .catch((error) => {
@@ -189,7 +188,6 @@ export const createBoard = async (data: NewBoard, router: string[] | NextRouter,
       .then((response) => {
         if (response.status === 200){
           setLoading(false)
-          toast.success('Successful');
         }
        
       })
@@ -214,7 +212,6 @@ export const createBoard = async (data: NewBoard, router: string[] | NextRouter,
         if (response.status === 200){
           dispatch(getSingleTask(response.data.data));
           setLoading(false)
-          toast.success('Successful');
           console.log('selected', response.data.data)
         }
        
