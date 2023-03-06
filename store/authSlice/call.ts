@@ -32,7 +32,7 @@ export const signIn = (data: { email: string; password: string }, router: any, s
 
 
   export const signUp = (data: {email: string; password: string; fullName: string; }, router: any, setLoading: any, dispatch: Dispatch<AnyAction>) =>{
-    setLoading(true)
+    setLoading(true);
     axios
     .post(`${BASE_URL}/signup`, {
       fullName: data.fullName,
@@ -40,14 +40,14 @@ export const signIn = (data: { email: string; password: string }, router: any, s
       email: data.email,
     })
     .then((response) => {
-        if (response.status === 200){
+        if (response.status >= 200){
           setLoading(false)
-            dispatch(setAuthState(true))
-            localStorage.setItem("kanbanJwtToken", response.data.token);
-            localStorage.setItem("kanbanUser", JSON.stringify(response.data.user));
-            dispatch(setUser(response.data.user));
-            setLoading(false);
-            router.push("/home");
+          dispatch(setAuthState(true));
+          localStorage.setItem("kanbanJwtToken", response.data.token);
+          localStorage.setItem("kanbanUser", JSON.stringify(response.data.user));
+          router.push("/home");
+          dispatch(setUser(response.data.user));
+          setLoading(false);   
           }else{
               setLoading(false)
               dispatch(setAuthState(false))
