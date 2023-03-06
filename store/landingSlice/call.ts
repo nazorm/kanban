@@ -26,5 +26,5 @@ export const getAllBoards = async (dispatch: Dispatch<AnyAction>, setLoading: an
             dispatch(getAllUserBoard(response.data.data))
         }
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {console.log(error)});
   };

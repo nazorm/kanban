@@ -3,6 +3,7 @@ import axios from "axios";
 import {  setAuthState, setUser } from ".";
 import { Dispatch, AnyAction } from "@reduxjs/toolkit";
 import { SetStateAction } from "react";
+import { toast } from 'react-toastify';
 const BASE_URL = "https://kanban-task-api.cyclic.app";
 
 export const signIn = (data: { email: string; password: string }, router: any, setLoading: any, dispatch: Dispatch<AnyAction>) => {
@@ -14,7 +15,6 @@ export const signIn = (data: { email: string; password: string }, router: any, s
         password: data.password,
       })
       .then((response) => {
-    
         if (response.status === 200){
           setLoading(false)
           dispatch(setAuthState(true))
@@ -27,7 +27,11 @@ export const signIn = (data: { email: string; password: string }, router: any, s
         }
         // setAuthUser(response.data.user);
       })
-      .catch((error: any) => console.log(error));
+      .catch((error: any) => { 
+        setLoading(false)
+        dispatch(setAuthState(false))
+        toast.error(error.response.data)
+      });
   };
 
 
@@ -40,7 +44,9 @@ export const signIn = (data: { email: string; password: string }, router: any, s
       email: data.email,
     })
     .then((response) => {
-        if (response.status >= 200){
+        if ( response.status === 200 ||
+          response.status === 201 ||
+          response.status === 202){
           setLoading(false)
           dispatch(setAuthState(true));
           localStorage.setItem("kanbanJwtToken", response.data.token);
@@ -53,5 +59,9 @@ export const signIn = (data: { email: string; password: string }, router: any, s
               dispatch(setAuthState(false))
           }
     })
-    .catch((error: any) => console.log(error));
+    .catch((error: any) => { 
+      setLoading(false)
+      dispatch(setAuthState(false))
+      toast.error(error.response.data)
+    });
   }

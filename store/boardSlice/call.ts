@@ -28,8 +28,7 @@ export const getAllCurrentBoardTasks = async (
     })
     .catch((error) => {
       setLoading(false)
-      console.log(error)
-      toast.error('something went wrong')
+      toast.error(error.response.data);
     });
 };
 
@@ -54,8 +53,7 @@ export const createBoard = async (data: NewBoard, router: string[] | NextRouter,
       })
       .catch((error) => {
         setLoading(false)
-        console.log(error)
-        toast.error('something went wrong')
+        toast.error(error.response.data);
       });
   };
 
@@ -78,8 +76,7 @@ export const createBoard = async (data: NewBoard, router: string[] | NextRouter,
       })
       .catch((error) => {
         setLoading(false);
-        console.log(error)
-        toast.error('something went wrong')
+        toast.error(error.response.data);
       });
   };
 
@@ -101,8 +98,7 @@ export const createBoard = async (data: NewBoard, router: string[] | NextRouter,
       })
       .catch((error) => {
         setLoading(false)
-        console.log(error);
-        toast.error('something went wrong')
+        toast.error(error.response.data);
       });
   };
 
@@ -125,8 +121,7 @@ export const createBoard = async (data: NewBoard, router: string[] | NextRouter,
       })
       .catch((error) => {
         setLoading(false)
-        console.log(error);
-        toast.error('something went wrong')
+        toast.error(error.response.data)
       });
   };
 
@@ -149,8 +144,7 @@ export const createBoard = async (data: NewBoard, router: string[] | NextRouter,
       })
       .catch((error)=>{
         setLoading(false)
-        console.log(error);
-        toast.error('something went wrong')
+        toast.error(error.response.data)
       })
   };
 
@@ -170,8 +164,7 @@ export const createBoard = async (data: NewBoard, router: string[] | NextRouter,
        
       })
       .catch((error)=>{
-        console.log(error);
-        toast.error('something went wrong')
+        toast.error(error.response.data)
       })
   }
 
@@ -193,8 +186,7 @@ export const createBoard = async (data: NewBoard, router: string[] | NextRouter,
       })
       .catch((error)=>{
         setLoading(false)
-        console.log(error);
-        toast.error('something went wrong')
+        toast.error(error.response.data)
       })
   }
 
@@ -212,13 +204,12 @@ export const createBoard = async (data: NewBoard, router: string[] | NextRouter,
         if (response.status === 200){
           dispatch(getSingleTask(response.data.data));
           setLoading(false)
-          console.log('selected', response.data.data)
         }
        
       })
       .catch((error)=>{
         setLoading(false)
-        console.log(error);
-        toast.error('something went wrong')
+        toast.error(error.response.data)
+        
       })
   }
