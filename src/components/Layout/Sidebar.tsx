@@ -57,7 +57,7 @@ export const SideBarIcon = (props: ISideBarLinkProps) => {
 
 export const SideBar = () => {
     const [isDarkTheme, setIsDarkTheme] = useState(true);
-    const [isEyeOpen, setIsEyeOpen] = useState(false);
+    const [isEyeOpen, setIsEyeOpen] = useState(true);
     const [loading, setLoading] = useState(false);
     const dispatch= useDispatch();
     const router = useRouter();
