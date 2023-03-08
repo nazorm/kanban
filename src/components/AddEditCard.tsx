@@ -13,6 +13,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import { Subtasks } from 'src/api/types';
 import { createBoard, updateBoard, addCollaborator, createTask } from '../../store/boardSlice/call';
 import { Loader } from "src/components/Loader";
+import { customMedia } from 'styles/breakpoints';
 
 export interface IEditCardProps {
     title: string,
@@ -252,6 +253,9 @@ const Box = styled.div`
 select{
     outline: none;
 }
+${customMedia.lessThan("medium")`
+      width: 350px;
+  `};
 `;
 const SubtaskContainer = styled.div`
 
