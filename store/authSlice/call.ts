@@ -51,7 +51,7 @@ export const signIn = (data: { email: string; password: string }, router: any, s
           dispatch(setAuthState(true));
           localStorage.setItem("kanbanJwtToken", response.data.token);
           localStorage.setItem("kanbanUser", JSON.stringify(response.data.user));
-          router.push("/home");
+          router.push("/");
           dispatch(setUser(response.data.user));
           setLoading(false);   
           }else{
@@ -64,4 +64,5 @@ export const signIn = (data: { email: string; password: string }, router: any, s
       dispatch(setAuthState(false))
       toast.error(error.response.data)
     });
-  }
+  } 
+  
