@@ -16,6 +16,7 @@ export const BoardColumn = ({ handleDragEnter, content }: IActiveBoardProps) => 
 }
 
 const ActiveColumn = styled.div`
+    text-align: center;
     .active-board-head{
         padding: 10px;
         text-align: center;

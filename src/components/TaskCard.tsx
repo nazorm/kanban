@@ -40,8 +40,9 @@ export const TaskCard = ({ title, handleDragStart, handleDragEnter, handleCardVi
 const Card = styled.div`
     width: 90%;
     margin: 10px auto;
-    padding: 5px;
+    padding: 5px 10px;
     border-radius: 4px;
+    text-align: start;
     background-color: ${StyleConstants.WHITE_COLOR};
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
     &:hover{
