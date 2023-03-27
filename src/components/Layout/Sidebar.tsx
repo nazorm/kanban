@@ -8,11 +8,12 @@ import Image from 'next/image';
 import { Switch } from '@mui/material';
 import { StyleConstants } from 'styles/StylesConstants';
 import boardIcon from '../../assets/icons/board-icon.svg';
+import { BiHomeAlt } from 'react-icons/bi';
 import closeEyeIcon from '../../assets/icons/eye-slash.svg';
 import openEyeIcon from '../../assets/icons/open-eye.svg';
 import lightIcon from '../../assets/icons/light-icon.svg';
 import darkIcon from '../../assets/icons/dark-icon.svg';
-import { useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getAllBoards } from 'store/landingSlice/call';
 import { userBoardSelector } from 'store/landingSlice';
 interface ISideBarLinkProps {
@@ -40,31 +41,63 @@ export const SideBarLink = (props: ISideBarLinkProps) => {
     )
 }
 
+export const OpenSideBarHome = (props: ISideBarLinkProps) => {
+    const { title, route, icon } = props;
+    const router = useRouter();
+
+    return (
+
+        <li className={router.asPath.includes(route) ? "active-item" : "side-bar__item"}>
+            <Link href={route} style={{ padding: '0' }}>
+                <div className='open-sidebar'>
+                    {icon}
+                    <span className='sidebar-title'> {title}</span>
+                </div>
+            </Link>
+        </li>
+
+
+    )
+}
+
 export const SideBarIcon = (props: ISideBarLinkProps) => {
-    const { route, icon } = props;
+    const { route, icon , title} = props;
     const router = useRouter();
     return (
         <li className={router.asPath.includes(route) ? "closed-active-item" : "closed-side-bar__item"}>
             <Link href={route}>
                 <div className='closed-sidebar'>
-                    <Image src={icon} alt='icon' className='icon' width={20} height={20} />
+                <p className='title-short'>{title?.substring(0,3)}</p>
+                    {/* <Image src={icon} alt='icon' className='icon' width={20} height={20} /> */}
                 </div>
             </Link>
         </li>
     )
 
 }
-
+export const ClosedSideBarHome = (props: ISideBarLinkProps) => {
+    const { route, icon } = props;
+    const router = useRouter();
+    return (
+        <li className={router.asPath.includes(route) ? "closed-active-item" : "closed-side-bar__item"}>
+            <Link href={route}>
+                <div className='closed-sidebar'>
+                    {icon}
+                </div>
+            </Link>
+        </li>
+    )
+}
 export const SideBar = () => {
     const [isDarkTheme, setIsDarkTheme] = useState(true);
     const [isEyeOpen, setIsEyeOpen] = useState(true);
     const [loading, setLoading] = useState(false);
-    const dispatch= useDispatch();
+    const dispatch = useDispatch();
     const router = useRouter();
-const allBoards = useSelector(userBoardSelector);
-    useEffect(()=>{
+    const allBoards = useSelector(userBoardSelector);
+    useEffect(() => {
         getAllBoards(dispatch, setLoading);
-    },[])
+    }, [])
 
     const handleChange = () => {
         setIsDarkTheme(!isDarkTheme);
@@ -83,10 +116,10 @@ const allBoards = useSelector(userBoardSelector);
         <Wrapper>{isEyeOpen ?
             <ClosedSideBar>
                 <ul className='sidebar-list'>
-                    <SideBarIcon
+                    <ClosedSideBarHome
                         key={1}
                         route={'/home'}
-                        icon={boardIcon}
+                        icon={<BiHomeAlt style={{ width: '25px', height: '25px', display: 'block' }} />}
                     />
                     {allBoards?.map((item: any) => {
                         return (
@@ -94,6 +127,7 @@ const allBoards = useSelector(userBoardSelector);
                                 key={item._id}
                                 route={`/board/${item.name}?boardId=${item._id}`}
                                 icon={boardIcon}
+                                title={item.name}
                             />
                         )
                     })}
@@ -102,11 +136,11 @@ const allBoards = useSelector(userBoardSelector);
             :
             <OpenSideBar>
                 <ul className='sidebar-list'>
-                    <SideBarLink
+                    <OpenSideBarHome
                         key={1}
                         route={'/home'}
                         title={'Home'}
-                        icon={boardIcon}
+                        icon={<BiHomeAlt style={{ width: '25px', height: '22px', display: 'inline-block' }} />}
                     />
                     {allBoards?.map((item: any) => {
                         return (
@@ -171,11 +205,18 @@ const OpenSideBar = styled.div`
     transition: 0.5s;
     font-weight: 300;
     
-&:hover{
+   &:hover{
     width: 220px;
     cursor: pointer;
     background-color: ${StyleConstants.ACCENT_COLOR};
     color: ${StyleConstants.LIGHT_LILAC};
+  }
+  .open-sidebar{
+    display: flex;
+    align-items: center;
+  }
+  .sidebar-title{
+    margin-left: 5px;
   }
 }
 .active-item{
@@ -197,9 +238,9 @@ const ClosedSideBar = styled.div`
             margin-top: 0;
         }
       .closed-side-bar__item, .closed-active-item{
-            margin: 10px 2px ;
+            margin: 5px 2px ;
             list-style-type: none;
-            padding: 15px;
+            padding: 5px 15px;
             width: 100px;
             transition: 0.5s;
       }
@@ -207,8 +248,11 @@ const ClosedSideBar = styled.div`
      img{
             width: 80px;
     }
-    }
 
+    }
+    .title-short{
+        border: 1px solid green;
+    }
 `;
 const ThemeWrapper = styled.div`
       position: absolute;
