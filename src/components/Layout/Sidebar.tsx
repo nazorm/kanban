@@ -190,6 +190,7 @@ const OpenSideBar = styled.div`
      width: 300px;
      padding-top: 10px;
      height: 600px;
+     overflow-y: scroll;
      background-color: ${StyleConstants.WHITE_COLOR};
     .sidebar-list{
         padding: 0px;
@@ -231,6 +232,7 @@ const ClosedSideBar = styled.div`
         width: 100px;
         height: 600px;
         padding-top: 10px;
+        overflow-y: scroll;
         background-color: ${StyleConstants.ACCENT_COLOR};
         color: ${StyleConstants.WHITE_COLOR};
       .sidebar-list{
