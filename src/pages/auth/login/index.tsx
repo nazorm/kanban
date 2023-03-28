@@ -25,9 +25,9 @@ interface ILoginScreenProps {
 const passwordCondition = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.*)")
 const schema = yup.object().shape({
     email: yup.string().email().required(),
-    password: yup.string().min(8).max(20).required().matches(
-        passwordCondition,
-        'Password must include letters, numbers, characters and uppercase'),
+    password:  yup.string()
+    .required('No password provided.') 
+    .min(6, 'Password is too short - should be 6 chars minimum.')
 })
 
 const LoginScreen = () => {
